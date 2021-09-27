@@ -5,7 +5,7 @@
 import { Octokit } from "@octokit/core";
 
 const octokit = new Octokit({
-  auth: `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`,
+  auth: `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`,
 });
 
 const userGist = "9cdd7a2c81928f9d191c68251cc6c374";
