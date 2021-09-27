@@ -13,9 +13,6 @@ const recordGist = "93d782341000b8029b86197d98a6dc23";
 const leaveGist = "7e6075bdce0d6baef0df758c030d4f1c";
 
 
-function consoleLog(){
-  console.log("saqib")
-}
 
 export const getUsers = async () => {
   try {
