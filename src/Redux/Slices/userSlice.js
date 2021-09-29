@@ -12,6 +12,7 @@ const initialState = {
   userRecords: [],
   activeUser: {},
   leaves: [],
+  gists: [],
 };
 
 const userSlice = createSlice({

@@ -5,35 +5,72 @@
 import { Octokit } from "@octokit/core";
 
 const octokit = new Octokit({
-  auth: `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`,
+  auth: process.env.REACT_APP_API_KEY,
 });
 
-const userGist = "9cdd7a2c81928f9d191c68251cc6c374";
-const recordGist = "93d782341000b8029b86197d98a6dc23";
-const leaveGist = "7e6075bdce0d6baef0df758c030d4f1c";
+const R = require("ramda");
 
+require("dotenv").config();
 
+let userGist;
+let recordGist;
+let leaveGist;
+const allgists = [];
 
-export const getUsers = async () => {
+// console.log("key",process.env.REACT_APP_API_KEY)
+
+export const getallGists = async () => {
   try {
-    const response = await octokit.request(`GET /gists/${userGist}`, {
-      org: "octokit",
-      type: "private",
+    const response = await octokit.request("GET /users/AreejFatima/gists", {
+      username: "AreejFatima",
     });
-    const data = response.data.files["userStore.txt"].content;
-    return data;
+    R.map((gist) => {
+      const temp = {
+        filename: R.keys(gist.files).toString(),
+        id: gist.id,
+      };
+      allgists.push(temp);
+    }, response.data);
+
+    R.map((item) => {
+      if (item.filename === "userStore.txt") {
+        userGist = item.id;
+      } else if (item.filename === "leaves.txt") {
+        leaveGist = item.id;
+      } else if (item.filename === "records.txt") {
+        recordGist = item.id;
+      }
+    }, allgists);
   } catch (error) {
     console.log(error);
   }
 };
+
+export const getUsers = async () => {
+  if (userGist) {
+    try {
+      const response = await octokit.request(`GET /gists/${userGist}`, {
+        org: "octokit",
+        type: "private",
+      });
+      const data = response.data.files["userStore.txt"].content;
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+};
+
 export const getRecords = async () => {
   try {
-    const response = await octokit.request(`GET /gists/${recordGist}`, {
-      org: "octokit",
-      type: "private",
-    });
-    const data = response.data.files["records.txt"].content;
-    return data;
+    if (recordGist) {
+      const response = await octokit.request(`GET /gists/${recordGist}`, {
+        org: "octokit",
+        type: "private",
+      });
+      const data = response.data.files["records.txt"].content;
+      return data;
+    }
   } catch (error) {
     console.log(error);
   }

@@ -1,16 +1,18 @@
 /* eslint-disable react/destructuring-assignment */
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import "react-bootstrap-table/dist/react-bootstrap-table-all.min.css";
 import Table from "react-bootstrap/Table";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
-import history from "../../history";
+
 
 const R = require("ramda");
 
 const UserRecords = () => {
   const [search, setSearch] = useState("");
+  const history = useHistory();
   const userRecords = useSelector((state) => state.user.userRecords);
   const id = useSelector((state) => state.user.activeUser.id);
   const allRecords = [];

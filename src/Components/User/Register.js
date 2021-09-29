@@ -1,8 +1,8 @@
 import Form from "react-bootstrap/Form";
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
-import history from "../../history";
 import { getUsers, getRecords } from "../gists";
 import {
   addUser,
@@ -15,6 +15,7 @@ const R = require("ramda");
 
 const Register = () => {
   const usersList = useSelector((state) => state.user.allUsers);
+  const history = useHistory();
   const [errors, setErrors] = useState({});
   const [name, setName] = useState("");
   const [pin, setPin] = useState("");
