@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useDispatch } from "react-redux";
 import "../../App.css";
-import history from "../../history";
-import { getUsers, getRecords } from "../gists";
+import { getUsers, getRecords, getallGists } from "../gists";
 import {
   setInitialEmployees,
   setInitialERecords,
@@ -12,6 +12,7 @@ import {
 
 const AdminLogin = () => {
   const [id, setId] = useState("");
+  const history = useHistory();
   const [pin, setPin] = useState("");
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
@@ -19,12 +20,15 @@ const AdminLogin = () => {
   const PIN = "12345";
 
   useEffect(() => {
-    getUsers().then((data) => {
-      dispatch(setInitialEmployees(JSON.parse(data)));
-    });
-    getRecords().then((data) => {
-      dispatch(setInitialERecords(JSON.parse(data)));
-    });
+    getallGists();
+    setTimeout(() => {
+      getUsers().then((data) => {
+        dispatch(setInitialEmployees(JSON.parse(data)));
+      });
+      getRecords().then((data) => {
+        dispatch(setInitialERecords(JSON.parse(data)));
+      });
+    }, 1000);
   }, []);
 
   function findFormErrors() {
@@ -34,7 +38,7 @@ const AdminLogin = () => {
     if (!pin || pin === "") newErrors.pin = "Pincode cannot be blank!";
     else if (pin !== PIN) newErrors.pin = "Invalid Pincode";
     return newErrors;
-  };
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -54,6 +58,7 @@ const AdminLogin = () => {
         <Form.Group size="lg">
           <Form.Label>Enter Admin Id </Form.Label>
           <Form.Control
+            placeholder="XX-000"
             autoFocus
             type="id"
             value={id}
@@ -68,7 +73,8 @@ const AdminLogin = () => {
         <Form.Group size="lg">
           <Form.Label>Enter Pin </Form.Label>
           <Form.Control
-            type="pin"
+            type="password"
+            placeholder="*****"
             value={pin}
             onChange={(e) => setPin(e.target.value)}
             isInvalid={!!errors.pin}

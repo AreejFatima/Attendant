@@ -2,14 +2,15 @@
 /* eslint-disable no-alert */
 import "../../App.css";
 import { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
-import history from "../../history";
 import { pushLeave } from "../../Redux/Slices/userSlice";
 
 const LeaveRequest = () => {
   const id = useSelector((state) => state.user.activeUser.id);
+  const history = useHistory();
 
   const [newLeave, setNewleave] = useState({
     userid: "",

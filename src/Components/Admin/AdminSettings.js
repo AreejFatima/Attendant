@@ -1,11 +1,12 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
 import { getUsers } from "../gists";
 import { deleteEmployee } from "../../Redux/Slices/adminSlice";
-import history from "../../history";
+
 
 
 const AdminSettings = () => (
@@ -17,6 +18,7 @@ const AdminSettings = () => (
 const EmployeeTable = () => {
   const [employees, setEmployees] = useState([]);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     getUsers().then((data) => {

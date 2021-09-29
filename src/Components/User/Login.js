@@ -1,12 +1,12 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable linebreak-style */
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useSelector, useDispatch } from "react-redux";
 import "../../App.css";
-import history from "../../history";
-import { getUsers, getRecords } from "../gists";
+import { getUsers, getRecords, getallGists } from "../gists";
 import {
   setActiveUser,
   setInitialUsers,
@@ -22,25 +22,33 @@ const Login = () => {
   const [newUser, setNewBox] = useState(true);
   const usersList = useSelector((state) => state.user.allUsers);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
-    getUsers().then((data) => {
-      dispatch(setInitialUsers(JSON.parse(data)));
-    });
-    getRecords().then((data) => {
-      dispatch(setInitialRecords(JSON.parse(data)));
-    });
+    getallGists();
+    setTimeout(() => {
+      getUsers().then((data) => {
+        dispatch(setInitialUsers(JSON.parse(data)));
+      });
+      getRecords().then((data) => {
+        dispatch(setInitialRecords(JSON.parse(data)));
+      });
+    }, 1000);
   }, []);
 
   function findFormErrors() {
     const current = R.find(R.propEq("id", id))(usersList);
+    // eslint-disable-next-line no-console
+    console.log("current", current);
     const newErrors = {};
-    if (!id || id === "") newErrors.id = "Employee Id cannot be blank!";
-    else if (id.length > 6) newErrors.id = "Invalid Employee Id!";
-    if (!pin || pin.length > 6 || pin.length < 6)
-      newErrors.pin = "pincode must be 6 digits long";
-    else if (id !== "" && pin !== current.pincode)
-      newErrors.pin = "Wrong Pincode Entered!";
+    if (current !== undefined) {
+      if (!pin || pin.length > 6 || pin.length < 6)
+        newErrors.pin = "pincode must be 6 digits long";
+      else if (pin !== current.pincode)
+        newErrors.pin = "Wrong Pincode Entered!";
+    } else {
+      newErrors.id = "Employee not found! Enter correct id";
+    }
     return newErrors;
   }
 
@@ -82,7 +90,7 @@ const Login = () => {
         <Form.Group size="lg">
           <Form.Label>Enter Employee Id </Form.Label>
           <Form.Control
-            placeholder="DE-000"
+            placeholder="XX-000"
             autoFocus
             type="id"
             value={id}
@@ -97,7 +105,7 @@ const Login = () => {
         <Form.Group size="lg">
           <Form.Label>Enter Pin </Form.Label>
           <Form.Control
-            type="pin"
+            type='password'
             value={pin}
             placeholder="--6-digit-pin--"
             onChange={(e) => setPin(e.target.value)}

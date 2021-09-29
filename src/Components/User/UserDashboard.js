@@ -1,9 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import { CgArrowLongRight, CgArrowLongLeft } from "react-icons/cg";
 import { BiCalendarEvent, BiTimer, BiLogOut } from "react-icons/bi";
 import { addRecord, setActiveUser } from "../../Redux/Slices/userSlice";
-import history from "../../history";
+
 import "../../App.css";
 
 const R = require("ramda");
@@ -11,6 +12,7 @@ const R = require("ramda");
 const UserDashboard = () => {
   const activeUser = useSelector((state) => state.user.activeUser);
   const [isWorking, setisWorking] = useState(false);
+  const history = useHistory();
   const dispatch = useDispatch();
 
   function handlePunch() {

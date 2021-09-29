@@ -1,10 +1,10 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { FaUserAlt, FaSortUp, FaSortDown, FaBackward } from "react-icons/fa";
 import { AiFillSetting } from "react-icons/ai";
 import { getUsers, getRecords } from "../gists";
-import history from "../../history";
 import "font-awesome/css/font-awesome.min.css";
 import {
   setInitialEmployees,
@@ -17,6 +17,7 @@ const AdminDashboard = () => {
   
   const timestamp = R.split(", ", new Date().toLocaleString());
   const currentDate = timestamp[0];
+  const history = useHistory();
   const workHourLog = [];
   const available = [];
   const unavailable = [];
