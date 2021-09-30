@@ -6,11 +6,10 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useSelector, useDispatch } from "react-redux";
 import "../../App.css";
-import { getUsers, getRecords, getallGists } from "../gists";
+
 import {
   setActiveUser,
-  setInitialUsers,
-  setInitialRecords,
+  fetchUserDataFromGists,
 } from "../../Redux/Slices/userSlice";
 
 const R = require("ramda");
@@ -25,15 +24,7 @@ const Login = () => {
   const history = useHistory();
 
   useEffect(() => {
-    getallGists();
-    setTimeout(() => {
-      getUsers().then((data) => {
-        dispatch(setInitialUsers(JSON.parse(data)));
-      });
-      getRecords().then((data) => {
-        dispatch(setInitialRecords(JSON.parse(data)));
-      });
-    }, 1000);
+    dispatch(fetchUserDataFromGists());
   }, []);
 
   function findFormErrors() {
@@ -105,7 +96,7 @@ const Login = () => {
         <Form.Group size="lg">
           <Form.Label>Enter Pin </Form.Label>
           <Form.Control
-            type='password'
+            type="password"
             value={pin}
             placeholder="--6-digit-pin--"
             onChange={(e) => setPin(e.target.value)}

@@ -4,19 +4,20 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
-import { getUsers } from "../gists";
+import { getRecords, getUsers } from "../gists";
 import { deleteEmployee } from "../../Redux/Slices/adminSlice";
 
-
-
 const AdminSettings = () => (
-    <div>
-      <EmployeeTable />
-    </div>
-  );
+  <div>
+    <EmployeeTable />
+  </div>
+);
+
+const R = require("ramda");
 
 const EmployeeTable = () => {
   const [employees, setEmployees] = useState([]);
+  const [records, setRecords] = useState([]);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -24,37 +25,53 @@ const EmployeeTable = () => {
     getUsers().then((data) => {
       setEmployees(JSON.parse(data));
     });
+    getRecords().then((data) => {
+      setRecords(JSON.parse(data));
+    });
   }, []);
 
   function removeEmployee(eid) {
     const payload = {
       data: employees,
+      data_record: records,
       id: eid,
     };
     dispatch(deleteEmployee(payload));
+    setTimeout(() => {
+      const toDelete = R.find(R.propEq("id", eid))(employees);
+      const filteredEmployees = employees.filter((item) => item !== toDelete);
+
+      const toDeleteRec = R.find(R.propEq("id", eid))(records);
+      const filteredrecords = records.filter((item) => item !== toDeleteRec);
+
+      setEmployees(filteredEmployees);
+      setRecords(filteredrecords);
+    }, 500);
     alert("Deleted Sucessfully, Reload to see changes");
   }
 
   function renderHeader() {
     const headerElement = ["EmployeeId", "Name", "Department"];
-    return headerElement.map((key, index) => <th key={index}>{key.toUpperCase()}</th>);
+    return headerElement.map((key, index) => (
+      <th key={index}>{key.toUpperCase()}</th>
+    ));
   }
 
   function renderBody() {
     return (
       employees &&
       employees.map(({ id, username, dept }) => (
-          <tr>
-            <td>{id}</td>
-            <td>{username}</td>
-            <td>{dept}</td>
-            <td className="opration">
-              <button className="button" onClick={() => removeEmployee(id)}>
-                Delete
-              </button>
-            </td>
-          </tr>
-        ))
+        <tr>
+          <td>{id}</td>
+          <td>{username}</td>
+          <td>{dept}</td>
+          <td className="opration">
+            <button className="button" onClick={() => removeEmployee(id)}>
+              Delete
+            </button>
+          </td>
+        </tr>
+      ))
     );
   }
 

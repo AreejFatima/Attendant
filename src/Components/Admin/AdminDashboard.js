@@ -4,17 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { FaUserAlt, FaSortUp, FaSortDown, FaBackward } from "react-icons/fa";
 import { AiFillSetting } from "react-icons/ai";
-import { getUsers, getRecords } from "../gists";
 import "font-awesome/css/font-awesome.min.css";
-import {
-  setInitialEmployees,
-  setInitialERecords,
-} from "../../Redux/Slices/adminSlice";
+import { fetchDataFromGists } from "../../Redux/Slices/adminSlice";
 
 const R = require("ramda");
 
 const AdminDashboard = () => {
-  
   const timestamp = R.split(", ", new Date().toLocaleString());
   const currentDate = timestamp[0];
   const history = useHistory();
@@ -26,12 +21,7 @@ const AdminDashboard = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    getRecords().then((data) => {
-      dispatch(setInitialERecords(JSON.parse(data)));
-    });
-    getUsers().then((data) => {
-      dispatch(setInitialEmployees(JSON.parse(data)));
-    });
+    dispatch(fetchDataFromGists());
   }, []);
 
   function assembleWHdata() {
@@ -73,10 +63,6 @@ const AdminDashboard = () => {
     }
   }
   assembleData();
-
-  
-
-  
 
   return (
     <div className="adminMain">
@@ -212,17 +198,17 @@ const Tabs = (props) => {
   );
 };
 const TabButtons = ({ buttons, changeTab, activeTab }) => (
-    <div className="tab-buttons">
-      {buttons.map((button) => (
-          <button
-            className={button === activeTab ? "active" : ""}
-            onClick={() => changeTab(button)}
-          >
-            {button}
-          </button>
-        ))}
-    </div>
-  );
+  <div className="tab-buttons">
+    {buttons.map((button) => (
+      <button
+        className={button === activeTab ? "active" : ""}
+        onClick={() => changeTab(button)}
+      >
+        {button}
+      </button>
+    ))}
+  </div>
+);
 
 const Tab = (props) => <>{props.children}</>;
 

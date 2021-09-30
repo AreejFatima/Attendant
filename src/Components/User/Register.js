@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Form from "react-bootstrap/Form";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
@@ -7,6 +8,7 @@ import { getUsers, getRecords } from "../gists";
 import {
   addUser,
   pushRecord,
+  fetchUserDataFromGists,
   setInitialRecords,
   setInitialUsers,
 } from "../../Redux/Slices/userSlice";
@@ -33,14 +35,9 @@ const Register = () => {
 
   useEffect(() => {
     if (user.id !== "") {
-      getUsers().then((data) => {
-        dispatch(setInitialUsers(JSON.parse(data)));
-      });
+      
+      dispatch(fetchUserDataFromGists())
       dispatch(addUser(user));
-
-      getRecords().then((data) => {
-        dispatch(setInitialRecords(JSON.parse(data)));
-      });
       dispatch(pushRecord(record));
     }
   }, [user]);
@@ -57,7 +54,7 @@ const Register = () => {
   function handleSubmit(event) {
     event.preventDefault();
     const newErrors = findFormErrors();
-    if (Object.keys(newErrors).length > 0) {
+    if (R.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
       alert("Registered Sucessfully!!!");

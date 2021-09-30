@@ -4,11 +4,8 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useDispatch } from "react-redux";
 import "../../App.css";
-import { getUsers, getRecords, getallGists } from "../gists";
-import {
-  setInitialEmployees,
-  setInitialERecords,
-} from "../../Redux/Slices/adminSlice";
+
+import { fetchDataFromGists } from "../../Redux/Slices/adminSlice";
 
 const AdminLogin = () => {
   const [id, setId] = useState("");
@@ -20,16 +17,8 @@ const AdminLogin = () => {
   const PIN = "12345";
 
   useEffect(() => {
-    getallGists();
-    setTimeout(() => {
-      getUsers().then((data) => {
-        dispatch(setInitialEmployees(JSON.parse(data)));
-      });
-      getRecords().then((data) => {
-        dispatch(setInitialERecords(JSON.parse(data)));
-      });
-    }, 1000);
-  }, []);
+    dispatch(fetchDataFromGists());
+  }, [dispatch]);
 
   function findFormErrors() {
     const newErrors = {};

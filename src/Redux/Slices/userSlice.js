@@ -1,9 +1,16 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-return-await */
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice, current, createAsyncThunk } from "@reduxjs/toolkit";
 import moment from "moment";
-import { patchUsers, patchRecords, patchLeaves } from "../../Components/gists";
+import {
+  patchUsers,
+  patchRecords,
+  patchLeaves,
+  getUsers,
+  getRecords,
+  getallGists,
+} from "../../Components/gists";
 
 const R = require("ramda");
 
@@ -12,8 +19,22 @@ const initialState = {
   userRecords: [],
   activeUser: {},
   leaves: [],
-  gists: [],
 };
+
+export const fetchUserDataFromGists = createAsyncThunk(
+  "user/fetchData",
+  async (_, thunkApi) => {
+    getallGists();
+    setTimeout(() => {
+      getUsers().then((data) => {
+        thunkApi.dispatch(setInitialUsers(JSON.parse(data)));
+      });
+      getRecords().then((data) => {
+        thunkApi.dispatch(setInitialRecords(JSON.parse(data)));
+      });
+    }, 1000);
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
