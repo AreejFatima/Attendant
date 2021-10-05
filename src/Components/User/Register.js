@@ -1,16 +1,17 @@
+/* eslint-disable no-console */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-unused-vars */
-import Form from "react-bootstrap/Form";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import Button from "react-bootstrap/Button";
-import { getUsers, getRecords } from "../gists";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { BiErrorCircle } from "react-icons/bi";
+
 import {
   addUser,
   pushRecord,
   fetchUserDataFromGists,
-  setInitialRecords,
-  setInitialUsers,
 } from "../../Redux/Slices/userSlice";
 
 const R = require("ramda");
@@ -18,9 +19,6 @@ const R = require("ramda");
 const Register = () => {
   const usersList = useSelector((state) => state.user.allUsers);
   const history = useHistory();
-  const [errors, setErrors] = useState({});
-  const [name, setName] = useState("");
-  const [pin, setPin] = useState("");
   const [record, setRecord] = useState({
     id: "",
     Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
@@ -35,46 +33,68 @@ const Register = () => {
 
   useEffect(() => {
     if (user.id !== "") {
-      
-      dispatch(fetchUserDataFromGists())
+      console.log(user)
+      dispatch(fetchUserDataFromGists());
       dispatch(addUser(user));
       dispatch(pushRecord(record));
     }
   }, [user]);
 
-  function findFormErrors() {
-    const newErrors = {};
-    if (!name || name === "") newErrors.name = "Enter Employee Username!";
-    else if (name.length > 15) newErrors.name = "Name too long";
-    if (!pin || pin.length > 6 || pin.length < 6)
-      newErrors.pin = "pincode must be 6 digits long";
-    return newErrors;
-  }
+  const initialValues = {
+    name: "",
+    pin: "",
+    dept: "",
+  };
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const newErrors = findFormErrors();
-    if (R.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-    } else {
-      alert("Registered Sucessfully!!!");
-      const tempObj = {
-        id: getId(event.target[0].value),
-        pincode: event.target[2].value,
-        username: event.target[1].value,
-        dept: event.target[0].value,
-      };
-      const tempRecord = {
-        id: getId(event.target[0].value),
-        Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
-      };
-      setUser(tempObj);
-      setRecord(tempRecord);
-    }
-  }
+  const onSubmit = (values) => {
+    alert("Registered Sucessfully!!!");
+    const tempObj = {
+      id: getId(values.dept),
+      pincode: values.pin,
+      username: values.name,
+      dept: values.dept,
+    };
+    const tempRecord = {
+      id: getId(values.dept),
+      Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
+    };
+    setUser(tempObj);
+    setRecord(tempRecord);
+  };
+
+  const validate = (values) => {
+    const errors = {};
+    if (!values.name || values.name === "")
+      errors.name = "Enter Employee Username!";
+    else if (values.name.length > 15) errors.name = "Name too long";
+    if (!values.pin || values.pin.length > 6 || values.pin.length < 6)
+      errors.pin = "pincode must be 6 digits long";
+    return errors;
+  };
+
+  // function handleSubmit(event) {
+  //   event.preventDefault();
+  //   const newErrors = findFormErrors();
+  //   if (R.keys(newErrors).length > 0) {
+  //     setErrors(newErrors);
+  //   } else {
+  //     alert("Registered Sucessfully!!!");
+  //     const tempObj = {
+  //       id: getId(event.target[0].value),
+  //       pincode: event.target[2].value,
+  //       username: event.target[1].value,
+  //       dept: event.target[0].value,
+  //     };
+  //     const tempRecord = {
+  //       id: getId(event.target[0].value),
+  //       Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
+  //     };
+  //     setUser(tempObj);
+  //     setRecord(tempRecord);
+  //   }
+  // }
 
   function backToLogin() {
-    setErrors(null);
     history.push("/");
   }
 
@@ -97,71 +117,66 @@ const Register = () => {
   }
 
   return (
-    <div className="Register">
-      <h1
-        style={{ color: "#04aa6d", fontFamily: "sans-serif", marginTop: "2%" }}
-      >
-        Registeration Form
-      </h1>
-
-      <Form onSubmit={handleSubmit} style={{ marginTop: "2%" }}>
-        <Form.Group>
-          <Form.Select
-            aria-label="Floating label select example"
-            style={{ width: "20%", marginLeft: "40%", marginBottom: "2%" }}
-          >
+    <Formik
+      initialValues={initialValues}
+      validate={validate}
+      onSubmit={onSubmit}
+    >
+      <Form>
+        <h1
+          style={{
+            color: "#04aa6d",
+            fontFamily: "sans-serif",
+            marginTop: "2%",
+          }}
+        >
+          Registeration Form
+        </h1>
+        <div className="formik-login">
+          <label htmlFor="dept">Select Department</label>
+          <Field as="select" name="dept" id="dept">
             <option value="null">Select Department</option>
             <option value="FE">FE</option>
             <option value="BE">BE</option>
             <option value="QA">QA</option>
-          </Form.Select>
-        </Form.Group>
+          </Field>
 
-        <Form.Group size="lg">
-          <Form.Label>Enter Full Name </Form.Label>
-          <Form.Control
-            autoFocus
-            type="name"
-            style={{ width: "20%", marginLeft: "40%", marginBottom: "2%" }}
-            onChange={(e) => setName(e.target.value)}
-            isInvalid={!!errors.name}
+          <label htmlFor="name">Enter Full Name</label>
+          <Field type="text" id="name" name="name" />
+          <ErrorMessage name="name" component={ErrorDiv} />
+
+          <label htmlFor="pin">Enter New PinCode</label>
+          <Field
+            type="password"
+            id="pin"
+            name="pin"
+            placeholder="--6-digit-pin--"
           />
-          <Form.Control.Feedback type="invalid">
-            {errors.name}
-          </Form.Control.Feedback>
-        </Form.Group>
+          <ErrorMessage name="pin" component={ErrorDiv} />
+          <br />
 
-        <Form.Group size="lg">
-          <Form.Label>Enter New Pin </Form.Label>
-          <Form.Control
-            type="pin"
-            style={{ width: "20%", marginLeft: "40%", marginBottom: "2%" }}
-            onChange={(e) => setPin(e.target.value)}
-            isInvalid={!!errors.pin}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.pin}
-          </Form.Control.Feedback>
-        </Form.Group>
-
-        <Button
-          block
-          type="submit"
-          style={{ backgroundColor: "#04aa6d", margin: "0.4%" }}
-        >
-          Register Me
-        </Button>
-
-        <Button
-          block
-          style={{ backgroundColor: "#04aa6d", margin: "0.4%" }}
-          onClick={backToLogin}
-        >
-          Back to Login
-        </Button>
+          <button
+            type="submit"
+            style={{ backgroundColor: "#04aa6d", margin: "2%" }}
+          >
+            Register Me
+          </button>
+          <button
+            style={{ backgroundColor: "#04aa6d", margin: "2%" }}
+            onClick={backToLogin}
+          >
+            Back to Login
+          </button>
+        </div>
       </Form>
-    </div>
+    </Formik>
   );
 };
+const ErrorDiv = (props) => (
+  <div className="error">
+    <BiErrorCircle size={22} />
+    {props.children}
+  </div>
+);
 
 export default Register;

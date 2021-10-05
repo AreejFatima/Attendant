@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Acme|Lobster");
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap");
 
-
 .App {
   text-align: center;
 }
@@ -23,7 +22,6 @@
   background-color: #ddd;
   color: black;
 }
-
 
 .topnav a.active {
   background-color: #04aa6d;
@@ -115,7 +113,6 @@
   margin: 0.5rem 0;
 }
 
-
 * {
   box-sizing: border-box;
 }
@@ -125,8 +122,6 @@
   margin: 0 auto;
   padding: 0 1rem;
 }
-
-
 
 .container .leaveSubmit {
   display: inline-block;
@@ -178,13 +173,10 @@
   color: #04aa6d;
 }
 
-
-
 .splitdiv {
   height: 100%;
   width: 50%;
 }
-
 
 #leftdiv {
   float: left;
@@ -206,7 +198,6 @@
   border-radius: 5px;
   color: #fafafa;
 }
-
 
 #rightdiv {
   float: right;
@@ -234,7 +225,6 @@
   border-radius: 5px;
   color: #4ecdc4;
 }
-
 
 .login2 h1 {
   font-family: Lobster;
@@ -275,8 +265,6 @@
   padding-left: 20px;
   padding-right: 20px;
 }
-
-
 
 .login2 .ripple {
   background-position: center;
@@ -320,7 +308,7 @@
   right: 0;
   background-color: white;
   border: 2px solid lightgray;
-  margin:1%;
+  margin: 1%;
 }
 .containerz .row {
   margin: 15px 0;
@@ -329,7 +317,6 @@
   margin-bottom: 0;
   margin-left: 1px;
 }
-
 
 #Etitle {
   text-align: center;
@@ -416,8 +403,6 @@ li {
   margin-left: 35%;
 }
 
-
-
 .wh table {
   width: 80%;
   margin-left: 10%;
@@ -436,4 +421,51 @@ li {
 .wh button {
   background: transparent;
   border: none;
+}
+.formik-login label{
+  font-weight: bold;
+  display: flex;
+  margin-bottom: 5px;
+}
+.formik-login [type="text"],[type="password"],[type="checkbox"] {
+  display: block;
+  width: 400px;
+  padding: 6px 12px;
+  font-size: 16px;
+  line-height: 1.4286;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+.formik-login{
+  position: fixed; 
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.formik-login button{
+  color: white;
+  align-self: center;
+  font-weight: 400;
+  line-height: 1;
+  margin: 5px;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 300;
+  width: 100px;
+  height: 40px;
+  border-radius: 5%;
+  background: transparent;
+  border: none;
+  
+}
+.formik-login button[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.error{
+  color: #cc0033;
+  display: inline-block;
+  font-size: 14px;
 }

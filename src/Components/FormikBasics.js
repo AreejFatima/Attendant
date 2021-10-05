@@ -1,23 +1,22 @@
+/* eslint-disable no-console */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import "../../App.css";
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import "../App.css";
+import { useEffect } from "react";
+ import {  useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { BiErrorCircle } from "react-icons/bi";
 import {
-  setActiveUser,
   fetchUserDataFromGists,
-} from "../../Redux/Slices/userSlice";
+} from "../Redux/Slices/userSlice";
 
-const R = require("ramda");
+// const R = require("ramda");
 
-// eslint-disable-next-line arrow-body-style
-const Login = () => {
-  const [newUser, setNewBox] = useState(true);
-  const usersList = useSelector((state) => state.user.allUsers);
+
+const FormikBasics = () => {
+  // const usersList = useSelector((state) => state.user.allUsers);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -26,19 +25,12 @@ const Login = () => {
   }, []);
 
   const initialValues = {
-    id: "",
+    name: "",
     pin: "",
   };
 
   const onSubmit = (values) => {
-    const enteredId = values.id;
-    const enteredPin = values.pin;
-    R.map((item) => {
-      if (item.id === enteredId && item.pincode === enteredPin) {
-        dispatch(setActiveUser(item));
-      }
-    }, usersList);
-    history.push("/UserDashboard");
+    console.log(values)
   };
 
   const handleRegister = () => {
@@ -46,16 +38,10 @@ const Login = () => {
   };
 
   const validate = (values) => {
-    const current = R.find(R.propEq("id", values.id))(usersList);
     const errors = {};
-    if (current !== undefined) {
-      if (!values.pin || values.pin.length > 6 || values.pin.length < 6)
-        errors.pin = "pincode must be 6 digits long";
-      else if (values.pin !== current.pincode)
-        errors.pin = "Wrong Pincode Entered!";
-    } else {
-      errors.id = "Employee not found! Enter correct id";
-    }
+    if (!values.name || values.name === "") errors.name = "Enter Employee Username!";
+    else if (values.name.length > 15) errors.name = "Name too long";
+    if (!values.pin || values.pin.length > 6 || values.pin.length < 6) errors.pin = "pincode must be 6 digits long";
     return errors;
   };
   return (
@@ -72,21 +58,22 @@ const Login = () => {
             marginTop: "2%",
           }}
         >
-          Login To Attendant
+          Registeration Form
         </h1>
         <div className="formik-login">
-          <label htmlFor="newUser">New User</label>
-          <Field
-            type="checkbox"
-            id="newuser"
-            name="newuser"
-            checked={newUser}
-            onChange={() => setNewBox(!newUser)}
-          />
-          <label htmlFor="id">Employee Id</label>
-          <Field type="text" id="id" name="id" placeholder="XX-000" />
-          <ErrorMessage name="id" component={ErrorDiv} />
-          <label htmlFor="pin">Employee Pin</label>
+          <label htmlFor="dept">Select Department</label>
+          <Field as="select" name="department">
+            <option value="null">Select Department</option>
+            <option value="FE">FE</option>
+            <option value="BE">BE</option>
+            <option value="QA">QA</option>
+          </Field>
+
+          <label htmlFor="name">Enter Full Name</label>
+          <Field type="text" id="name" name="name" />
+          <ErrorMessage name="name" component={ErrorDiv} />
+
+          <label htmlFor="pin">Enter New PinCode</label>
           <Field
             type="password"
             id="pin"
@@ -98,17 +85,15 @@ const Login = () => {
 
           <button
             type="submit"
-            disabled={newUser === true}
             style={{ backgroundColor: "#04aa6d", margin: "2%" }}
           >
-            Login
+            Register Me
           </button>
           <button
-            disabled={!newUser}
             style={{ backgroundColor: "#04aa6d", margin: "2%" }}
             onClick={handleRegister}
           >
-            Register
+            Back to Login
           </button>
         </div>
       </Form>
@@ -123,4 +108,4 @@ const ErrorDiv = (props) => (
   </div>
 );
 
-export default Login;
+export default FormikBasics;
