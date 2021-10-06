@@ -7,7 +7,6 @@ import Table from "react-bootstrap/Table";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
 
-
 const R = require("ramda");
 
 const UserRecords = () => {

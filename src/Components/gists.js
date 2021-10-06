@@ -17,7 +17,7 @@ let recordGist;
 let leaveGist;
 const allgists = [];
 
-// console.log("key",process.env.REACT_APP_API_KEY)
+// Getting All Gists, and then Data from Gists (Helper Functions)
 
 export const getallGists = async () => {
   try {
@@ -76,6 +76,21 @@ export const getRecords = async () => {
   }
 };
 
+export const getLeaves = async () => {
+  try {
+    const response = await octokit.request(`GET /gists/${leaveGist}`, {
+      org: "octokit",
+      type: "private",
+    });
+    const data = response.data.files["leaves.txt"].content;
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Patching Data to Gists (Helper Functions)
+
 export const patchUsers = async function (u) {
   try {
     const response = await octokit.request(`PATCH /gists/${userGist}`, {
@@ -101,19 +116,6 @@ export const patchRecords = async function (r) {
         },
       },
     });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const getLeaves = async () => {
-  try {
-    const response = await octokit.request(`GET /gists/${leaveGist}`, {
-      org: "octokit",
-      type: "private",
-    });
-    const data = response.data.files["leaves.txt"].content;
-    return data;
   } catch (error) {
     console.log(error);
   }

@@ -1,3 +1,4 @@
+
 /* eslint-disable no-console */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -33,7 +34,7 @@ const Register = () => {
 
   useEffect(() => {
     if (user.id !== "") {
-      console.log(user)
+
       dispatch(fetchUserDataFromGists());
       dispatch(addUser(user));
       dispatch(pushRecord(record));

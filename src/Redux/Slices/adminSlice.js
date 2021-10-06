@@ -18,6 +18,7 @@ const initialState = {
   records: [],
 };
 
+// fetching data from gists and setting states
 export const fetchDataFromGists = createAsyncThunk(
   "admin/fetchData",
   async (_, thunkApi) => {
@@ -37,6 +38,7 @@ const adminSlice = createSlice({
   name: "admin",
   initialState,
   reducers: {
+    // Delete Employee & Record
     deleteEmployee(state, action) {
       state.employees = action.payload.data;
       state.records = action.payload.data_record;
@@ -65,6 +67,8 @@ const adminSlice = createSlice({
 
       state.employees = filteredEmployees;
     },
+
+    // Set States
 
     setInitialEmployees(state, action) {
       state.employees = action.payload;

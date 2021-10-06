@@ -24,6 +24,7 @@ const AdminDashboard = () => {
     dispatch(fetchDataFromGists());
   }, []);
 
+  // Calculating work hours
   function assembleWHdata() {
     if (recordz) {
       R.map((item) => {
@@ -44,6 +45,7 @@ const AdminDashboard = () => {
   }
   assembleWHdata();
 
+  // Finding Available, onLeave & Unavailable Employees
   function assembleData() {
     if (recordz) {
       R.map((item) => {
