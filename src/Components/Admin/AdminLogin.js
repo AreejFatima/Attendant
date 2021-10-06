@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
 import { useDispatch } from "react-redux";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { BiErrorCircle } from "react-icons/bi";
 import "../../App.css";
 
 import { fetchDataFromGists } from "../../Redux/Slices/adminSlice";
 
-const R = require("ramda");
-
 const AdminLogin = () => {
-  const [id, setId] = useState("");
   const history = useHistory();
-  const [pin, setPin] = useState("");
-  const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
   const ID = "AD-000";
   const PIN = "12345";
@@ -23,72 +20,75 @@ const AdminLogin = () => {
     dispatch(fetchDataFromGists());
   }, [dispatch]);
 
-  function findFormErrors() {
-    const newErrors = {};
-    if (!id || id === "") newErrors.id = "Admin Id cannot be blank!";
-    else if (id !== ID) newErrors.id = "Invalid Admin Id!";
-    if (!pin || pin === "") newErrors.pin = "Pincode cannot be blank!";
-    else if (pin !== PIN) newErrors.pin = "Invalid Pincode";
-    return newErrors;
-  }
+  const initialValues = {
+    id: "",
+    pin: "",
+  };
 
-  function handleSubmit(event) {
-    event.preventDefault();
-    const newErrors = findFormErrors();
-
-    if (R.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-    } else {
-      setErrors(null);
-      history.push("/AdminDashboard");
-    }
-  }
+  const onSubmit = () => {
+    history.push("/AdminDashboard");
+  };
+  const validate = (values) => {
+    const errors = {};
+    if (!values.id || values.id === "") errors.id = "Admin Id cannot be blank!";
+    else if (values.id !== ID) errors.id = "Invalid Admin Id!";
+    if (!values.pin || values.pin === "")
+      errors.pin = "Pincode cannot be blank!";
+    else if (values.pin !== PIN) errors.pin = "Invalid Pincode";
+    return errors;
+  };
 
   return (
-    <div className="Login">
-      <Form onSubmit={handleSubmit}>
-        <Form.Group size="lg">
-          <Form.Label>Enter Admin Id </Form.Label>
-          <Form.Control
-            placeholder="XX-000"
-            autoFocus
-            type="id"
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-            isInvalid={!!errors.id}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.id}
-          </Form.Control.Feedback>
-        </Form.Group>
+    <div>
+      <Formik
+        initialValues={initialValues}
+        validate={validate}
+        onSubmit={onSubmit}
+      >
+        <Form>
+          <h1
+            style={{
+              color: "#04aa6d",
+              fontFamily: "sans-serif",
+              marginTop: "2%",
+            }}
+          >
+            Admin Login
+          </h1>
+          <div className="formik-login">
+            <label htmlFor="id">Admin Id</label>
+            <Field type="text" id="id" name="id" placeholder="XX-000" />
+            <ErrorMessage name="id" component={ErrorDiv} />
 
-        <Form.Group size="lg">
-          <Form.Label>Enter Pin </Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="*****"
-            value={pin}
-            onChange={(e) => setPin(e.target.value)}
-            isInvalid={!!errors.pin}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.pin}
-          </Form.Control.Feedback>
-        </Form.Group>
+            <label htmlFor="pin">Admin Pincode</label>
+            <Field
+              type="password"
+              id="pin"
+              name="pin"
+              placeholder="--6-digit-pin--"
+            />
+            <ErrorMessage name="pin" component={ErrorDiv} />
+            <br />
 
-        <Button
-          style={{ backgroundColor: "#04aa6d", margin: "2%" }}
-          type="submit"
-        >
-          Log In
-        </Button>
-      </Form>
-
+            <button
+              type="submit"
+              style={{ backgroundColor: "#04aa6d", margin: "2%" }}
+            >
+              Login
+            </button>
+          </div>
+        </Form>
+      </Formik>
       <p className="linkAdmin">
-        Log In as <a href="/">Employee</a>
+        Log In as <a href="/"> Employee</a>
       </p>
     </div>
   );
 };
-
+const ErrorDiv = (props) => (
+  <div className="error">
+    <BiErrorCircle size={22} />
+    {props.children}
+  </div>
+);
 export default AdminLogin;

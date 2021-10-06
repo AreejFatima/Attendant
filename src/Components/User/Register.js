@@ -1,4 +1,3 @@
-
 /* eslint-disable no-console */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable jsx-a11y/label-has-associated-control */
@@ -33,12 +32,18 @@ const Register = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user.id !== "" && record.id!=="") {
+    if (user.id !== "") {
       dispatch(fetchUserDataFromGists());
       dispatch(addUser(user));
-      dispatch(pushRecord(record));
     }
   }, [user]);
+
+  useEffect(() => {
+    if (record.id !== "") {
+      dispatch(fetchUserDataFromGists());
+      dispatch(pushRecord(record));
+    }
+  }, [record]);
 
   const initialValues = {
     name: "",
@@ -58,9 +63,9 @@ const Register = () => {
       id: getId(values.dept),
       Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
     };
-    console.log("tempRecord",tempRecord)
-    console.log("tempUser",tempObj)
-    console.log("id",getId(values.dept))
+    console.log("tempRecord", tempRecord);
+    console.log("tempUser", tempObj);
+    console.log("id", getId(values.dept));
     setUser(tempObj);
     setRecord(tempRecord);
   };
@@ -74,28 +79,6 @@ const Register = () => {
       errors.pin = "pincode must be 6 digits long";
     return errors;
   };
-
-  // function handleSubmit(event) {
-  //   event.preventDefault();
-  //   const newErrors = findFormErrors();
-  //   if (R.keys(newErrors).length > 0) {
-  //     setErrors(newErrors);
-  //   } else {
-  //     alert("Registered Sucessfully!!!");
-  //     const tempObj = {
-  //       id: getId(event.target[0].value),
-  //       pincode: event.target[2].value,
-  //       username: event.target[1].value,
-  //       dept: event.target[0].value,
-  //     };
-  //     const tempRecord = {
-  //       id: getId(event.target[0].value),
-  //       Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
-  //     };
-  //     setUser(tempObj);
-  //     setRecord(tempRecord);
-  //   }
-  // }
 
   function backToLogin() {
     history.push("/");
@@ -120,59 +103,64 @@ const Register = () => {
   }
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validate={validate}
-      onSubmit={onSubmit}
-    >
-      <Form>
-        <h1
-          style={{
-            color: "#04aa6d",
-            fontFamily: "sans-serif",
-            marginTop: "2%",
-          }}
-        >
-          Registeration Form
-        </h1>
-        <div className="formik-login">
-          <label htmlFor="dept">Select Department</label>
-          <Field as="select" name="dept" id="dept">
-            <option value="null">Select Department</option>
-            <option value="FE">FE</option>
-            <option value="BE">BE</option>
-            <option value="QA">QA</option>
-          </Field>
-
-          <label htmlFor="name">Enter Full Name</label>
-          <Field type="text" id="name" name="name" />
-          <ErrorMessage name="name" component={ErrorDiv} />
-
-          <label htmlFor="pin">Enter New PinCode</label>
-          <Field
-            type="password"
-            id="pin"
-            name="pin"
-            placeholder="--6-digit-pin--"
-          />
-          <ErrorMessage name="pin" component={ErrorDiv} />
-          <br />
-
-          <button
-            type="submit"
-            style={{ backgroundColor: "#04aa6d", margin: "2%" }}
+    <div>
+      <Formik
+        initialValues={initialValues}
+        validate={validate}
+        onSubmit={onSubmit}
+      >
+        <Form>
+          <h1
+            style={{
+              color: "#04aa6d",
+              fontFamily: "sans-serif",
+              marginTop: "2%",
+            }}
           >
-            Register Me
-          </button>
-          <button
-            style={{ backgroundColor: "#04aa6d", margin: "2%" }}
-            onClick={backToLogin}
-          >
-            Back to Login
-          </button>
-        </div>
-      </Form>
-    </Formik>
+            Registeration Form
+          </h1>
+          <div className="formik-login">
+            <label htmlFor="dept">Select Department</label>
+            <Field as="select" name="dept" id="dept">
+              <option value="null">Select Department</option>
+              <option value="FE">FE</option>
+              <option value="BE">BE</option>
+              <option value="QA">QA</option>
+            </Field>
+
+            <label htmlFor="name">Enter Full Name</label>
+            <Field type="text" id="name" name="name" />
+            <ErrorMessage name="name" component={ErrorDiv} />
+
+            <label htmlFor="pin">Enter New PinCode</label>
+            <Field
+              type="password"
+              id="pin"
+              name="pin"
+              placeholder="--6-digit-pin--"
+            />
+            <ErrorMessage name="pin" component={ErrorDiv} />
+            <br />
+
+            <button
+              type="submit"
+              style={{ backgroundColor: "#04aa6d", margin: "2%" }}
+            >
+              Register Me
+            </button>
+            <button
+              style={{ backgroundColor: "#04aa6d", margin: "2%" }}
+              onClick={backToLogin}
+            >
+              Back to Login
+            </button>
+          </div>
+        </Form>
+      </Formik>
+      <p className="linkAdmin">
+        Log In as <a href="/">Employee</a>
+      </p>
+    </div>
   );
 };
 const ErrorDiv = (props) => (

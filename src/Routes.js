@@ -7,7 +7,6 @@ import AdminLogin from "./Components/Admin/AdminLogin";
 import AdminDashboard from "./Components/Admin/AdminDashboard";
 import AdminSettings from "./Components/Admin/AdminSettings";
 import LeaveRequest from "./Components/User/LeaveRequest";
-import FormikBasics from "./Components/FormikBasics";
 
 const Routes = () => {
   const history = useHistory();
@@ -22,7 +21,6 @@ const Routes = () => {
         <Route path="/AdminDashboard" component={AdminDashboard} />
         <Route path="/AdminSettings" component={AdminSettings} />
         <Route path="/LeaveRequest" component={LeaveRequest} />
-        <Route path="/FormikBasics" component={FormikBasics} />
       </Switch>
     </Router>
   );
