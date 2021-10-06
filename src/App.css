@@ -427,7 +427,8 @@ li {
   display: flex;
   margin-bottom: 5px;
 }
-.formik-login [type="text"],[type="password"],[type="checkbox"] {
+.formik-login [type="text"],[type="password"],[type="checkbox"]
+{
   display: block;
   width: 400px;
   padding: 6px 12px;
@@ -469,3 +470,45 @@ li {
   display: inline-block;
   font-size: 14px;
 }
+
+.formik-leave label{
+  font-weight: bold;
+  display: flex;
+  margin-bottom: 5px;
+}
+.formik-leave [type="text"],[type="number"],.formik-leave select,
+.formik-leave textarea{
+  display: block;
+  width: 600px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.4286;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+.formik-leave{
+  margin-left: 30%;
+}
+.formik-leave button{
+  color: white;
+  align-self: center;
+  font-weight: 400;
+  line-height: 1;
+  margin: 5px;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 300;
+  width: 100px;
+  height: 40px;
+  border-radius: 5%;
+  background: transparent;
+  border: none; 
+}
+.formik-leave button[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+

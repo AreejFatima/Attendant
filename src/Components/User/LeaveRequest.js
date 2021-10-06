@@ -1,63 +1,73 @@
+/* eslint-disable no-console */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-alert */
 import "../../App.css";
-import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FaBackward } from "react-icons/fa";
-import { BiLogOutCircle } from "react-icons/bi";
+import { useHistory } from "react-router-dom";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { BiErrorCircle } from "react-icons/bi";
 import { pushLeave } from "../../Redux/Slices/userSlice";
 
 const LeaveRequest = () => {
   const id = useSelector((state) => state.user.activeUser.id);
+  const [newLeave, setNewLeave] = useState("");
+  const dispatch = useDispatch();
   const history = useHistory();
 
-  const [newLeave, setNewleave] = useState({
-    userid: "",
-    status: "",
-    name: "",
-    dept: "",
-    type: "",
-    days: "",
-    reason: "",
-    message: "",
-  });
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    if (newLeave.id !== "") {
+    if (newLeave !== "") {
       dispatch(pushLeave(newLeave));
     }
   }, [newLeave]);
 
-  function handleSubmit(event) {
+  const initialValues = {
+    name: "",
+    dept: "",
+    type: "",
+    days: 0,
+    reason: "",
+    message: "",
+  };
+
+  const onSubmit = (values) => {
+    console.log(values);
     alert("leave submitted");
-    event.preventDefault();
     const tempLeave = {
       userid: id,
       status: "pending",
-      name: event.target[0].value,
-      dept: event.target[1].value,
-      type: event.target[2].value,
-      days: event.target[3].value,
-      reason: event.target[4].value,
-      message: event.target[5].value,
+      name: values.name,
+      dept: values.dept,
+      type: values.type,
+      days: values.days,
+      reason: values.reason,
+      message: values.message,
     };
-    setNewleave(tempLeave);
-  }
+    setNewLeave(tempLeave);
+    history.push("/UserDashboard");
+  };
 
+  const validate = (values) => {
+    const errors = {};
+    if (
+      !values.name ||
+      !values.dept ||
+      !values.reason ||
+      !values.type ||
+      !values.days
+    )
+      errors.name = "Required!";
+    return errors;
+  };
   return (
-    <div>
-      <div className="aicon">
-        <button onClick={() => history.push("UserDashboard")}>
-          <FaBackward size={30} />
-        </button>
-        <button onClick={() => history.push("/")}>
-          <BiLogOutCircle size={30} />
-        </button>
-      </div>
-      <div className="container">
-        <h1
+    <Formik
+      initialValues={initialValues}
+      validate={validate}
+      onSubmit={onSubmit}
+    >
+      <Form>
+        <h3
           style={{
             color: "#04aa6d",
             fontFamily: "sans-serif",
@@ -65,41 +75,67 @@ const LeaveRequest = () => {
           }}
         >
           Leave Application Form
-        </h1>
-        <form onSubmit={handleSubmit}>
-          <label htmlFor="name">Employee Name</label>
-          <input type="text" id="name" placeholder="Name" required />
-          <label htmFor="department">Department</label>
-          <input
-            type="text"
-            id="department"
-            placeholder="Department Name"
-            required
-          />
-          <label htmlFor="leaveType">Leave Type</label>
-          <select id="leaveType" required>
-            <option value="half">Half Leave</option>
-            <option value="full">Full Leave</option>
-          </select>
-          <label htmlFor="days">No. of days</label>
-          <input type="text" id="days" placeholder="Enter Days" required />
-          <label htmlFor="reason">Reason For Leave</label>
-          <select id="reason" required>
+        </h3>
+        <div className="formik-leave">
+          <label htmlFor="name">Enter Full Name</label>
+          <Field type="text" id="name" name="name" />
+          <ErrorMessage name="name" component={ErrorDiv} />
+
+          <label htmlFor="dept">Select Department</label>
+          <Field as="select" name="dept">
+            <option value="null">Select Department</option>
+            <option value="FE">FE</option>
+            <option value="BE">BE</option>
+            <option value="QA">QA</option>
+          </Field>
+          <ErrorMessage name="dept" component={ErrorDiv} />
+
+          <label htmlFor="type">Select Leave Type</label>
+          <Field as="select" name="type">
+            <option value="null">Leave Type</option>
+            <option value="HalfLeave">Half Leave</option>
+            <option value="FullLeave">Full Leave</option>
+          </Field>
+          <ErrorMessage name="type" component={ErrorDiv} />
+
+          <label htmlFor="days">Enter Days</label>
+          <Field type="number" id="days" name="days" />
+          <ErrorMessage name="days" component={ErrorDiv} />
+
+          <label htmlFor="reason">Tell your Reason</label>
+          <Field as="select" name="reason" className="select">
+            <option value="null">Reason for Leave</option>
             <option value="sick">Sick Leave</option>
             <option value="vacation">Vacation Leave</option>
             <option value="annual">Annual Leave</option>
             <option value="other">Other</option>
-          </select>
-          <br />
-          <label htmlFor="message">Message/Comments</label>
-          <textarea id="message" cols="30" rows="10" placeholder="Message" />
-          <button className="leaveSubmit" type="submit">
+          </Field>
+          <ErrorMessage name="reason" component={ErrorDiv} />
+
+          <label htmlFor="message">Message</label>
+          <Field as="textarea" id="message" name="message" />
+          <ErrorMessage name="message" component={ErrorDiv} />
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "#04aa6d",
+              marginRight: "46%",
+              marginBottom: "4%",
+            }}
+          >
             Submit
           </button>
-        </form>
-      </div>
-    </div>
+        </div>
+      </Form>
+    </Formik>
   );
 };
+
+const ErrorDiv = (props) => (
+  <div className="error">
+    <BiErrorCircle size={22} />
+    {props.children}
+  </div>
+);
 
 export default LeaveRequest;
