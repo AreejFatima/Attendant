@@ -30,6 +30,7 @@ const EmployeeTable = () => {
     });
   }, []);
 
+  // Deleting Employee and Records
   function removeEmployee(eid) {
     const payload = {
       data: employees,
@@ -50,13 +51,14 @@ const EmployeeTable = () => {
     alert("Deleted Sucessfully, Reload to see changes");
   }
 
+  // Form Header
   function renderHeader() {
     const headerElement = ["EmployeeId", "Name", "Department"];
     return headerElement.map((key, index) => (
       <th key={index}>{key.toUpperCase()}</th>
     ));
   }
-
+  // Form Body
   function renderBody() {
     return (
       employees &&

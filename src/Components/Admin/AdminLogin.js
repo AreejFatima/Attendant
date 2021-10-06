@@ -7,6 +7,8 @@ import "../../App.css";
 
 import { fetchDataFromGists } from "../../Redux/Slices/adminSlice";
 
+const R = require("ramda");
+
 const AdminLogin = () => {
   const [id, setId] = useState("");
   const history = useHistory();
@@ -16,6 +18,7 @@ const AdminLogin = () => {
   const ID = "AD-000";
   const PIN = "12345";
 
+  // Fetching Records and users from gists
   useEffect(() => {
     dispatch(fetchDataFromGists());
   }, [dispatch]);
@@ -33,7 +36,7 @@ const AdminLogin = () => {
     event.preventDefault();
     const newErrors = findFormErrors();
 
-    if (Object.keys(newErrors).length > 0) {
+    if (R.keys(newErrors).length > 0) {
       setErrors(newErrors);
     } else {
       setErrors(null);

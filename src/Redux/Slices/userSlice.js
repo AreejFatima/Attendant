@@ -20,7 +20,7 @@ const initialState = {
   activeUser: {},
   leaves: [],
 };
-
+// fetching data from gists and setting states
 export const fetchUserDataFromGists = createAsyncThunk(
   "user/fetchData",
   async (_, thunkApi) => {
@@ -40,12 +40,13 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    // ADD User
     addUser(state, action) {
       state.allUsers.push(action.payload);
       const stringUsers = JSON.stringify(state.allUsers);
       (async () => await patchUsers(stringUsers))();
     },
-
+    // Set States
     setInitialUsers(state, action) {
       state.allUsers = action.payload;
     },
@@ -57,7 +58,7 @@ const userSlice = createSlice({
     setActiveUser(state, action) {
       state.activeUser = action.payload;
     },
-
+    // Push leave to gist
     pushLeave(state, action) {
       state.leaves.push(action.payload);
       const stringLeave = JSON.stringify(state.leaves);
@@ -66,11 +67,10 @@ const userSlice = createSlice({
 
     pushRecord(state, action) {
       state.userRecords.push(action.payload);
-
       const stringRecords = JSON.stringify(state.userRecords);
       (async () => await patchRecords(stringRecords))();
     },
-
+    // ADD Record
     addRecord(state, action) {
       const userRecord = R.findIndex(
         R.propEq("id", action.payload.id),
@@ -102,6 +102,7 @@ const userSlice = createSlice({
   },
 });
 
+// Calculating Employee Work Hours (Seconds returned and used for testing)
 function calculateWorkHours(st, et) {
   const startTime = moment(st, "HH:mm:ss A");
   const endTime = moment(et, "HH:mm:ss A");

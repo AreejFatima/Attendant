@@ -1,16 +1,12 @@
-/* eslint-disable no-unused-vars */
 import Form from "react-bootstrap/Form";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
-import { getUsers, getRecords } from "../gists";
 import {
   addUser,
   pushRecord,
   fetchUserDataFromGists,
-  setInitialRecords,
-  setInitialUsers,
 } from "../../Redux/Slices/userSlice";
 
 const R = require("ramda");
@@ -35,8 +31,7 @@ const Register = () => {
 
   useEffect(() => {
     if (user.id !== "") {
-      
-      dispatch(fetchUserDataFromGists())
+      dispatch(fetchUserDataFromGists());
       dispatch(addUser(user));
       dispatch(pushRecord(record));
     }
