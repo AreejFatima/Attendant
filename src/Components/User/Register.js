@@ -33,8 +33,7 @@ const Register = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user.id !== "") {
-
+    if (user.id !== "" && record.id!=="") {
       dispatch(fetchUserDataFromGists());
       dispatch(addUser(user));
       dispatch(pushRecord(record));
@@ -59,6 +58,9 @@ const Register = () => {
       id: getId(values.dept),
       Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
     };
+    console.log("tempRecord",tempRecord)
+    console.log("tempUser",tempObj)
+    console.log("id",getId(values.dept))
     setUser(tempObj);
     setRecord(tempRecord);
   };
