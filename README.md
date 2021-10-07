@@ -40,20 +40,32 @@
             - adminSlice
             - userSlice
     - Components
-         - NavBar
+         - Shared
+              - ErrorDiv
+              - NavBar
          - Admin
-             - AdminLogin
-             - AdminDashboard
-             - Admin Settings
+              - AvailabilityTabs
+              - EmployeeTable
+              - TabButtons
+              - Tabs
+              - WorkHourTable
          - User
-            - Login
-            - Register
-            - UserDashboard
-            - UserRecords
-            - Leave Requests
-         - gists.js (a file containing helper function of storing and retreiving data from gists)
-   - Routes.js
-   - history.js
+             - RecordsRow
+             - RecordsTable
+             - SearchBar
+    - Adapter
+         - gists
+    - Routing
+         - Routes
+    - Pages
+         - adminLoginPage
+         - adminDashboardPage
+         - adminSettingsPage
+         - userLoginPage
+         - userRegisterPage
+         - userDashboardPage
+         - userLeavePage
+         - userRecordsPage 
 
    
  ## Missing features:
