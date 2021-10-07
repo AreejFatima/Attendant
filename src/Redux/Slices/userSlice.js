@@ -10,7 +10,7 @@ import {
   getUsers,
   getRecords,
   getallGists,
-} from "../../Components/gists";
+} from "../../Adapter/gists";
 
 const R = require("ramda");
 

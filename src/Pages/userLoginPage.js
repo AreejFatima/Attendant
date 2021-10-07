@@ -1,21 +1,18 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import "../../App.css";
+import "../App.css";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { BiErrorCircle } from "react-icons/bi";
+import ErrorDiv from "../Components/Shared/ErrorDiv";
 import {
   setActiveUser,
   fetchUserDataFromGists,
-} from "../../Redux/Slices/userSlice";
+} from "../Redux/Slices/userSlice";
 
 const R = require("ramda");
 
-// eslint-disable-next-line arrow-body-style
-const Login = () => {
+const userLoginPage = () => {
   const [newUser, setNewBox] = useState(true);
   const usersList = useSelector((state) => state.user.allUsers);
   const dispatch = useDispatch();
@@ -121,11 +118,4 @@ const Login = () => {
   );
 };
 
-const ErrorDiv = (props) => (
-  <div className="error">
-    <BiErrorCircle size={22} />
-    {props.children}
-  </div>
-);
-
-export default Login;
+export default userLoginPage;

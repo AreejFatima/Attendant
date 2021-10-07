@@ -1,15 +1,13 @@
-/* eslint-disable react/destructuring-assignment */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { BiErrorCircle } from "react-icons/bi";
-import "../../App.css";
+import "../App.css";
+import { fetchDataFromGists } from "../Redux/Slices/adminSlice";
+import ErrorDiv from "../Components/Shared/ErrorDiv";
 
-import { fetchDataFromGists } from "../../Redux/Slices/adminSlice";
-
-const AdminLogin = () => {
+const adminLoginPage = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const ID = "AD-000";
@@ -85,10 +83,5 @@ const AdminLogin = () => {
     </div>
   );
 };
-const ErrorDiv = (props) => (
-  <div className="error">
-    <BiErrorCircle size={22} />
-    {props.children}
-  </div>
-);
-export default AdminLogin;
+
+export default adminLoginPage;

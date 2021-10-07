@@ -2,8 +2,8 @@ import "./App.css";
 import React from "react";
 import { Provider } from "react-redux";
 import store from "./Redux/Store/store";
-import Navbar from "./Components/NavBar";
-import Routes from "./Routes";
+import Navbar from "./Components/Shared/NavBar";
+import Routes from "./Routing/Routes";
 
 function App() {
   return (

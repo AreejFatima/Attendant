@@ -1,15 +1,16 @@
-/* eslint-disable react/destructuring-assignment */
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import "react-bootstrap-table/dist/react-bootstrap-table-all.min.css";
-import Table from "react-bootstrap/Table";
+
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
+import SearchBar from "../Components/User/SearchBar";
+import RecordsTable from "../Components/User/RecordsTable";
 
 const R = require("ramda");
 
-const UserRecords = () => {
+const userRecordsPage = () => {
   const [search, setSearch] = useState("");
   const history = useHistory();
   const userRecords = useSelector((state) => state.user.userRecords);
@@ -49,54 +50,9 @@ const UserRecords = () => {
           <BiLogOutCircle size={30} />
         </button>
       </div>
-      <UserInput update={(e) => handleChange(e)} />
-      <Recordz data={recordsByDate} />
+      <SearchBar update={(e) => handleChange(e)} />
+      <RecordsTable data={recordsByDate} />
     </div>
   );
 };
-
-const UserInput = (props) => (
-  <div>
-    <input
-      className="form-control mb-2"
-      style={{
-        width: "30%",
-        marginLeft: "35%",
-        border: "2px solid green",
-        marginTop: "1%",
-      }}
-      placeholder="Search Record..."
-      onChange={(e) => props.update(e)}
-    />
-  </div>
-);
-
-const RecordsRow = (props) => {
-  const { date, punchIn, punchOut } = props;
-  return (
-    <tr>
-      <td>{date}</td>
-      <td>{punchIn}</td>
-      <td>{punchOut}</td>
-    </tr>
-  );
-};
-
-const Recordz = (props) => (
-  <Table striped bordered hover>
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Punch In</th>
-        <th>Punch Out</th>
-      </tr>
-    </thead>
-    <tbody>
-      {props.data.map((d) => (
-        <RecordsRow date={d.date} punchIn={d.punchIn} punchOut={d.punchOut} />
-      ))}
-    </tbody>
-  </Table>
-);
-
-export default UserRecords;
+export default userRecordsPage;

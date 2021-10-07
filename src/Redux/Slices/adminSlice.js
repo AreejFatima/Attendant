@@ -8,7 +8,7 @@ import {
   getRecords,
   getallGists,
   patchRecords,
-} from "../../Components/gists";
+} from "../../Adapter/gists";
 
 const R = require("ramda");
 

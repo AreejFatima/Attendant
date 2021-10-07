@@ -1,16 +1,13 @@
-/* eslint-disable no-console */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import "../../App.css";
+import "../App.css";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { BiErrorCircle } from "react-icons/bi";
-import { pushLeave } from "../../Redux/Slices/userSlice";
+import { pushLeave } from "../Redux/Slices/userSlice";
+import ErrorDiv from "../Components/Shared/ErrorDiv";
 
-const LeaveRequest = () => {
+const userLeavePage = () => {
   const id = useSelector((state) => state.user.activeUser.id);
   const [newLeave, setNewLeave] = useState("");
   const dispatch = useDispatch();
@@ -32,7 +29,6 @@ const LeaveRequest = () => {
   };
 
   const onSubmit = (values) => {
-    console.log(values);
     alert("leave submitted");
     const tempLeave = {
       userid: id,
@@ -51,9 +47,9 @@ const LeaveRequest = () => {
   const validate = (values) => {
     const errors = {};
     if (!values.name) errors.name = "Required!";
-    else if (values.dept==='null') errors.dept = "Required!";
-    else if (values.reason==='null') errors.reason = "Required!";
-    else if (values.type==='null') errors.type = "Required!";
+    else if (values.dept === "null") errors.dept = "Required!";
+    else if (values.reason === "null") errors.reason = "Required!";
+    else if (values.type === "null") errors.type = "Required!";
     else if (!values.days) errors.days = "Required!";
     return errors;
   };
@@ -128,11 +124,4 @@ const LeaveRequest = () => {
   );
 };
 
-const ErrorDiv = (props) => (
-  <div className="error">
-    <BiErrorCircle size={22} />
-    {props.children}
-  </div>
-);
-
-export default LeaveRequest;
+export default userLeavePage;

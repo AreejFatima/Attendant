@@ -4,14 +4,8 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
-import { getRecords, getUsers } from "../gists";
+import { getRecords, getUsers } from "../../Adapter/gists";
 import { deleteEmployee } from "../../Redux/Slices/adminSlice";
-
-const AdminSettings = () => (
-  <div>
-    <EmployeeTable />
-  </div>
-);
 
 const R = require("ramda");
 
@@ -98,4 +92,4 @@ const EmployeeTable = () => {
   );
 };
 
-export default AdminSettings;
+export default EmployeeTable;

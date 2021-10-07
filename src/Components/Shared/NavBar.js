@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import "../App.css";
+import "../../App.css";
 
 const NavBar = () => (
     <div className="topnav">

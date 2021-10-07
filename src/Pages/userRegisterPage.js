@@ -1,22 +1,20 @@
-/* eslint-disable no-console */
-/* eslint-disable react/destructuring-assignment */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-unused-vars */
+
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { BiErrorCircle } from "react-icons/bi";
+import ErrorDiv from "../Components/Shared/ErrorDiv";
 
 import {
   addUser,
   pushRecord,
   fetchUserDataFromGists,
-} from "../../Redux/Slices/userSlice";
+} from "../Redux/Slices/userSlice";
 
 const R = require("ramda");
 
-const Register = () => {
+const userRegisterPage = () => {
   const usersList = useSelector((state) => state.user.allUsers);
   const history = useHistory();
   const [record, setRecord] = useState({
@@ -63,9 +61,6 @@ const Register = () => {
       id: getId(values.dept),
       Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
     };
-    console.log("tempRecord", tempRecord);
-    console.log("tempUser", tempObj);
-    console.log("id", getId(values.dept));
     setUser(tempObj);
     setRecord(tempRecord);
   };
@@ -158,11 +153,4 @@ const Register = () => {
     </Formik>
   );
 };
-const ErrorDiv = (props) => (
-  <div className="error">
-    <BiErrorCircle size={22} />
-    {props.children}
-  </div>
-);
-
-export default Register;
+export default userRegisterPage;
