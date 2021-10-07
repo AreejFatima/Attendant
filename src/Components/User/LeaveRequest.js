@@ -50,14 +50,11 @@ const LeaveRequest = () => {
 
   const validate = (values) => {
     const errors = {};
-    if (
-      !values.name ||
-      !values.dept ||
-      !values.reason ||
-      !values.type ||
-      !values.days
-    )
-      errors.name = "Required!";
+    if (!values.name) errors.name = "Required!";
+    else if (values.dept==='null') errors.dept = "Required!";
+    else if (values.reason==='null') errors.reason = "Required!";
+    else if (values.type==='null') errors.type = "Required!";
+    else if (!values.days) errors.days = "Required!";
     return errors;
   };
   return (

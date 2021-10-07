@@ -103,64 +103,59 @@ const Register = () => {
   }
 
   return (
-    <div>
-      <Formik
-        initialValues={initialValues}
-        validate={validate}
-        onSubmit={onSubmit}
-      >
-        <Form>
-          <h1
-            style={{
-              color: "#04aa6d",
-              fontFamily: "sans-serif",
-              marginTop: "2%",
-            }}
+    <Formik
+      initialValues={initialValues}
+      validate={validate}
+      onSubmit={onSubmit}
+    >
+      <Form>
+        <h1
+          style={{
+            color: "#04aa6d",
+            fontFamily: "sans-serif",
+            marginTop: "2%",
+          }}
+        >
+          Registeration Form
+        </h1>
+        <div className="formik-login">
+          <label htmlFor="dept">Select Department</label>
+          <Field as="select" name="dept" id="dept">
+            <option value="null">Select Department</option>
+            <option value="FE">FE</option>
+            <option value="BE">BE</option>
+            <option value="QA">QA</option>
+          </Field>
+
+          <label htmlFor="name">Enter Full Name</label>
+          <Field type="text" id="name" name="name" />
+          <ErrorMessage name="name" component={ErrorDiv} />
+
+          <label htmlFor="pin">Enter New PinCode</label>
+          <Field
+            type="password"
+            id="pin"
+            name="pin"
+            placeholder="--6-digit-pin--"
+          />
+          <ErrorMessage name="pin" component={ErrorDiv} />
+          <br />
+
+          <button
+            type="submit"
+            style={{ backgroundColor: "#04aa6d", margin: "2%" }}
           >
-            Registeration Form
-          </h1>
-          <div className="formik-login">
-            <label htmlFor="dept">Select Department</label>
-            <Field as="select" name="dept" id="dept">
-              <option value="null">Select Department</option>
-              <option value="FE">FE</option>
-              <option value="BE">BE</option>
-              <option value="QA">QA</option>
-            </Field>
-
-            <label htmlFor="name">Enter Full Name</label>
-            <Field type="text" id="name" name="name" />
-            <ErrorMessage name="name" component={ErrorDiv} />
-
-            <label htmlFor="pin">Enter New PinCode</label>
-            <Field
-              type="password"
-              id="pin"
-              name="pin"
-              placeholder="--6-digit-pin--"
-            />
-            <ErrorMessage name="pin" component={ErrorDiv} />
-            <br />
-
-            <button
-              type="submit"
-              style={{ backgroundColor: "#04aa6d", margin: "2%" }}
-            >
-              Register Me
-            </button>
-            <button
-              style={{ backgroundColor: "#04aa6d", margin: "2%" }}
-              onClick={backToLogin}
-            >
-              Back to Login
-            </button>
-          </div>
-        </Form>
-      </Formik>
-      <p className="linkAdmin">
-        Log In as <a href="/">Employee</a>
-      </p>
-    </div>
+            Register Me
+          </button>
+          <button
+            style={{ backgroundColor: "#04aa6d", margin: "2%" }}
+            onClick={backToLogin}
+          >
+            Back to Login
+          </button>
+        </div>
+      </Form>
+    </Formik>
   );
 };
 const ErrorDiv = (props) => (
