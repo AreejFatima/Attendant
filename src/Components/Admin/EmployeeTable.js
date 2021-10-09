@@ -16,6 +16,7 @@ const R = require("ramda");
 const EmployeeTable = () => {
   const [employees, setEmployees] = useState([]);
   const [records, setRecords] = useState([]);
+  const [isAdded, setIsAdded] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
   const [currentEmpId, setcurrentEmpId] = useState({
@@ -27,9 +28,17 @@ const EmployeeTable = () => {
     pincode: "",
   });
   const [editFormData, setEditFormData] = useState({
-    id: "",
     username: "",
     dept: "",
+    role: "",
+    email: "",
+  });
+
+  const [addFormData, setAddFormData] = useState({
+    username: "",
+    dept: "",
+    role: "",
+    email: "",
   });
 
   useEffect(() => {
@@ -64,6 +73,54 @@ const EmployeeTable = () => {
     }, 1000);
     // alert("Deleted Sucessfully, Reload to see changes");
   }
+  function handleAdd() {
+    setIsAdded(true);
+  }
+  function handleAddFormChange(event) {
+    const fieldName = event.target.getAttribute("name");
+    const fieldValue = event.target.value;
+    const newFormData = { ...addFormData };
+    newFormData[fieldName] = fieldValue;
+    setAddFormData(newFormData);
+  }
+
+  function pad(num, size) {
+    num = num.toString();
+    while (num.length < size) num = `0${num}`;
+    return num;
+  }
+
+  function getId(dept) {
+    const firstid = "000";
+    if (R.isEmpty(employees)) {
+      return `${dept}-${firstid}`;
+    }
+    const lastUser = R.last(employees);
+    const intId = lastUser.id.split("-");
+    const newId = parseInt(intId[1], 10) + 1;
+    const padded = pad(newId, 3);
+    return `${dept}-${padded}`;
+  }
+
+  function handleAddFormSubmit() {
+    const addedEmployee = {
+      id: getId(addFormData.dept),
+      username: addFormData.username,
+      dept: addFormData.dept,
+      role: addFormData.role,
+      email: addFormData.email,
+      pincode: "000000",
+    };
+    console.log(addedEmployee);
+    const newEmployees = [...employees];
+    newEmployees.push(addedEmployee);
+    setEmployees(newEmployees);
+    setIsAdded(false);
+
+    setTimeout(() => {
+      dispatch(editEmployees(newEmployees));
+    }, 1000);
+  }
 
   function editEmployee(event, id, username, dept, pincode, role, email) {
     const currentTemp = {
@@ -76,9 +133,10 @@ const EmployeeTable = () => {
     };
     setcurrentEmpId(currentTemp);
     const tempEmp = {
-      id,
       username,
       dept,
+      role,
+      email,
     };
     setEditFormData(tempEmp);
   }
@@ -92,13 +150,12 @@ const EmployeeTable = () => {
   }
 
   function handleEditFormSave() {
-    console.log("ok");
     const editedEmployee = {
       id: currentEmpId.id,
       username: editFormData.username,
       dept: editFormData.dept,
-      role: currentEmpId.role,
-      email: currentEmpId.role,
+      role: editFormData.role,
+      email: editFormData.email,
       pincode: currentEmpId.pincode,
     };
     console.log(editedEmployee);
@@ -129,7 +186,7 @@ const EmployeeTable = () => {
 
   // Form Header
   function renderHeader() {
-    const headerElement = ["EmployeeId", "Name", "Department", "Operations"];
+    const headerElement = ["Name", "Department", "Role", "Email", "Operations"];
     return headerElement.map((key, index) => (
       <th key={index}>{key.toUpperCase()}</th>
     ));
@@ -145,6 +202,7 @@ const EmployeeTable = () => {
               editFormData={editFormData}
               handleEditFormChange={handleEditFormChange}
               handleEditFormSave={handleEditFormSave}
+              isEdit
             />
           ) : (
             <ReadOnlyRow
@@ -174,11 +232,24 @@ const EmployeeTable = () => {
         </button>
       </div>
       <h1 id="Etitle">Employee List</h1>
+      <button className="button" onClick={handleAdd}>
+        ADD
+      </button>
       <table id="employee">
         <thead>
           <tr>{renderHeader()}</tr>
         </thead>
-        <tbody>{renderBody()}</tbody>
+        <>
+          <tbody>{renderBody()}</tbody>
+          {isAdded ? (
+            <EditableRow
+              editFormData={addFormData}
+              handleEditFormChange={handleAddFormChange}
+              handleEditFormSave={handleAddFormSubmit}
+              isEdit={false}
+            />
+          ) : null}
+        </>
       </table>
     </>
   );

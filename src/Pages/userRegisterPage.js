@@ -136,7 +136,7 @@ const userRegisterPage = () => {
 
           <label htmlFor="email">Enter Email</label>
           <Field
-            type="email"
+            type="text"
             id="email"
             name="email"
             placeholder="name@example.com"
