@@ -26,6 +26,8 @@ const userRegisterPage = () => {
     pincode: "",
     username: "",
     dept: "",
+    role: "",
+    email: "",
   });
   const dispatch = useDispatch();
 
@@ -47,6 +49,7 @@ const userRegisterPage = () => {
     name: "",
     pin: "",
     dept: "",
+    email: "",
   };
 
   const onSubmit = (values) => {
@@ -56,6 +59,8 @@ const userRegisterPage = () => {
       pincode: values.pin,
       username: values.name,
       dept: values.dept,
+      email: values.email,
+      role: "Not Assigned",
     };
     const tempRecord = {
       id: getId(values.dept),
@@ -72,6 +77,9 @@ const userRegisterPage = () => {
     else if (values.name.length > 15) errors.name = "Name too long";
     if (!values.pin || values.pin.length > 6 || values.pin.length < 6)
       errors.pin = "pincode must be 6 digits long";
+    if (!values.email) errors.email = "Required!";
+    else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email))
+      errors.email = "Invalid Email!";
     return errors;
   };
 
@@ -125,6 +133,15 @@ const userRegisterPage = () => {
           <label htmlFor="name">Enter Full Name</label>
           <Field type="text" id="name" name="name" />
           <ErrorMessage name="name" component={ErrorDiv} />
+
+          <label htmlFor="email">Enter Email</label>
+          <Field
+            type="email"
+            id="email"
+            name="email"
+            placeholder="name@example.com"
+          />
+          <ErrorMessage name="email" component={ErrorDiv} />
 
           <label htmlFor="pin">Enter New PinCode</label>
           <Field

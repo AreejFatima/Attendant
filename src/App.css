@@ -427,7 +427,7 @@ li {
   display: flex;
   margin-bottom: 5px;
 }
-.formik-login [type="text"],[type="password"],[type="checkbox"]
+.formik-login [type="text"],[type="password"],[type="checkbox"],[type="email"]
 {
   display: block;
   width: 400px;
@@ -507,6 +507,53 @@ li {
   border: none; 
 }
 .formik-leave button[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+
+.formik-emp label{
+  font-weight: bold;
+  margin-right: 2px;
+  margin-bottom: 8px;
+}
+.formik-emp [type="text"],[type="email"],[type="number"],.formik-emp select
+{
+  width: 200px;
+  height: 30px;
+  padding: 2px 2px;
+  font-size: 12px;
+  line-height: 1.4286;
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+.formik-emp{
+  display: flex;
+  flex-direction: row;
+  gap:3px;
+  align-items: center;
+  margin-left: 13%;
+
+}
+.formik-emp button{
+  color: white;
+  align-self: center;
+  font-weight: 300;
+  margin: 5px;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 300;
+  width: 70px;
+  height: 25px;
+  border-radius: 5%;
+  background: transparent;
+  border: none;
+  margin-bottom: 16px;
+  
+}
+.formik-emp button[disabled] {
   opacity: 0.7;
   cursor: not-allowed;
 }

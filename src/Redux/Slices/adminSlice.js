@@ -34,11 +34,40 @@ export const fetchDataFromGists = createAsyncThunk(
   }
 );
 
+// export const addUser = createAsyncThunk(
+//   "admin/addUser",
+//   async (user, thunkApi) => {
+//    const state= thunkApi.getState()
+//    state.employees.push(user);
+//    const stringUsers = JSON.stringify(state.employees);
+//   (async () => await patchUsers(stringUsers))();
+//   }
+// );
+
 const adminSlice = createSlice({
   name: "admin",
   initialState,
   reducers: {
     // Delete Employee & Record
+
+    addEmployee(state, action) {
+      state.employees.push(action.payload);
+      const stringUsers = JSON.stringify(state.employees);
+      (async () => await patchUsers(stringUsers))();
+    },
+
+     editEmployees(state, action) {
+       console.log("payload",action.payload)
+      state.employees=action.payload;
+      const stringUsers = JSON.stringify(state.employees);
+      (async () => await patchUsers(stringUsers))();
+    },
+
+    addRecord(state, action) {
+      state.records.push(action.payload);
+      const stringRecords = JSON.stringify(state.records);
+      (async () => await patchRecords(stringRecords))();
+    },
     deleteEmployee(state, action) {
       state.employees = action.payload.data;
       state.records = action.payload.data_record;
@@ -80,6 +109,12 @@ const adminSlice = createSlice({
   },
 });
 
-export const { deleteEmployee, setInitialEmployees, setInitialERecords } =
-  adminSlice.actions;
+export const {
+  deleteEmployee,
+  setInitialEmployees,
+  setInitialERecords,
+  addEmployee,
+  addRecord,
+  editEmployees,
+} = adminSlice.actions;
 export default adminSlice.reducer;
