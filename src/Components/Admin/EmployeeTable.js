@@ -5,20 +5,26 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
-
-import { deleteEmployee, editEmployees } from "../../Redux/Slices/adminSlice";
+import {
+  deleteEmployee,
+  editEmployees,
+  addRecord,
+} from "../../Redux/Slices/adminSlice";
 import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
 import { getUsers, getRecords } from "../../Adapter/gists";
+import SearchBar from "../User/SearchBar";
 
 const R = require("ramda");
 
 const EmployeeTable = () => {
   const [employees, setEmployees] = useState([]);
   const [records, setRecords] = useState([]);
+  const [search, setSearch] = useState("");
   const [isAdded, setIsAdded] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
+  let tableData = [...employees];
   const [currentEmpId, setcurrentEmpId] = useState({
     id: null,
     dept: "",
@@ -51,6 +57,18 @@ const EmployeeTable = () => {
       setRecords(JSON.parse(data));
     });
   }, []);
+
+  function handleSearchChange(event) {
+    const searchValue = event.target.value;
+    setSearch(searchValue);
+  }
+
+  const searchString = search;
+  if (searchString.length > 0) {
+    tableData = tableData.filter(
+      (e) => e.username.match(searchString) || e.role.match(searchString) || e.dept.match(searchString)
+    );
+  }
 
   // Deleting Employee and Records
 
@@ -111,14 +129,26 @@ const EmployeeTable = () => {
       email: addFormData.email,
       pincode: "000000",
     };
+    const newRecord = {
+      id: getId(addFormData.dept),
+      Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
+    };
     console.log(addedEmployee);
     const newEmployees = [...employees];
     newEmployees.push(addedEmployee);
     setEmployees(newEmployees);
     setIsAdded(false);
+    const initial = {
+      username: "",
+      dept: "",
+      role: "",
+      email: "",
+    };
+    setAddFormData(initial);
 
     setTimeout(() => {
       dispatch(editEmployees(newEmployees));
+      dispatch(addRecord(newRecord));
     }, 1000);
   }
 
@@ -192,17 +222,16 @@ const EmployeeTable = () => {
     ));
   }
   // Form Body
-  function renderBody() {
+  function renderBody(data) {
     return (
-      employees &&
-      employees.map(({ id, username, dept, pincode, role, email }) => (
+      data &&
+      data.map(({ id, username, dept, pincode, role, email }) => (
         <>
           {currentEmpId.id === id ? (
             <EditableRow
               editFormData={editFormData}
               handleEditFormChange={handleEditFormChange}
               handleEditFormSave={handleEditFormSave}
-              isEdit
             />
           ) : (
             <ReadOnlyRow
@@ -235,18 +264,18 @@ const EmployeeTable = () => {
       <button className="button" onClick={handleAdd}>
         ADD
       </button>
+      <SearchBar update={(e) => handleSearchChange(e)} />
       <table id="employee">
         <thead>
           <tr>{renderHeader()}</tr>
         </thead>
         <>
-          <tbody>{renderBody()}</tbody>
+          <tbody>{renderBody(tableData)}</tbody>
           {isAdded ? (
             <EditableRow
               editFormData={addFormData}
               handleEditFormChange={handleAddFormChange}
               handleEditFormSave={handleAddFormSubmit}
-              isEdit={false}
             />
           ) : null}
         </>
