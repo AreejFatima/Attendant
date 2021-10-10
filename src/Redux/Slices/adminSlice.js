@@ -56,9 +56,9 @@ const adminSlice = createSlice({
       (async () => await patchUsers(stringUsers))();
     },
 
-     editEmployees(state, action) {
-       console.log("payload",action.payload)
-      state.employees=action.payload;
+    editEmployees(state, action) {
+      console.log("payload", action.payload);
+      state.employees = action.payload;
       const stringUsers = JSON.stringify(state.employees);
       (async () => await patchUsers(stringUsers))();
     },

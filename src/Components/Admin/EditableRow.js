@@ -45,7 +45,7 @@ const EditableRow = ({
       />
     </td>
     <td className="opration">
-      <button className="button" onClick={handleEditFormSave}>
+      <button className="button2" onClick={handleEditFormSave}>
         Save
       </button>
     </td>

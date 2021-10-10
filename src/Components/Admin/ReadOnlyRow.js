@@ -18,7 +18,7 @@ const ReadOnlyRow = ({
         Delete
       </button>
       <button
-        className="button"
+        className="button2"
         onClick={(event) =>
           editEmployee(event, id, username, dept, pincode, role, email)
         }

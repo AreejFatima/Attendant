@@ -5,7 +5,7 @@ const SearchBar = (props) => (
       style={{
         width: "30%",
         marginLeft: "35%",
-        border: "2px solid green",
+        border: "2px solid black",
         marginTop: "1%",
       }}
       placeholder="Search Record..."

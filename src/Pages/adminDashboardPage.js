@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { FaBackward } from "react-icons/fa";
@@ -14,7 +14,7 @@ const adminDashboardPage = () => {
   const timestamp = R.split(", ", new Date().toLocaleString());
   const currentDate = timestamp[0];
   const history = useHistory();
-  const workHourLog = [];
+  const [workHourLog, setWHLog] = useState([]);
   const available = [];
   const unavailable = [];
   const onleave = [];
@@ -23,16 +23,30 @@ const adminDashboardPage = () => {
 
   useEffect(() => {
     dispatch(fetchDataFromGists());
+    assembleWHdata();
   }, []);
 
   // Calculating work hours
-  function assembleWHdata() {
+  function assembleWHdata(event) {
+    const tempLogArr = [];
+    const month = event ? event.target.value : 0;
+
+    const currentdate = new Date();
+    const todayDate = Date.parse(
+      R.split(", ", currentDate.toLocaleString())[0]
+    );
+    const temp = new Date(currentdate.setMonth(currentdate.getMonth() - month));
+    const lastNmonths = Date.parse(R.split(", ", temp.toLocaleString())[0]);
+
     if (recordz) {
       R.map((item) => {
         let sum = 0;
         let count = 0;
         R.map((r) => {
-          sum += r.workHours;
+          const rdate = Date.parse(r.date);
+          if (rdate === "" || (rdate >= lastNmonths && rdate < todayDate)) {
+            sum += r.workHours;
+          }
           count += 1;
         }, item.Records);
         const tempLog = {
@@ -40,11 +54,11 @@ const adminDashboardPage = () => {
           totalHours: sum,
           averageHours: sum / count,
         };
-        workHourLog.push(tempLog);
+        tempLogArr.push(tempLog);
       }, recordz);
     }
+    setWHLog(tempLogArr);
   }
-  assembleWHdata();
 
   // Finding Available, onLeave & Unavailable Employees
   function assembleData() {
@@ -87,6 +101,24 @@ const adminDashboardPage = () => {
         </div>
 
         <div className="split right">
+          <h2>Employee Work Hours </h2>
+          <div className="btn-group">
+            <button value="0" onClick={(e) => assembleWHdata(e)}>
+              All
+            </button>
+            <button value="1" onClick={(e) => assembleWHdata(e)}>
+              1 month
+            </button>
+            <button value="3" onClick={(e) => assembleWHdata(e)}>
+              3 month
+            </button>
+            <button value="6" onClick={(e) => assembleWHdata(e)}>
+              6 month
+            </button>
+            <button value="12" onClick={(e) => assembleWHdata(e)}>
+              12 month
+            </button>
+          </div>
           <WorkHourTable data={workHourLog} />
         </div>
       </div>

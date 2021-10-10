@@ -1,10 +1,10 @@
-/* eslint-disable no-console */
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
+import { RiAddFill } from "react-icons/ri";
 import {
   deleteEmployee,
   editEmployees,
@@ -49,11 +49,9 @@ const EmployeeTable = () => {
 
   useEffect(() => {
     getUsers().then((data) => {
-      console.log(JSON.parse(data));
       setEmployees(JSON.parse(data));
     });
     getRecords().then((data) => {
-      console.log(JSON.parse(data));
       setRecords(JSON.parse(data));
     });
   }, []);
@@ -66,7 +64,10 @@ const EmployeeTable = () => {
   const searchString = search;
   if (searchString.length > 0) {
     tableData = tableData.filter(
-      (e) => e.username.match(searchString) || e.role.match(searchString) || e.dept.match(searchString)
+      (e) =>
+        e.username.match(searchString) ||
+        e.role.match(searchString) ||
+        e.dept.match(searchString)
     );
   }
 
@@ -133,7 +134,6 @@ const EmployeeTable = () => {
       id: getId(addFormData.dept),
       Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
     };
-    console.log(addedEmployee);
     const newEmployees = [...employees];
     newEmployees.push(addedEmployee);
     setEmployees(newEmployees);
@@ -188,7 +188,6 @@ const EmployeeTable = () => {
       email: editFormData.email,
       pincode: currentEmpId.pincode,
     };
-    console.log(editedEmployee);
     const newEmployees = [...employees];
 
     const index = employees.findIndex((emp) => emp.id === currentEmpId.id);
@@ -200,8 +199,6 @@ const EmployeeTable = () => {
     setTimeout(() => {
       dispatch(editEmployees(newEmployees));
     }, 1000);
-
-    console.log("newList", newEmployees);
 
     const initial = {
       id: null,
@@ -260,11 +257,10 @@ const EmployeeTable = () => {
           <BiLogOutCircle size={30} />
         </button>
       </div>
-      <h1 id="Etitle">Employee List</h1>
-      <button className="button" onClick={handleAdd}>
-        ADD
-      </button>
       <SearchBar update={(e) => handleSearchChange(e)} />
+      <button className="add-emp" onClick={handleAdd}>
+        <RiAddFill size={50} />
+      </button>
       <table id="employee">
         <thead>
           <tr>{renderHeader()}</tr>

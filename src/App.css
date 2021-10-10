@@ -325,16 +325,25 @@
 #employee {
   border-collapse: collapse;
   border: 3px solid #ddd;
-  margin-left: 20%;
-  margin-top: 3%;
-  width: 60%;
-  height: 100%;
+  margin-bottom: 4%;
+  width: 100%;
+  height: 50%;
+  
 }
 
 #employee td,
 #employee th {
   border: 1px solid #ddd;
   padding: 12px;
+  margin: 10px;
+  
+}
+.add-emp {
+  margin-top: 30px;
+  background: transparent;
+  border: none;
+  margin-left: 94%;
+  color: #04aa6d;
 }
 
 #employee tr:hover {
@@ -361,8 +370,22 @@
   padding: 3px 10px;
   border-radius: 8px;
   cursor: pointer;
-  border: 1px solid #f44336;
+  border: 2px solid #f44336;
   background-color: transparent;
+}
+
+.opration .button2 {
+  border: none;
+  outline: none;
+  font-size: 11px;
+  font-family: "Quicksand", sans-serif;
+  color:#04aa6d;
+  padding: 3px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid #1f9c6e;
+  background-color: transparent;
+  margin-left: 3%;
 }
 
 #opration .button:active {
@@ -407,7 +430,7 @@ li {
   width: 80%;
   margin-left: 10%;
   height: 100%;
-  margin-top: 10%;
+  margin-top: 7%;
   border: 3px #04aa6d double;
 }
 
@@ -422,13 +445,15 @@ li {
   background: transparent;
   border: none;
 }
-.formik-login label{
+.formik-login label {
   font-weight: bold;
   display: flex;
   margin-bottom: 5px;
 }
-.formik-login [type="text"],[type="password"],[type="checkbox"],[type="email"]
-{
+.formik-login [type="text"],
+[type="password"],
+[type="checkbox"],
+[type="email"] {
   display: block;
   width: 400px;
   padding: 6px 12px;
@@ -439,13 +464,13 @@ li {
   border-radius: 4px;
   margin-bottom: 20px;
 }
-.formik-login{
-  position: fixed; 
+.formik-login {
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.formik-login button{
+.formik-login button {
   color: white;
   align-self: center;
   font-weight: 400;
@@ -459,25 +484,26 @@ li {
   border-radius: 5%;
   background: transparent;
   border: none;
-  
 }
 .formik-login button[disabled] {
   opacity: 0.7;
   cursor: not-allowed;
 }
-.error{
+.error {
   color: #cc0033;
   display: inline-block;
   font-size: 14px;
 }
 
-.formik-leave label{
+.formik-leave label {
   font-weight: bold;
   display: flex;
   margin-bottom: 5px;
 }
-.formik-leave [type="text"],[type="number"],.formik-leave select,
-.formik-leave textarea{
+.formik-leave [type="text"],
+[type="number"],
+.formik-leave select,
+.formik-leave textarea {
   display: block;
   width: 600px;
   padding: 6px 12px;
@@ -488,10 +514,10 @@ li {
   border-radius: 4px;
   margin-bottom: 20px;
 }
-.formik-leave{
+.formik-leave {
   margin-left: 30%;
 }
-.formik-leave button{
+.formik-leave button {
   color: white;
   align-self: center;
   font-weight: 400;
@@ -504,21 +530,22 @@ li {
   height: 40px;
   border-radius: 5%;
   background: transparent;
-  border: none; 
+  border: none;
 }
 .formik-leave button[disabled] {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-
-.formik-emp label{
+.formik-emp label {
   font-weight: bold;
   margin-right: 2px;
   margin-bottom: 8px;
 }
-.formik-emp [type="text"],[type="email"],[type="number"],.formik-emp select
-{
+.formik-emp [type="text"],
+[type="email"],
+[type="number"],
+.formik-emp select {
   width: 200px;
   height: 30px;
   padding: 2px 2px;
@@ -529,15 +556,14 @@ li {
   border-radius: 4px;
   margin-bottom: 10px;
 }
-.formik-emp{
+.formik-emp {
   display: flex;
   flex-direction: row;
-  gap:3px;
+  gap: 3px;
   align-items: center;
   margin-left: 13%;
-
 }
-.formik-emp button{
+.formik-emp button {
   color: white;
   align-self: center;
   font-weight: 300;
@@ -551,11 +577,31 @@ li {
   background: transparent;
   border: none;
   margin-bottom: 16px;
-  
 }
 .formik-emp button[disabled] {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
+.btn-group button {
+  background-color: #04aa6d;
+  border: 1px solid green;
+  color: white;
+  padding: 10px 24px;
+  cursor: pointer;
+  float: left;
+}
 
+.btn-group:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.btn-group button:not(:last-child) {
+  border-right: none;
+}
+
+.btn-group button:hover {
+  background-color: #3e8e41;
+}
