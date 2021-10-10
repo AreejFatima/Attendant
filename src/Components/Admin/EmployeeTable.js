@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
 import { RiAddFill } from "react-icons/ri";
+import Snackbar from "@mui/material/Snackbar";
+import { IconButton } from "@mui/material";
 import {
   deleteEmployee,
   editEmployees,
@@ -22,6 +24,8 @@ const EmployeeTable = () => {
   const [records, setRecords] = useState([]);
   const [search, setSearch] = useState("");
   const [isAdded, setIsAdded] = useState(false);
+  const [isSnackOpen, setIsSnackOpen] = useState(false);
+  const [snackMesage, setMessage] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
   let tableData = [...employees];
@@ -56,6 +60,11 @@ const EmployeeTable = () => {
     });
   }, []);
 
+  function SnackBarClose() {
+    setIsSnackOpen(false);
+  }
+
+
   function handleSearchChange(event) {
     const searchValue = event.target.value;
     setSearch(searchValue);
@@ -74,6 +83,8 @@ const EmployeeTable = () => {
   // Deleting Employee and Records
 
   function removeEmployee(eid) {
+    setIsSnackOpen(true)
+    setMessage("Employee Deleted Sucessfully!");
     const payload = {
       data: employees,
       data_record: records,
@@ -249,6 +260,14 @@ const EmployeeTable = () => {
 
   return (
     <>
+    <Snackbar
+      anchorOrigin={{vertical:'center',horizontal:'center'}} 
+      open={isSnackOpen}
+      autoHideDuration={3000}
+      onClose={SnackBarClose}
+      message={<span id='message-id'>{snackMesage}</span>}
+      action={[<IconButton key='close' arial-label='close' color='inherit' onClick={SnackBarClose}>x</IconButton>]}
+      />
       <div className="aicon">
         <button onClick={() => history.push("AdminDashboard")}>
           <FaBackward size={30} />

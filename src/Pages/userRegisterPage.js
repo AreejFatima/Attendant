@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
+import Snackbar from "@mui/material/Snackbar";
+import { IconButton } from "@mui/material";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
 
 import {
@@ -16,6 +18,8 @@ const R = require("ramda");
 
 const userRegisterPage = () => {
   const usersList = useSelector((state) => state.user.allUsers);
+  const [isSnackOpen, setIsSnackOpen] = useState(false);
+  const [snackMesage, setMessage] = useState("");
   const history = useHistory();
   const [record, setRecord] = useState({
     id: "",
@@ -45,6 +49,10 @@ const userRegisterPage = () => {
     }
   }, [record]);
 
+  function SnackBarClose() {
+    setIsSnackOpen(false);
+  }
+
   const initialValues = {
     name: "",
     pin: "",
@@ -53,7 +61,8 @@ const userRegisterPage = () => {
   };
 
   const onSubmit = (values) => {
-    alert("Registered Sucessfully!!!");
+    setIsSnackOpen(true)
+    setMessage("Registered Sucessfully!!!");
     const tempObj = {
       id: getId(values.dept),
       pincode: values.pin,
@@ -106,68 +115,78 @@ const userRegisterPage = () => {
   }
 
   return (
-    <Formik
-      initialValues={initialValues}
-      validate={validate}
-      onSubmit={onSubmit}
-    >
-      <Form>
-        <h1
-          style={{
-            color: "#04aa6d",
-            fontFamily: "sans-serif",
-            marginTop: "2%",
-          }}
-        >
-          Registeration Form
-        </h1>
-        <div className="formik-login">
-          <label htmlFor="dept">Select Department</label>
-          <Field as="select" name="dept" id="dept">
-            <option value="null">Select Department</option>
-            <option value="FE">FE</option>
-            <option value="BE">BE</option>
-            <option value="QA">QA</option>
-          </Field>
-
-          <label htmlFor="name">Enter Full Name</label>
-          <Field type="text" id="name" name="name" />
-          <ErrorMessage name="name" component={ErrorDiv} />
-
-          <label htmlFor="email">Enter Email</label>
-          <Field
-            type="text"
-            id="email"
-            name="email"
-            placeholder="name@example.com"
-          />
-          <ErrorMessage name="email" component={ErrorDiv} />
-
-          <label htmlFor="pin">Enter New PinCode</label>
-          <Field
-            type="password"
-            id="pin"
-            name="pin"
-            placeholder="--6-digit-pin--"
-          />
-          <ErrorMessage name="pin" component={ErrorDiv} />
-          <br />
-
-          <button
-            type="submit"
-            style={{ backgroundColor: "#04aa6d", margin: "2%" }}
+    <div>
+      <Snackbar
+      anchorOrigin={{vertical:'center',horizontal:'center'}} 
+      open={isSnackOpen}
+      autoHideDuration={3000}
+      onClose={SnackBarClose}
+      message={<span id='message-id'>{snackMesage}</span>}
+      action={[<IconButton key='close' arial-label='close' color='inherit' onClick={SnackBarClose}>x</IconButton>]}
+      />
+      <Formik
+        initialValues={initialValues}
+        validate={validate}
+        onSubmit={onSubmit}
+      >
+        <Form>
+          <h1
+            style={{
+              color: "#04aa6d",
+              fontFamily: "sans-serif",
+              marginTop: "2%",
+            }}
           >
-            Register Me
-          </button>
-          <button
-            style={{ backgroundColor: "#04aa6d", margin: "2%" }}
-            onClick={backToLogin}
-          >
-            Back to Login
-          </button>
-        </div>
-      </Form>
-    </Formik>
+            Registeration Form
+          </h1>
+          <div className="formik-login">
+            <label htmlFor="dept">Select Department</label>
+            <Field as="select" name="dept" id="dept">
+              <option value="null">Select Department</option>
+              <option value="FE">FE</option>
+              <option value="BE">BE</option>
+              <option value="QA">QA</option>
+            </Field>
+
+            <label htmlFor="name">Enter Full Name</label>
+            <Field type="text" id="name" name="name" />
+            <ErrorMessage name="name" component={ErrorDiv} />
+
+            <label htmlFor="email">Enter Email</label>
+            <Field
+              type="text"
+              id="email"
+              name="email"
+              placeholder="name@example.com"
+            />
+            <ErrorMessage name="email" component={ErrorDiv} />
+
+            <label htmlFor="pin">Enter New PinCode</label>
+            <Field
+              type="password"
+              id="pin"
+              name="pin"
+              placeholder="--6-digit-pin--"
+            />
+            <ErrorMessage name="pin" component={ErrorDiv} />
+            <br />
+
+            <button
+              type="submit"
+              style={{ backgroundColor: "#04aa6d", margin: "2%" }}
+            >
+              Register Me
+            </button>
+            <button
+              style={{ backgroundColor: "#04aa6d", margin: "2%" }}
+              onClick={backToLogin}
+            >
+              Back to Login
+            </button>
+          </div>
+        </Form>
+      </Formik>
+    </div>
   );
 };
 export default userRegisterPage;
