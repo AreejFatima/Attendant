@@ -8,9 +8,8 @@ import { RiAddFill } from "react-icons/ri";
 import Snackbar from "@mui/material/Snackbar";
 import { IconButton } from "@mui/material";
 import {
-  deleteEmployee,
-  editEmployees,
-  addRecord,
+  patchRecordData,
+  patchEmployeeData,
 } from "../../Redux/Slices/adminSlice";
 import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
@@ -64,7 +63,6 @@ const EmployeeTable = () => {
     setIsSnackOpen(false);
   }
 
-
   function handleSearchChange(event) {
     const searchValue = event.target.value;
     setSearch(searchValue);
@@ -83,25 +81,31 @@ const EmployeeTable = () => {
   // Deleting Employee and Records
 
   function removeEmployee(eid) {
-    setIsSnackOpen(true)
+    setIsSnackOpen(true);
     setMessage("Employee Deleted Sucessfully!");
-    const payload = {
-      data: employees,
-      data_record: records,
-      id: eid,
-    };
-    dispatch(deleteEmployee(payload));
+    const tempEmp = [...employees];
+    const tempRec = [...records];
+
+    const toDelete = R.find(R.propEq("id", eid), tempEmp);
+
+    const toDeleteRec = R.find(R.propEq("id", eid), tempRec);
+
+    const filteredRecords = tempRec.filter((item) => item !== toDeleteRec);
+
+    const filteredEmployees = tempEmp.filter((item) => item !== toDelete);
+    dispatch(patchEmployeeData(filteredEmployees));
+    dispatch(patchRecordData(filteredRecords));
+
     setTimeout(() => {
-      const toDelete = R.find(R.propEq("id", eid))(employees);
-      const filteredEmployees = employees.filter((item) => item !== toDelete);
+      const toDeleted = R.find(R.propEq("id", eid))(employees);
+      const filteredEmp = employees.filter((item) => item !== toDeleted);
 
-      const toDeleteRec = R.find(R.propEq("id", eid))(records);
-      const filteredrecords = records.filter((item) => item !== toDeleteRec);
+      const toDeletedRec = R.find(R.propEq("id", eid))(records);
+      const filteredRec = records.filter((item) => item !== toDeletedRec);
 
-      setEmployees(filteredEmployees);
-      setRecords(filteredrecords);
+      setEmployees(filteredEmp);
+      setRecords(filteredRec);
     }, 1000);
-    // alert("Deleted Sucessfully, Reload to see changes");
   }
   function handleAdd() {
     setIsAdded(true);
@@ -141,10 +145,15 @@ const EmployeeTable = () => {
       email: addFormData.email,
       pincode: "000000",
     };
-    const newRecord = {
+    const addedRecord = {
       id: getId(addFormData.dept),
       Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
     };
+
+    const newRecords = [...records];
+    newRecords.push(addedRecord);
+    setRecords(newRecords);
+
     const newEmployees = [...employees];
     newEmployees.push(addedEmployee);
     setEmployees(newEmployees);
@@ -158,8 +167,8 @@ const EmployeeTable = () => {
     setAddFormData(initial);
 
     setTimeout(() => {
-      dispatch(editEmployees(newEmployees));
-      dispatch(addRecord(newRecord));
+      dispatch(patchEmployeeData(newEmployees));
+      dispatch(patchRecordData(newRecords));
     }, 1000);
   }
 
@@ -208,7 +217,7 @@ const EmployeeTable = () => {
     setEmployees(newEmployees);
 
     setTimeout(() => {
-      dispatch(editEmployees(newEmployees));
+      dispatch(patchEmployeeData(newEmployees));
     }, 1000);
 
     const initial = {
@@ -260,13 +269,22 @@ const EmployeeTable = () => {
 
   return (
     <>
-    <Snackbar
-      anchorOrigin={{vertical:'center',horizontal:'center'}} 
-      open={isSnackOpen}
-      autoHideDuration={3000}
-      onClose={SnackBarClose}
-      message={<span id='message-id'>{snackMesage}</span>}
-      action={[<IconButton key='close' arial-label='close' color='inherit' onClick={SnackBarClose}>x</IconButton>]}
+      <Snackbar
+        anchorOrigin={{ vertical: "center", horizontal: "center" }}
+        open={isSnackOpen}
+        autoHideDuration={3000}
+        onClose={SnackBarClose}
+        message={<span id="message-id">{snackMesage}</span>}
+        action={[
+          <IconButton
+            key="close"
+            arial-label="close"
+            color="inherit"
+            onClick={SnackBarClose}
+          >
+            x
+          </IconButton>,
+        ]}
       />
       <div className="aicon">
         <button onClick={() => history.push("AdminDashboard")}>
