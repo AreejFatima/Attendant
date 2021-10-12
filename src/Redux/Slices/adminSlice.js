@@ -34,17 +34,19 @@ export const fetchDataFromGists = createAsyncThunk(
 
 export const patchEmployeeData = createAsyncThunk(
   "admin/patchEmployeeData",
-  async (employees) => {
+  async (employees, thunkApi) => {
     const stringUsers = JSON.stringify(employees);
     patchUsers(stringUsers);
+    thunkApi.dispatch(setInitialEmployees(employees));
   }
 );
 
 export const patchRecordData = createAsyncThunk(
   "admin/patchRecordData",
-  async (records) => {
+  async (records, thunkApi) => {
     const stringRecords = JSON.stringify(records);
     patchRecords(stringRecords);
+    thunkApi.dispatch(setInitialERecords(records));
   }
 );
 
