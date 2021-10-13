@@ -35,17 +35,37 @@ export const fetchUserDataFromGists = createAsyncThunk(
     }, 1000);
   }
 );
+export const patchUserData = createAsyncThunk(
+  "user/patchUserData",
+  async (users, thunkApi) => {
+    const stringUsers = JSON.stringify(users);
+    patchUsers(stringUsers);
+    thunkApi.dispatch(setInitialUsers(users));
+  }
+);
+
+export const patchUserRecords = createAsyncThunk(
+  "user/patchUserRecords",
+  async (record, thunkApi) => {
+    const stringRecords = JSON.stringify(record);
+    patchRecords(stringRecords);
+    thunkApi.dispatch(setInitialRecords(record));
+  }
+);
+
+export const patchLeaveData = createAsyncThunk(
+  "user/patchLeaveData",
+  async (leave, thunkApi) => {
+    const stringLeaves = JSON.stringify(leave);
+    patchLeaves(stringLeaves);
+    thunkApi.dispatch(setInitialLeaves(leave));
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    // ADD User
-    addUser(state, action) {
-      state.allUsers.push(action.payload);
-      const stringUsers = JSON.stringify(state.allUsers);
-      (async () => await patchUsers(stringUsers))();
-    },
     // Set States
     setInitialUsers(state, action) {
       state.allUsers = action.payload;
@@ -54,73 +74,20 @@ const userSlice = createSlice({
     setInitialRecords(state, action) {
       state.userRecords = action.payload;
     },
+    setInitialLeaves(state, action) {
+      state.leaves = action.payload;
+    },
 
     setActiveUser(state, action) {
       state.activeUser = action.payload;
     },
-    // Push leave to gist
-    pushLeave(state, action) {
-      state.leaves.push(action.payload);
-      const stringLeave = JSON.stringify(state.leaves);
-      (async () => await patchLeaves(stringLeave))();
-    },
-
-    pushRecord(state, action) {
-      state.userRecords.push(action.payload);
-      const stringRecords = JSON.stringify(state.userRecords);
-      (async () => await patchRecords(stringRecords))();
-    },
-    // ADD Record
-    addRecord(state, action) {
-      const userRecord = R.findIndex(
-        R.propEq("id", action.payload.id),
-        state.userRecords
-      );
-
-      if (action.payload.status) {
-        const newRecord = {
-          date: action.payload.timestamp[0],
-          punchIn: action.payload.timestamp[1],
-          punchOut: "",
-          workHours: 0,
-        };
-        state.userRecords[userRecord].Records.push(newRecord);
-        const stringRecords = JSON.stringify(state.userRecords);
-        (async () => await patchRecords(stringRecords))();
-      } else {
-        const lastRecord = R.last(state.userRecords[userRecord].Records);
-        lastRecord.punchOut = action.payload.timestamp[1];
-        const start = lastRecord.punchIn;
-        const end = action.payload.timestamp[1];
-        const totalHours = calculateWorkHours(start, end);
-        lastRecord.workHours = totalHours;
-
-        const stringRecords = JSON.stringify(state.userRecords);
-        (async () => await patchRecords(stringRecords))();
-      }
-    },
   },
 });
 
-// Calculating Employee Work Hours (Seconds returned and used for testing)
-function calculateWorkHours(st, et) {
-  const startTime = moment(st, "HH:mm:ss A");
-  const endTime = moment(et, "HH:mm:ss A");
-  const duration = moment.duration(endTime.diff(startTime));
-  const hours = parseInt(duration.asHours(), 10);
-  const minutes = parseInt(duration.asMinutes(), 10) % 60;
-  const seconds = parseInt(duration.asSeconds(), 10);
-  // const result = hours + " hour and " + minutes + " minutes.";
-  return seconds;
-}
-
 export const {
-  addUser,
   setActiveUser,
-  addRecord,
-  pushRecord,
-  pushLeave,
   setInitialUsers,
   setInitialRecords,
+  setInitialLeaves,
 } = userSlice.actions;
 export default userSlice.reducer;

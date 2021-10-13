@@ -63,12 +63,6 @@ const adminSlice = createSlice({
   name: "admin",
   initialState,
   reducers: {
-    addEmployee(state, action) {
-      state.employees.push(action.payload);
-      const stringUsers = JSON.stringify(state.employees);
-      (async () => await patchUsers(stringUsers))();
-    },
-
     // Set States
 
     setInitialEmployees(state, action) {
@@ -81,10 +75,6 @@ const adminSlice = createSlice({
   },
 });
 
-export const {
-  deleteEmployee,
-  setInitialEmployees,
-  setInitialERecords,
-  addEmployee,
-} = adminSlice.actions;
+export const { deleteEmployee, setInitialEmployees, setInitialERecords } =
+  adminSlice.actions;
 export default adminSlice.reducer;

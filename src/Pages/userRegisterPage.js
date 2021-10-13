@@ -9,15 +9,16 @@ import { IconButton } from "@mui/material";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
 
 import {
-  addUser,
-  pushRecord,
   fetchUserDataFromGists,
+  patchUserData,
+  patchUserRecords,
 } from "../Redux/Slices/userSlice";
 
 const R = require("ramda");
 
 const userRegisterPage = () => {
   const usersList = useSelector((state) => state.user.allUsers);
+  const userRecordsList = useSelector((state) => state.user.userRecords);
   const [isSnackOpen, setIsSnackOpen] = useState(false);
   const [snackMesage, setMessage] = useState("");
   const history = useHistory();
@@ -38,14 +39,18 @@ const userRegisterPage = () => {
   useEffect(() => {
     if (user.id !== "") {
       dispatch(fetchUserDataFromGists());
-      dispatch(addUser(user));
+      const tempUsers = [...usersList];
+      tempUsers.push(user);
+      dispatch(patchUserData(tempUsers));
     }
   }, [user]);
 
   useEffect(() => {
     if (record.id !== "") {
       dispatch(fetchUserDataFromGists());
-      dispatch(pushRecord(record));
+      const tempRecs = [...userRecordsList];
+      tempRecs.push(record);
+      dispatch(patchUserRecords(tempRecs));
     }
   }, [record]);
 
@@ -61,7 +66,7 @@ const userRegisterPage = () => {
   };
 
   const onSubmit = (values) => {
-    setIsSnackOpen(true)
+    setIsSnackOpen(true);
     setMessage("Registered Sucessfully!!!");
     const tempObj = {
       id: getId(values.dept),
@@ -117,12 +122,21 @@ const userRegisterPage = () => {
   return (
     <div>
       <Snackbar
-      anchorOrigin={{vertical:'center',horizontal:'center'}} 
-      open={isSnackOpen}
-      autoHideDuration={3000}
-      onClose={SnackBarClose}
-      message={<span id='message-id'>{snackMesage}</span>}
-      action={[<IconButton key='close' arial-label='close' color='inherit' onClick={SnackBarClose}>x</IconButton>]}
+        anchorOrigin={{ vertical: "center", horizontal: "center" }}
+        open={isSnackOpen}
+        autoHideDuration={3000}
+        onClose={SnackBarClose}
+        message={<span id="message-id">{snackMesage}</span>}
+        action={[
+          <IconButton
+            key="close"
+            arial-label="close"
+            color="inherit"
+            onClick={SnackBarClose}
+          >
+            x
+          </IconButton>,
+        ]}
       />
       <Formik
         initialValues={initialValues}

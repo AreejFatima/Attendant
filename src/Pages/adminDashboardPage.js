@@ -48,11 +48,12 @@ const adminDashboardPage = () => {
         let count = 0;
         R.map((r) => {
           const rdate = Date.parse(r.date);
-          if (rdate === "" || (rdate >= lastNmonths && rdate < todayDate)) {
+          if (rdate === "" || (rdate >= lastNmonths && rdate <= todayDate)) {
             sum += r.workHours;
           }
           count += 1;
         }, item.Records);
+
         const tempLog = {
           id: item.id,
           totalHours: sum,

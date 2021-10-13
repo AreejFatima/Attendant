@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import "../App.css";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -13,7 +13,6 @@ import {
 const R = require("ramda");
 
 const userLoginPage = () => {
-  const [newUser, setNewBox] = useState(true);
   const usersList = useSelector((state) => state.user.allUsers);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -73,14 +72,6 @@ const userLoginPage = () => {
             Employee Login
           </h1>
           <div className="formik-login">
-            <label htmlFor="newUser">New User</label>
-            <Field
-              type="checkbox"
-              id="newuser"
-              name="newuser"
-              checked={newUser}
-              onChange={() => setNewBox(!newUser)}
-            />
             <label htmlFor="id">Employee Id</label>
             <Field type="text" id="id" name="id" placeholder="XX-000" />
             <ErrorMessage name="id" component={ErrorDiv} />
@@ -96,13 +87,11 @@ const userLoginPage = () => {
 
             <button
               type="submit"
-              disabled={newUser === true}
               style={{ backgroundColor: "#04aa6d", margin: "2%" }}
             >
               Login
             </button>
             <button
-              disabled={!newUser}
               style={{ backgroundColor: "#04aa6d", margin: "2%" }}
               onClick={handleRegister}
             >
