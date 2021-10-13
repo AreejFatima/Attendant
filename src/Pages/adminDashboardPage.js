@@ -7,16 +7,20 @@ import "font-awesome/css/font-awesome.min.css";
 import { fetchDataFromGists } from "../Redux/Slices/adminSlice";
 import WorkHourTable from "../Components/Admin/WorkHourTable";
 import AvailabilityTabs from "../Components/Admin/AvailabilityTabs";
+import SearchBar from "../Components/User/SearchBar";
 
 const R = require("ramda");
 
 const adminDashboardPage = () => {
   const timestamp = R.split(", ", new Date().toLocaleString());
   const currentDate = timestamp[0];
+  const [search, setSearch] = useState("");
   const history = useHistory();
   const [workHourLog, setWHLog] = useState([]);
+  const allEmployees = [];
   const available = [];
   const unavailable = [];
+  let searchResults = [];
   const onleave = [];
   const recordz = useSelector((state) => state.admin.records);
   const dispatch = useDispatch();
@@ -68,18 +72,43 @@ const adminDashboardPage = () => {
         if (last.date === currentDate && last.punchOut === "") {
           if (!available.includes(item.id)) {
             available.push(item.id);
+            const temp = {
+              id: item.id,
+              status: "Available",
+            };
+            allEmployees.push(temp);
           }
         } else if (last.date === currentDate && last.punchOut !== "") {
           if (!unavailable.includes(item.id)) {
             unavailable.push(item.id);
+            const temp = {
+              id: item.id,
+              status: "UnAvailable",
+            };
+            allEmployees.push(temp);
           }
         } else if (!onleave.includes(item.id)) {
           onleave.push(item.id);
+          const temp = {
+            id: item.id,
+            status: "On Leave",
+          };
+          allEmployees.push(temp);
         }
       }, recordz);
     }
   }
   assembleData();
+  // SearchBar
+  function handleSearchChange(event) {
+    const searchValue = event.target.value;
+    setSearch(searchValue);
+  }
+
+  const searchString = search;
+  if (searchString.length > 0) {
+    searchResults = allEmployees.filter((e) => e.id.match(searchString));
+  }
 
   return (
     <div className="adminMain">
@@ -93,11 +122,33 @@ const adminDashboardPage = () => {
       </div>
       <div>
         <div className="split left">
-          <AvailabilityTabs
-            available={available}
-            unavailable={unavailable}
-            onleave={onleave}
-          />
+          <SearchBar update={(e) => handleSearchChange(e)} />
+          {R.isEmpty(searchResults) ? (
+            <AvailabilityTabs
+              available={available}
+              unavailable={unavailable}
+              onleave={onleave}
+            />
+          ) : null}
+
+          {R.isEmpty(searchResults) ? null : (
+            <table className="styled-table">
+              <thead>
+                <tr>
+                  <th>Employee</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {searchResults.map((e) => (
+                  <tr>
+                    <td>{e.id}</td>
+                    <td>{e.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
 
         <div className="split right">

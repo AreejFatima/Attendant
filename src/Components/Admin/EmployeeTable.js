@@ -15,6 +15,7 @@ import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
 import { getUsers, getRecords } from "../../Adapter/gists";
 import SearchBar from "../User/SearchBar";
+import Settings from "./Settings";
 
 const R = require("ramda");
 
@@ -294,25 +295,32 @@ const EmployeeTable = () => {
           <BiLogOutCircle size={30} />
         </button>
       </div>
-      <SearchBar update={(e) => handleSearchChange(e)} />
-      <button className="add-emp" onClick={handleAdd}>
-        <RiAddFill size={50} />
-      </button>
-      <table id="employee">
-        <thead>
-          <tr>{renderHeader()}</tr>
-        </thead>
-        <>
-          <tbody>{renderBody(tableData)}</tbody>
-          {isAdded ? (
-            <EditableRow
-              editFormData={addFormData}
-              handleEditFormChange={handleAddFormChange}
-              handleEditFormSave={handleAddFormSubmit}
-            />
-          ) : null}
-        </>
-      </table>
+      <Settings/>
+      <div className='employee-settings'>
+      <h4 style={{
+              color: "#04aa6d",
+              fontFamily: "sans-serif",
+            }}>Employee Settings</h4>
+        <SearchBar update={(e) => handleSearchChange(e)} />
+        <button className="add-emp" onClick={handleAdd}>
+          <RiAddFill size={50} />
+        </button>
+        <table id="employee">
+          <thead>
+            <tr>{renderHeader()}</tr>
+          </thead>
+          <>
+            <tbody>{renderBody(tableData)}</tbody>
+            {isAdded ? (
+              <EditableRow
+                editFormData={addFormData}
+                handleEditFormChange={handleAddFormChange}
+                handleEditFormSave={handleAddFormSubmit}
+              />
+            ) : null}
+          </>
+        </table>
+      </div>
     </>
   );
 };

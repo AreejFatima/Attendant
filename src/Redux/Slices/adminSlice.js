@@ -8,6 +8,7 @@ import {
   getRecords,
   getallGists,
   patchRecords,
+  patchSettings,
 } from "../../Adapter/gists";
 
 const initialState = {
@@ -47,6 +48,14 @@ export const patchRecordData = createAsyncThunk(
     const stringRecords = JSON.stringify(records);
     patchRecords(stringRecords);
     thunkApi.dispatch(setInitialERecords(records));
+  }
+);
+
+export const patchSettingData = createAsyncThunk(
+  "admin/patchSettingData",
+  async (hours) => {
+    const stringHours = JSON.stringify(hours);
+    patchSettings(stringHours);
   }
 );
 

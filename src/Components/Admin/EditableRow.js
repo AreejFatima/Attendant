@@ -36,7 +36,7 @@ const EditableRow = ({
     </td>
     <td>
       <input
-        type="email"
+        type="text"
         required="required"
         placeholder="Email"
         name="email"
