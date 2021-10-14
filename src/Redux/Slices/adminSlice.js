@@ -8,9 +8,8 @@ import {
   getRecords,
   getallGists,
   patchRecords,
+  patchSettings,
 } from "../../Adapter/gists";
-
-const R = require("ramda");
 
 const initialState = {
   requestedLeaves: [],
@@ -34,40 +33,36 @@ export const fetchDataFromGists = createAsyncThunk(
   }
 );
 
+export const patchEmployeeData = createAsyncThunk(
+  "admin/patchEmployeeData",
+  async (employees, thunkApi) => {
+    const stringUsers = JSON.stringify(employees);
+    patchUsers(stringUsers);
+    thunkApi.dispatch(setInitialEmployees(employees));
+  }
+);
+
+export const patchRecordData = createAsyncThunk(
+  "admin/patchRecordData",
+  async (records, thunkApi) => {
+    const stringRecords = JSON.stringify(records);
+    patchRecords(stringRecords);
+    thunkApi.dispatch(setInitialERecords(records));
+  }
+);
+
+export const patchSettingData = createAsyncThunk(
+  "admin/patchSettingData",
+  async (hours) => {
+    const stringHours = JSON.stringify(hours);
+    patchSettings(stringHours);
+  }
+);
+
 const adminSlice = createSlice({
   name: "admin",
   initialState,
   reducers: {
-    // Delete Employee & Record
-    deleteEmployee(state, action) {
-      state.employees = action.payload.data;
-      state.records = action.payload.data_record;
-      const toDelete = R.find(
-        R.propEq("id", action.payload.id),
-        state.employees
-      );
-      const toDeleteRec = R.find(
-        R.propEq("id", action.payload.id),
-        state.records
-      );
-
-      const filteredRecords = state.records.filter(
-        (item) => item !== toDeleteRec
-      );
-
-      const filteredEmployees = state.employees.filter(
-        (item) => item !== toDelete
-      );
-
-      const stringEmp = JSON.stringify(filteredEmployees);
-      (async () => await patchUsers(stringEmp))();
-
-      const stringRec = JSON.stringify(filteredRecords);
-      (async () => await patchRecords(stringRec))();
-
-      state.employees = filteredEmployees;
-    },
-
     // Set States
 
     setInitialEmployees(state, action) {

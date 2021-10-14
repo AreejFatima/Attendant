@@ -15,6 +15,7 @@ require("dotenv").config();
 let userGist;
 let recordGist;
 let leaveGist;
+let settingGist;
 const allgists = [];
 
 // Getting All Gists, and then Data from Gists (Helper Functions)
@@ -39,6 +40,9 @@ export const getallGists = async () => {
         leaveGist = item.id;
       } else if (item.filename === "records.txt") {
         recordGist = item.id;
+      }
+      else if (item.filename === "settings.txt") {
+        settingGist = item.id;
       }
     }, allgists);
   } catch (error) {
@@ -128,6 +132,21 @@ export const patchLeaves = async (l) => {
       files: {
         "leaves.txt": {
           content: l,
+        },
+      },
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const patchSettings = async (s) => {
+  try {
+    const response = await octokit.request(`PATCH /gists/${settingGist}`, {
+      gist_id: leaveGist,
+      files: {
+        "settings.txt": {
+          content: s,
         },
       },
     });

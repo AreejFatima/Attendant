@@ -4,20 +4,31 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { pushLeave } from "../Redux/Slices/userSlice";
+import Snackbar from "@mui/material/Snackbar";
+import { IconButton } from "@mui/material";
+import { patchLeaveData } from "../Redux/Slices/userSlice";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
 
 const userLeavePage = () => {
   const id = useSelector((state) => state.user.activeUser.id);
+  const stateLeaves = useSelector((state) => state.user.leaves);
+  const [isSnackOpen, setIsSnackOpen] = useState(false);
+  const [snackMesage, setMessage] = useState("");
   const [newLeave, setNewLeave] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
     if (newLeave !== "") {
-      dispatch(pushLeave(newLeave));
+      const tempLeave = [...stateLeaves];
+      tempLeave.push(newLeave);
+      dispatch(patchLeaveData(tempLeave));
     }
   }, [newLeave]);
+
+  function SnackBarClose() {
+    setIsSnackOpen(false);
+  }
 
   const initialValues = {
     name: "",
@@ -29,7 +40,8 @@ const userLeavePage = () => {
   };
 
   const onSubmit = (values) => {
-    alert("leave submitted");
+    setIsSnackOpen(true);
+    setMessage("Leave Submitted!");
     const tempLeave = {
       userid: id,
       status: "pending",
@@ -54,73 +66,92 @@ const userLeavePage = () => {
     return errors;
   };
   return (
-    <Formik
-      initialValues={initialValues}
-      validate={validate}
-      onSubmit={onSubmit}
-    >
-      <Form>
-        <h3
-          style={{
-            color: "#04aa6d",
-            fontFamily: "sans-serif",
-            marginTop: "2%",
-          }}
-        >
-          Leave Application Form
-        </h3>
-        <div className="formik-leave">
-          <label htmlFor="name">Enter Full Name</label>
-          <Field type="text" id="name" name="name" />
-          <ErrorMessage name="name" component={ErrorDiv} />
-
-          <label htmlFor="dept">Select Department</label>
-          <Field as="select" name="dept">
-            <option value="null">Select Department</option>
-            <option value="FE">FE</option>
-            <option value="BE">BE</option>
-            <option value="QA">QA</option>
-          </Field>
-          <ErrorMessage name="dept" component={ErrorDiv} />
-
-          <label htmlFor="type">Select Leave Type</label>
-          <Field as="select" name="type">
-            <option value="null">Leave Type</option>
-            <option value="HalfLeave">Half Leave</option>
-            <option value="FullLeave">Full Leave</option>
-          </Field>
-          <ErrorMessage name="type" component={ErrorDiv} />
-
-          <label htmlFor="days">Enter Days</label>
-          <Field type="number" id="days" name="days" />
-          <ErrorMessage name="days" component={ErrorDiv} />
-
-          <label htmlFor="reason">Tell your Reason</label>
-          <Field as="select" name="reason" className="select">
-            <option value="null">Reason for Leave</option>
-            <option value="sick">Sick Leave</option>
-            <option value="vacation">Vacation Leave</option>
-            <option value="annual">Annual Leave</option>
-            <option value="other">Other</option>
-          </Field>
-          <ErrorMessage name="reason" component={ErrorDiv} />
-
-          <label htmlFor="message">Message</label>
-          <Field as="textarea" id="message" name="message" />
-          <ErrorMessage name="message" component={ErrorDiv} />
-          <button
-            type="submit"
+    <div>
+      <Snackbar
+        anchorOrigin={{ vertical: "center", horizontal: "center" }}
+        open={isSnackOpen}
+        autoHideDuration={3000}
+        onClose={SnackBarClose}
+        message={<span id="message-id">{snackMesage}</span>}
+        action={[
+          <IconButton
+            key="close"
+            arial-label="close"
+            color="inherit"
+            onClick={SnackBarClose}
+          >
+            x
+          </IconButton>,
+        ]}
+      />
+      <Formik
+        initialValues={initialValues}
+        validate={validate}
+        onSubmit={onSubmit}
+      >
+        <Form>
+          <h3
             style={{
-              backgroundColor: "#04aa6d",
-              marginRight: "46%",
-              marginBottom: "4%",
+              color: "#04aa6d",
+              fontFamily: "sans-serif",
+              marginTop: "2%",
             }}
           >
-            Submit
-          </button>
-        </div>
-      </Form>
-    </Formik>
+            Leave Application Form
+          </h3>
+          <div className="formik-leave">
+            <label htmlFor="name">Enter Full Name</label>
+            <Field type="text" id="name" name="name" />
+            <ErrorMessage name="name" component={ErrorDiv} />
+
+            <label htmlFor="dept">Select Department</label>
+            <Field as="select" name="dept">
+              <option value="null">Select Department</option>
+              <option value="FE">FE</option>
+              <option value="BE">BE</option>
+              <option value="QA">QA</option>
+            </Field>
+            <ErrorMessage name="dept" component={ErrorDiv} />
+
+            <label htmlFor="type">Select Leave Type</label>
+            <Field as="select" name="type">
+              <option value="null">Leave Type</option>
+              <option value="HalfLeave">Half Leave</option>
+              <option value="FullLeave">Full Leave</option>
+            </Field>
+            <ErrorMessage name="type" component={ErrorDiv} />
+
+            <label htmlFor="days">Enter Days</label>
+            <Field type="number" id="days" name="days" />
+            <ErrorMessage name="days" component={ErrorDiv} />
+
+            <label htmlFor="reason">Tell your Reason</label>
+            <Field as="select" name="reason" className="select">
+              <option value="null">Reason for Leave</option>
+              <option value="sick">Sick Leave</option>
+              <option value="vacation">Vacation Leave</option>
+              <option value="annual">Annual Leave</option>
+              <option value="other">Other</option>
+            </Field>
+            <ErrorMessage name="reason" component={ErrorDiv} />
+
+            <label htmlFor="message">Message</label>
+            <Field as="textarea" id="message" name="message" />
+            <ErrorMessage name="message" component={ErrorDiv} />
+            <button
+              type="submit"
+              style={{
+                backgroundColor: "#04aa6d",
+                marginRight: "46%",
+                marginBottom: "4%",
+              }}
+            >
+              Submit
+            </button>
+          </div>
+        </Form>
+      </Formik>
+    </div>
   );
 };
 
