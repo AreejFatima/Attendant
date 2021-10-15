@@ -1,4 +1,10 @@
-const RecordsRow = (props) => {
+export interface rowType {
+  date: string;
+  punchIn: string;
+  punchOut: string;
+}
+
+const RecordsRow = (props: rowType) => {
   const { date, punchIn, punchOut } = props;
   return (
     <tr>

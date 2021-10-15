@@ -1,4 +1,7 @@
-const SearchBar = (props) => (
+// eslint-disable-next-line import/no-extraneous-dependencies
+import React from "react";
+
+const SearchBar = (props: any) => (
   <div>
     <input
       className="form-control mb-2"
@@ -9,7 +12,7 @@ const SearchBar = (props) => (
         marginTop: "1%",
       }}
       placeholder="Search Record..."
-      onChange={(e) => props.update(e)}
+      onChange={(event) => props.update(event)}
     />
   </div>
 );

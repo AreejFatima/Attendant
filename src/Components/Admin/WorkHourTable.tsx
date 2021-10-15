@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { useState } from "react";
 import { FaSortUp, FaSortDown } from "react-icons/fa";
 
@@ -16,11 +17,21 @@ const sortTypes = {
   },
 };
 
-const WorkHourTable = (props) => {
-  const [currentSort, setCurrentsort] = useState("default");
+interface Props {
+  id: string;
+  totalHours: number;
+  averageHours: number;
+}
 
-  const onSortChange = () => {
-    let nextSort;
+interface Data {
+  data: Props[];
+}
+
+const WorkHourTable = (props: Data) => {
+  const [currentSort, setCurrentsort] = useState<string>("default");
+
+  const onSortChange = (): void => {
+    let nextSort: string;
 
     if (currentSort === "down") nextSort = "up";
     else if (currentSort === "up") nextSort = "default";
@@ -29,7 +40,7 @@ const WorkHourTable = (props) => {
     setCurrentsort(nextSort);
   };
 
-  const { data } = props;
+  const { data }: Data = props;
 
   return (
     data.length > 0 && (

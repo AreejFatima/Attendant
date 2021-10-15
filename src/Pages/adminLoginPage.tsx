@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
+// eslint-disable-next-line import/no-extraneous-dependencies
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -7,27 +8,31 @@ import "../App.css";
 import { fetchDataFromGists } from "../Redux/Slices/adminSlice";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
 
-const adminLoginPage = () => {
+interface initialType {
+  id: string;
+  pin: string;
+}
+const adminLoginPage: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const ID = "AD-000";
-  const PIN = "12345";
+  const ID: string = "AD-000";
+  const PIN: string = "12345";
 
   // Fetching Records and users from gists
   useEffect(() => {
     dispatch(fetchDataFromGists());
   }, [dispatch]);
 
-  const initialValues = {
+  const initialValues: initialType = {
     id: "",
     pin: "",
   };
 
-  const onSubmit = () => {
+  const onSubmit = (): void => {
     history.push("/AdminDashboard");
   };
-  const validate = (values) => {
-    const errors = {};
+  const validate = (values: initialType) => {
+    const errors: any = {};
     if (!values.id || values.id === "") errors.id = "Admin Id cannot be blank!";
     else if (values.id !== ID) errors.id = "Invalid Admin Id!";
     if (!values.pin || values.pin === "")

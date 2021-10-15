@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 /* eslint-disable no-return-await */
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+
+// Types
 
 import {
   patchUsers,
@@ -11,7 +13,50 @@ import {
   patchSettings,
 } from "../../Adapter/gists";
 
-const initialState = {
+interface Hour {
+  officeHour: string;
+  minWH: string;
+}
+
+export interface leaveType {
+  userid: string;
+  status: string;
+  name: string;
+  dept: string;
+  type: string;
+  days: number;
+  reason: string;
+  message: string;
+}
+
+export interface empType {
+  id: string;
+  pincode: string;
+  username: string;
+  dept: string;
+  role: string;
+  email: string;
+}
+
+export interface individualRecType {
+  date: string;
+  punchIn: string;
+  punchOut: string;
+  workHours: number;
+}
+
+export interface recordType {
+  id: string;
+  Records: individualRecType[];
+}
+
+interface initialStateTypes {
+  requestedLeaves: leaveType[];
+  employees: empType[];
+  records: recordType[];
+}
+
+const initialState: initialStateTypes = {
   requestedLeaves: [],
   employees: [],
   records: [],
@@ -35,7 +80,7 @@ export const fetchDataFromGists = createAsyncThunk(
 
 export const patchEmployeeData = createAsyncThunk(
   "admin/patchEmployeeData",
-  async (employees, thunkApi) => {
+  async (employees: empType[], thunkApi) => {
     const stringUsers = JSON.stringify(employees);
     patchUsers(stringUsers);
     thunkApi.dispatch(setInitialEmployees(employees));
@@ -44,7 +89,7 @@ export const patchEmployeeData = createAsyncThunk(
 
 export const patchRecordData = createAsyncThunk(
   "admin/patchRecordData",
-  async (records, thunkApi) => {
+  async (records: recordType[], thunkApi) => {
     const stringRecords = JSON.stringify(records);
     patchRecords(stringRecords);
     thunkApi.dispatch(setInitialERecords(records));
@@ -53,7 +98,7 @@ export const patchRecordData = createAsyncThunk(
 
 export const patchSettingData = createAsyncThunk(
   "admin/patchSettingData",
-  async (hours) => {
+  async (hours: Hour) => {
     const stringHours = JSON.stringify(hours);
     patchSettings(stringHours);
   }
@@ -65,16 +110,15 @@ const adminSlice = createSlice({
   reducers: {
     // Set States
 
-    setInitialEmployees(state, action) {
+    setInitialEmployees(state, action: PayloadAction<empType[]>) {
       state.employees = action.payload;
     },
 
-    setInitialERecords(state, action) {
+    setInitialERecords(state, action: PayloadAction<recordType[]>) {
       state.records = action.payload;
     },
   },
 });
 
-export const { deleteEmployee, setInitialEmployees, setInitialERecords } =
-  adminSlice.actions;
+export const { setInitialEmployees, setInitialERecords } = adminSlice.actions;
 export default adminSlice.reducer;

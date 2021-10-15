@@ -1,15 +1,19 @@
 /* eslint-disable react/destructuring-assignment */
+// eslint-disable-next-line import/no-extraneous-dependencies
 import React, { useState } from "react";
 import TabButtons from "./TabButtons";
 
-const Tabs = (props) => {
-    const [activeTab, setActiveTab] = useState([props.children[0].props.label]);
+
+
+const Tabs:React.FC = (props:any) => {
+ 
+    const [activeTab, setActiveTab] = useState(props.children[0].props.label);
   
-    const changeTab = (tab) => {
+    const changeTab = (tab:typeof activeTab) :void=> {
       setActiveTab(tab);
     };
-    let content;
-    const buttons = [];
+    let content:string[];
+    const buttons:string[]= [];
     return (
       <div>
         {React.Children.map(props.children, (child) => {

@@ -1,32 +1,36 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import "../App.css";
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Snackbar from "@mui/material/Snackbar";
 import { IconButton } from "@mui/material";
 import { patchLeaveData } from "../Redux/Slices/userSlice";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
+import { leaveType } from "../Redux/Slices/adminSlice";
 
-const userLeavePage = () => {
-  const id = useSelector((state) => state.user.activeUser.id);
-  const stateLeaves = useSelector((state) => state.user.leaves);
+const userLeavePage: React.FC = () => {
+  const id = useSelector((state: RootStateOrAny) => state.user.activeUser.id);
+  const stateLeaves: leaveType[] = useSelector(
+    (state: RootStateOrAny) => state.user.leaves
+  );
   const [isSnackOpen, setIsSnackOpen] = useState(false);
-  const [snackMesage, setMessage] = useState("");
-  const [newLeave, setNewLeave] = useState("");
+  const [snackMesage, setMessage] = useState<string>("");
+  const [newLeave, setNewLeave] = useState<leaveType>(null);
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
-    if (newLeave !== "") {
-      const tempLeave = [...stateLeaves];
+    if (newLeave !== null) {
+      const tempLeave: leaveType[] = [...stateLeaves];
       tempLeave.push(newLeave);
       dispatch(patchLeaveData(tempLeave));
     }
   }, [newLeave]);
 
-  function SnackBarClose() {
+  function SnackBarClose(): void {
     setIsSnackOpen(false);
   }
 
@@ -42,7 +46,7 @@ const userLeavePage = () => {
   const onSubmit = (values) => {
     setIsSnackOpen(true);
     setMessage("Leave Submitted!");
-    const tempLeave = {
+    const tempLeave: leaveType = {
       userid: id,
       status: "pending",
       name: values.name,
@@ -56,8 +60,8 @@ const userLeavePage = () => {
     history.push("/UserDashboard");
   };
 
-  const validate = (values) => {
-    const errors = {};
+  const validate = (values): void => {
+    const errors: any = {};
     if (!values.name) errors.name = "Required!";
     else if (values.dept === "null") errors.dept = "Required!";
     else if (values.reason === "null") errors.reason = "Required!";
@@ -68,7 +72,7 @@ const userLeavePage = () => {
   return (
     <div>
       <Snackbar
-        anchorOrigin={{ vertical: "center", horizontal: "center" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={isSnackOpen}
         autoHideDuration={3000}
         onClose={SnackBarClose}

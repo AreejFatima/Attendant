@@ -1,39 +1,53 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { FaBackward } from "react-icons/fa";
 import { AiFillSetting } from "react-icons/ai";
 import "font-awesome/css/font-awesome.min.css";
-import { fetchDataFromGists } from "../Redux/Slices/adminSlice";
+import { fetchDataFromGists, recordType } from "../Redux/Slices/adminSlice";
 import WorkHourTable from "../Components/Admin/WorkHourTable";
 import AvailabilityTabs from "../Components/Admin/AvailabilityTabs";
 import SearchBar from "../Components/User/SearchBar";
 
 const R = require("ramda");
 
+interface workType {
+  id: string;
+  totalHours: number;
+  averageHours: number;
+}
+
+interface allEmpType {
+  id: string;
+  status: string;
+}
+
 const adminDashboardPage = () => {
   const timestamp = R.split(", ", new Date().toLocaleString());
-  const currentDate = timestamp[0];
-  const [search, setSearch] = useState("");
+  const currentDate: string = timestamp[0];
+  const [search, setSearch] = useState<string>("");
   const history = useHistory();
-  const [workHourLog, setWHLog] = useState([]);
-  const allEmployees = [];
-  const available = [];
-  const unavailable = [];
-  let searchResults = [];
-  const onleave = [];
-  const recordz = useSelector((state) => state.admin.records);
+  const [workHourLog, setWHLog] = useState<workType[]>([]);
+  const allEmployees: allEmpType[] = [];
+  const available: string[] = [];
+  const unavailable: string[] = [];
+  let searchResults: allEmpType[] = [];
+  const onleave: string[] = [];
+  const recordz: recordType = useSelector(
+    (state: RootStateOrAny) => state.admin.records
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchDataFromGists());
-    assembleWHdata();
+    assembleWHdata(null);
   }, []);
 
   // Calculating work hours
-  function assembleWHdata(event) {
+  function assembleWHdata(event): void {
     const tempLogArr = [];
-    const month = event ? event.target.value : 0;
+    const month = event ? event.target.value : 1;
 
     const currentdate = new Date();
     const todayDate = Date.parse(
@@ -48,13 +62,13 @@ const adminDashboardPage = () => {
         let count = 0;
         R.map((r) => {
           const rdate = Date.parse(r.date);
-          if (rdate === "" || (rdate >= lastNmonths && rdate <= todayDate)) {
+          if (r.date === "" || (rdate >= lastNmonths && rdate <= todayDate)) {
             sum += r.workHours;
           }
           count += 1;
         }, item.Records);
 
-        const tempLog = {
+        const tempLog: workType = {
           id: item.id,
           totalHours: sum,
           averageHours: sum / count,
@@ -66,7 +80,7 @@ const adminDashboardPage = () => {
   }
 
   // Finding Available, onLeave & Unavailable Employees
-  function assembleData() {
+  function assembleData(): void {
     if (recordz) {
       R.map((item) => {
         const last = R.last(item.Records);
@@ -101,12 +115,12 @@ const adminDashboardPage = () => {
   }
   assembleData();
   // SearchBar
-  function handleSearchChange(event) {
+  function handleSearchChange(event): void {
     const searchValue = event.target.value;
     setSearch(searchValue);
   }
 
-  const searchString = search;
+  const searchString: string = search;
   if (searchString.length > 0) {
     searchResults = allEmployees.filter((e) => e.id.match(searchString));
   }
@@ -155,7 +169,7 @@ const adminDashboardPage = () => {
         <div className="split right">
           <h2>Employee Work Hours </h2>
           <div className="btn-group">
-            <button value="0" onClick={(e) => assembleWHdata(e)}>
+            <button value="1" onClick={(e) => assembleWHdata(e)}>
               All
             </button>
             <button value="1" onClick={(e) => assembleWHdata(e)}>

@@ -2,7 +2,6 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-return-await */
 import { createSlice, current, createAsyncThunk } from "@reduxjs/toolkit";
-import moment from "moment";
 import {
   patchUsers,
   patchRecords,
@@ -11,10 +10,18 @@ import {
   getRecords,
   getallGists,
 } from "../../Adapter/gists";
+import { leaveType, empType, recordType } from "./adminSlice";
+
+interface initialStateType {
+  allUsers: empType[];
+  userRecords: recordType[];
+  activeUser: any;
+  leaves: leaveType[];
+}
 
 const R = require("ramda");
 
-const initialState = {
+const initialState: initialStateType = {
   allUsers: [],
   userRecords: [],
   activeUser: {},
@@ -37,7 +44,7 @@ export const fetchUserDataFromGists = createAsyncThunk(
 );
 export const patchUserData = createAsyncThunk(
   "user/patchUserData",
-  async (users, thunkApi) => {
+  async (users: empType[], thunkApi) => {
     const stringUsers = JSON.stringify(users);
     patchUsers(stringUsers);
     thunkApi.dispatch(setInitialUsers(users));
@@ -46,7 +53,7 @@ export const patchUserData = createAsyncThunk(
 
 export const patchUserRecords = createAsyncThunk(
   "user/patchUserRecords",
-  async (record, thunkApi) => {
+  async (record: recordType[], thunkApi) => {
     const stringRecords = JSON.stringify(record);
     patchRecords(stringRecords);
     thunkApi.dispatch(setInitialRecords(record));
@@ -55,7 +62,7 @@ export const patchUserRecords = createAsyncThunk(
 
 export const patchLeaveData = createAsyncThunk(
   "user/patchLeaveData",
-  async (leave, thunkApi) => {
+  async (leave: leaveType[], thunkApi) => {
     const stringLeaves = JSON.stringify(leave);
     patchLeaves(stringLeaves);
     thunkApi.dispatch(setInitialLeaves(leave));

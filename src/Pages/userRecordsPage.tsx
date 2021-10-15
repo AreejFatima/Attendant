@@ -1,22 +1,27 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
 import "react-bootstrap-table/dist/react-bootstrap-table-all.min.css";
-
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
 import SearchBar from "../Components/User/SearchBar";
 import RecordsTable from "../Components/User/RecordsTable";
+import { recordType, individualRecType } from "../Redux/Slices/adminSlice";
 
 const R = require("ramda");
 
 const userRecordsPage = () => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
   const history = useHistory();
-  const userRecords = useSelector((state) => state.user.userRecords);
-  const id = useSelector((state) => state.user.activeUser.id);
+  const userRecords: recordType[] = useSelector(
+    (state: RootStateOrAny) => state.user.userRecords
+  );
+  const id: string = useSelector(
+    (state: RootStateOrAny) => state.user.activeUser.id
+  );
   const allRecords = [];
-  let recordsByDate = [];
+  let recordsByDate: individualRecType[] = [];
 
   R.map((item) => {
     if (item.id === id) {
@@ -30,7 +35,7 @@ const userRecordsPage = () => {
     }, item);
   }, allRecords);
 
-  function handleChange(event) {
+  function handleChange(event): void {
     const searchValue = event.target.value;
     setSearch(searchValue);
   }

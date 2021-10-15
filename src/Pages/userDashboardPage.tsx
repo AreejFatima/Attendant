@@ -1,37 +1,39 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-destructuring */
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch,RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { useState } from "react";
 import moment from "moment";
 import { CgArrowLongRight, CgArrowLongLeft } from "react-icons/cg";
 import { BiCalendarEvent, BiTimer, BiLogOut } from "react-icons/bi";
 import { patchUserRecords, setActiveUser } from "../Redux/Slices/userSlice";
+import { recordType } from "../Redux/Slices/adminSlice";
 
 import "../App.css";
 
 const R = require("ramda");
 
 // Calculating Employee Work Hours (Seconds returned and used for testing)
-function calculateWorkHours(st, et) {
+function calculateWorkHours(st:string, et:string) {
   const startTime = moment(st, "HH:mm:ss A");
   const endTime = moment(et, "HH:mm:ss A");
   const duration = moment.duration(endTime.diff(startTime));
-  const hours = parseInt(duration.asHours(), 10);
-  const minutes = parseInt(duration.asMinutes(), 10) % 60;
-  const seconds = parseInt(duration.asSeconds(), 10);
+  const hours= Math.floor(duration.asHours());
+  const minutes = Math.floor(duration.asMinutes()) % 60;
+  const seconds = Math.floor(duration.asSeconds());
   // const result = hours + " hour and " + minutes + " minutes.";
   return seconds;
 }
 
 const userDashboardPage = () => {
-  const activeUser = useSelector((state) => state.user.activeUser);
-  const userRecords = useSelector((state) => state.user.userRecords);
-  const [isWorking, setisWorking] = useState(false);
+  const activeUser = useSelector((state:RootStateOrAny) => state.user.activeUser);
+  const userRecords:recordType[] = useSelector((state:RootStateOrAny) => state.user.userRecords);
+  const [isWorking, setisWorking] = useState<boolean>(false);
   const history = useHistory();
   const dispatch = useDispatch();
 
-  function addUserRecord(userRecordsArray, id, status, timestamp) {
+  function addUserRecord(userRecordsArray:recordType[], id:string, status:boolean, timestamp) {
     const tempRec = R.clone(userRecordsArray);
 
     const userRecord = R.findIndex(R.propEq("id", id), tempRec);
@@ -56,14 +58,14 @@ const userDashboardPage = () => {
     }
   }
 
-  function handlePunch() {
+  function handlePunch():void {
     const status = !isWorking;
     const timestamp = R.split(", ", new Date().toLocaleString());
     setisWorking(status);
     addUserRecord(userRecords, activeUser.id, status, timestamp);
   }
 
-  function handleLogout() {
+  function handleLogout():void {
     const inactive = {
       id: "",
       pincode: "",

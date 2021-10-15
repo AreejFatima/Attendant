@@ -1,13 +1,21 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable no-console */
+import React from 'react'
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
 import ErrorDiv from "../Shared/ErrorDiv";
+// eslint-disable-next-line import/named
 import { patchSettingData } from "../../Redux/Slices/adminSlice";
 
-const Settings = () => {
+interface objectTypes{
+  officeHour:string,
+  minWH:string
+}
+
+const Settings:React.FC = () => {
   const dispatch = useDispatch();
-  const initialValues = {
+  const initialValues :objectTypes= {
     officeHour: "",
     minWH: "",
   };
@@ -21,8 +29,9 @@ const Settings = () => {
     dispatch(patchSettingData(temp));
   };
 
-  const validate = (values) => {
-    const errors = {};
+  const validate = (values:objectTypes) => {
+    const errors:any={};
+    
     if (values.officeHour === "null") errors.officeHour = "Required";
     if (!values.minWH) errors.minWH = "Required";
     return errors;

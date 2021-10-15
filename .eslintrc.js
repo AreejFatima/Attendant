@@ -7,19 +7,23 @@ module.exports = {
   extends: ["plugin:react/recommended", "airbnb", "prettier"],
   parserOptions: {
     ecmaFeatures: {
-      jsx: false,
+      jsx: true,
     },
     ecmaVersion: 12,
     sourceType: "module",
+    project: "./tsconfig.json",
   },
   plugins: ["react"],
   rules: {
     "linebreak-style": 0,
-    "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],
+    "react/jsx-filename-extension": [
+      1,
+      { extensions: [".js", ".jsx", ".ts", ".tsx"] },
+    ],
     "react/react-in-jsx-scope": "off",
     "no-use-before-define": 0,
-    "no-return-await":0,
-    "no-var":0,
+    "no-return-await": 0,
+    "no-var": 0,
     "no-param-reassign": 0,
     "label-has-associated-control": 0,
     "no-alert": 0,
@@ -39,5 +43,26 @@ module.exports = {
         button: false,
       },
     ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        js: "never",
+        jsx: "never",
+        ts: "never",
+        tsx: "never",
+      },
+    ],
+  },
+  settings: {
+    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"],
+    },
+    "import/resolver": {
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+      },
+    },
   },
 };

@@ -1,13 +1,14 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Snackbar from "@mui/material/Snackbar";
 import { IconButton } from "@mui/material";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
-
+import { recordType, empType } from "../Redux/Slices/adminSlice";
 import {
   fetchUserDataFromGists,
   patchUserData,
@@ -17,16 +18,18 @@ import {
 const R = require("ramda");
 
 const userRegisterPage = () => {
-  const usersList = useSelector((state) => state.user.allUsers);
-  const userRecordsList = useSelector((state) => state.user.userRecords);
-  const [isSnackOpen, setIsSnackOpen] = useState(false);
-  const [snackMesage, setMessage] = useState("");
+  const usersList = useSelector((state: RootStateOrAny) => state.user.allUsers);
+  const userRecordsList = useSelector(
+    (state: RootStateOrAny) => state.user.userRecords
+  );
+  const [isSnackOpen, setIsSnackOpen] = useState<boolean>(false);
+  const [snackMesage, setMessage] = useState<string>("");
   const history = useHistory();
-  const [record, setRecord] = useState({
+  const [record, setRecord] = useState<recordType>({
     id: "",
     Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
   });
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<empType>({
     id: "",
     pincode: "",
     username: "",
@@ -54,7 +57,7 @@ const userRegisterPage = () => {
     }
   }, [record]);
 
-  function SnackBarClose() {
+  function SnackBarClose(): void {
     setIsSnackOpen(false);
   }
 
@@ -65,7 +68,7 @@ const userRegisterPage = () => {
     email: "",
   };
 
-  const onSubmit = (values) => {
+  const onSubmit = (values): void => {
     setIsSnackOpen(true);
     setMessage("Registered Sucessfully!!!");
     const tempObj = {
@@ -76,7 +79,7 @@ const userRegisterPage = () => {
       email: values.email,
       role: "Not Assigned",
     };
-    const tempRecord = {
+    const tempRecord: recordType = {
       id: getId(values.dept),
       Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
     };
@@ -85,7 +88,7 @@ const userRegisterPage = () => {
   };
 
   const validate = (values) => {
-    const errors = {};
+    const errors: any = {};
     if (!values.name || values.name === "")
       errors.name = "Enter Employee Username!";
     else if (values.name.length > 15) errors.name = "Name too long";
@@ -97,17 +100,17 @@ const userRegisterPage = () => {
     return errors;
   };
 
-  function backToLogin() {
+  function backToLogin(): void {
     history.push("/");
   }
 
-  function pad(num, size) {
+  function pad(num: number | string, size) {
     num = num.toString();
     while (num.length < size) num = `0${num}`;
     return num;
   }
 
-  function getId(dept) {
+  function getId(dept: string) {
     const firstid = "000";
     if (R.isEmpty(usersList)) {
       return `${dept}-${firstid}`;
@@ -122,7 +125,7 @@ const userRegisterPage = () => {
   return (
     <div>
       <Snackbar
-        anchorOrigin={{ vertical: "center", horizontal: "center" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={isSnackOpen}
         autoHideDuration={3000}
         onClose={SnackBarClose}

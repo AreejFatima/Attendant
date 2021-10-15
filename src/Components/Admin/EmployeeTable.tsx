@@ -1,4 +1,5 @@
 /* eslint-disable react/no-array-index-key */
+// eslint-disable-next-line import/no-extraneous-dependencies
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -10,6 +11,8 @@ import { IconButton } from "@mui/material";
 import {
   patchRecordData,
   patchEmployeeData,
+  empType,
+  recordType,
 } from "../../Redux/Slices/adminSlice";
 import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
@@ -19,17 +22,24 @@ import Settings from "./Settings";
 
 const R = require("ramda");
 
+interface editUserType {
+  username: string;
+  dept: string;
+  role: string;
+  email: string;
+}
+
 const EmployeeTable = () => {
-  const [employees, setEmployees] = useState([]);
-  const [records, setRecords] = useState([]);
-  const [search, setSearch] = useState("");
-  const [isAdded, setIsAdded] = useState(false);
-  const [isSnackOpen, setIsSnackOpen] = useState(false);
-  const [snackMesage, setMessage] = useState("");
+  const [employees, setEmployees] = useState<empType[]>([]);
+  const [records, setRecords] = useState<recordType[]>([]);
+  const [search, setSearch] = useState<string>("");
+  const [isAdded, setIsAdded] = useState<boolean>(false);
+  const [isSnackOpen, setIsSnackOpen] = useState<boolean>(false);
+  const [snackMesage, setMessage] = useState<string>("");
   const dispatch = useDispatch();
   const history = useHistory();
   let tableData = [...employees];
-  const [currentEmpId, setcurrentEmpId] = useState({
+  const [currentEmpId, setcurrentEmpId] = useState<empType>({
     id: null,
     dept: "",
     role: "",
@@ -37,14 +47,14 @@ const EmployeeTable = () => {
     username: "",
     pincode: "",
   });
-  const [editFormData, setEditFormData] = useState({
+  const [editFormData, setEditFormData] = useState<editUserType>({
     username: "",
     dept: "",
     role: "",
     email: "",
   });
 
-  const [addFormData, setAddFormData] = useState({
+  const [addFormData, setAddFormData] = useState<editUserType>({
     username: "",
     dept: "",
     role: "",
@@ -60,16 +70,18 @@ const EmployeeTable = () => {
     });
   }, []);
 
-  function SnackBarClose() {
+  function SnackBarClose(): void {
     setIsSnackOpen(false);
   }
 
-  function handleSearchChange(event) {
+  function handleSearchChange(
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void {
     const searchValue = event.target.value;
     setSearch(searchValue);
   }
 
-  const searchString = search;
+  const searchString: string = search;
   if (searchString.length > 0) {
     tableData = tableData.filter(
       (e) =>
@@ -81,37 +93,45 @@ const EmployeeTable = () => {
 
   // Deleting Employee and Records
 
-  function removeEmployee(eid) {
+  function removeEmployee(eid: string): void {
     setIsSnackOpen(true);
     setMessage("Employee Deleted Sucessfully!");
-    const tempEmp = [...employees];
-    const tempRec = [...records];
+    const tempEmp: empType[] = [...employees];
+    const tempRec: recordType[] = [...records];
 
-    const toDelete = R.find(R.propEq("id", eid), tempEmp);
+    const toDelete: empType = R.find(R.propEq("id", eid), tempEmp);
 
-    const toDeleteRec = R.find(R.propEq("id", eid), tempRec);
+    const toDeleteRec: recordType = R.find(R.propEq("id", eid), tempRec);
 
-    const filteredRecords = tempRec.filter((item) => item !== toDeleteRec);
+    const filteredRecords: recordType[] = tempRec.filter(
+      (item) => item !== toDeleteRec
+    );
 
-    const filteredEmployees = tempEmp.filter((item) => item !== toDelete);
+    const filteredEmployees: empType[] = tempEmp.filter(
+      (item) => item !== toDelete
+    );
     dispatch(patchEmployeeData(filteredEmployees));
     dispatch(patchRecordData(filteredRecords));
 
     setTimeout(() => {
-      const toDeleted = R.find(R.propEq("id", eid))(employees);
-      const filteredEmp = employees.filter((item) => item !== toDeleted);
+      const toDeleted: empType = R.find(R.propEq("id", eid))(employees);
+      const filteredEmp: empType[] = employees.filter(
+        (item) => item !== toDeleted
+      );
 
-      const toDeletedRec = R.find(R.propEq("id", eid))(records);
-      const filteredRec = records.filter((item) => item !== toDeletedRec);
+      const toDeletedRec: recordType = R.find(R.propEq("id", eid))(records);
+      const filteredRec: recordType[] = records.filter(
+        (item) => item !== toDeletedRec
+      );
 
       setEmployees(filteredEmp);
       setRecords(filteredRec);
     }, 1000);
   }
-  function handleAdd() {
+  function handleAdd(): void {
     setIsAdded(true);
   }
-  function handleAddFormChange(event) {
+  function handleAddFormChange(event: React.ChangeEvent<HTMLInputElement>) {
     const fieldName = event.target.getAttribute("name");
     const fieldValue = event.target.value;
     const newFormData = { ...addFormData };
@@ -119,13 +139,13 @@ const EmployeeTable = () => {
     setAddFormData(newFormData);
   }
 
-  function pad(num, size) {
+  function pad(num: number | string, size) {
     num = num.toString();
     while (num.length < size) num = `0${num}`;
     return num;
   }
 
-  function getId(dept) {
+  function getId(dept: string): string {
     const firstid = "000";
     if (R.isEmpty(employees)) {
       return `${dept}-${firstid}`;
@@ -137,7 +157,7 @@ const EmployeeTable = () => {
     return `${dept}-${padded}`;
   }
 
-  function handleAddFormSubmit() {
+  function handleAddFormSubmit(): void {
     const addedEmployee = {
       id: getId(addFormData.dept),
       username: addFormData.username,
@@ -146,16 +166,16 @@ const EmployeeTable = () => {
       email: addFormData.email,
       pincode: "000000",
     };
-    const addedRecord = {
+    const addedRecord: recordType = {
       id: getId(addFormData.dept),
       Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
     };
 
-    const newRecords = [...records];
+    const newRecords: recordType[] = [...records];
     newRecords.push(addedRecord);
     setRecords(newRecords);
 
-    const newEmployees = [...employees];
+    const newEmployees: empType[] = [...employees];
     newEmployees.push(addedEmployee);
     setEmployees(newEmployees);
     setIsAdded(false);
@@ -192,7 +212,7 @@ const EmployeeTable = () => {
     setEditFormData(tempEmp);
   }
 
-  function handleEditFormChange(event) {
+  function handleEditFormChange(event: React.ChangeEvent<HTMLInputElement>) {
     const fieldName = event.target.getAttribute("name");
     const fieldValue = event.target.value;
     const newFormData = { ...editFormData };
@@ -200,7 +220,7 @@ const EmployeeTable = () => {
     setEditFormData(newFormData);
   }
 
-  function handleEditFormSave() {
+  function handleEditFormSave(): void {
     const editedEmployee = {
       id: currentEmpId.id,
       username: editFormData.username,
@@ -271,7 +291,7 @@ const EmployeeTable = () => {
   return (
     <>
       <Snackbar
-        anchorOrigin={{ vertical: "center", horizontal: "center" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={isSnackOpen}
         autoHideDuration={3000}
         onClose={SnackBarClose}
@@ -295,13 +315,17 @@ const EmployeeTable = () => {
           <BiLogOutCircle size={30} />
         </button>
       </div>
-      <Settings/>
-      <div className='employee-settings'>
-      <h4 style={{
-              color: "#04aa6d",
-              fontFamily: "sans-serif",
-            }}>Employee Settings</h4>
-        <SearchBar update={(e) => handleSearchChange(e)} />
+      <Settings />
+      <div className="employee-settings">
+        <h4
+          style={{
+            color: "#04aa6d",
+            fontFamily: "sans-serif",
+          }}
+        >
+          Employee Settings
+        </h4>
+        <SearchBar update={(event) => handleSearchChange(event)} />
         <button className="add-emp" onClick={handleAdd}>
           <RiAddFill size={50} />
         </button>

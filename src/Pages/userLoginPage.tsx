@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import "../App.css";
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
@@ -9,11 +10,19 @@ import {
   setActiveUser,
   fetchUserDataFromGists,
 } from "../Redux/Slices/userSlice";
+import { empType } from "../Redux/Slices/adminSlice";
 
 const R = require("ramda");
 
+interface initialValueType {
+  id: string;
+  pin: string;
+}
+
 const userLoginPage = () => {
-  const usersList = useSelector((state) => state.user.allUsers);
+  const usersList: empType[] = useSelector(
+    (state: RootStateOrAny) => state.user.allUsers
+  );
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -21,12 +30,12 @@ const userLoginPage = () => {
     dispatch(fetchUserDataFromGists());
   }, []);
 
-  const initialValues = {
+  const initialValues: initialValueType = {
     id: "",
     pin: "",
   };
 
-  const onSubmit = (values) => {
+  const onSubmit = (values): void => {
     const enteredId = values.id;
     const enteredPin = values.pin;
     R.map((item) => {
@@ -43,7 +52,7 @@ const userLoginPage = () => {
 
   const validate = (values) => {
     const current = R.find(R.propEq("id", values.id))(usersList);
-    const errors = {};
+    const errors: any = {};
     if (current !== undefined) {
       if (!values.pin || values.pin.length > 6 || values.pin.length < 6)
         errors.pin = "pincode must be 6 digits long";
