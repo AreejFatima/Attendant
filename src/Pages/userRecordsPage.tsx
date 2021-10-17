@@ -56,6 +56,7 @@ const userRecordsPage = () => {
         </button>
       </div>
       <SearchBar update={(e) => handleChange(e)} />
+      <p style={{fontStyle:'italic', color:'grey',fontSize:'13px'}}>Search by Date</p>
       <RecordsTable data={recordsByDate} />
     </div>
   );

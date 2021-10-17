@@ -20,7 +20,7 @@ const Settings:React.FC = () => {
     minWH: "",
   };
 
-  const onSubmit = (values) => {
+  const onSubmit = (values) :void=> {
     console.log(values);
     const temp = {
       officeHour: values.officeHour,
@@ -38,14 +38,14 @@ const Settings:React.FC = () => {
   };
   return (
     <div className="settings">
-      <h4
+      <h5
         style={{
           color: "#04aa6d",
           fontFamily: "sans-serif",
         }}
       >
-        General Settings
-      </h4>
+        Work Hour Settings
+      </h5>
       <Formik
         initialValues={initialValues}
         validate={validate}
@@ -70,12 +70,18 @@ const Settings:React.FC = () => {
             <option value="8:00am-6:00pm">8:00am-6:00pm</option>
           </Field>
           <ErrorMessage name="officeHour" component={ErrorDiv} />{" "}
-          <label htmlFor="minWH">Min Work Hours</label>
+          <label htmlFor="minWH">Work Hours</label>
           <Field
             type="number"
             id="officeHour"
             name="minWH"
-            placeholder="Min Work Hours"
+            placeholder="Work Hours"
+            style={{
+              fontSize: "12px",
+              borderRadius: "4px",
+              height: "10%",
+              width:'20%'
+            }}
           />
           <ErrorMessage name="minWH" component={ErrorDiv} />
           <button

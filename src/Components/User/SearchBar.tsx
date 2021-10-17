@@ -11,7 +11,7 @@ const SearchBar = (props: any) => (
         border: "2px solid black",
         marginTop: "1%",
       }}
-      placeholder="Search Record..."
+      placeholder="Search ....."
       onChange={(event) => props.update(event)}
     />
   </div>

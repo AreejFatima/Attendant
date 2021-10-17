@@ -7,6 +7,8 @@ import { useHistory } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Snackbar from "@mui/material/Snackbar";
 import { IconButton } from "@mui/material";
+import { FaBackward } from "react-icons/fa";
+import { BiLogOutCircle } from "react-icons/bi";
 import { patchLeaveData } from "../Redux/Slices/userSlice";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
 import { leaveType } from "../Redux/Slices/adminSlice";
@@ -71,6 +73,14 @@ const userLeavePage: React.FC = () => {
   };
   return (
     <div>
+       <div className="aicon">
+        <button onClick={() => history.push("UserDashboard")}>
+          <FaBackward size={30} />
+        </button>
+        <button onClick={() => history.push("/")}>
+          <BiLogOutCircle size={30} />
+        </button>
+      </div>
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={isSnackOpen}

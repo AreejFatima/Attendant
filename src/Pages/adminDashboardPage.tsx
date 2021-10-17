@@ -138,6 +138,7 @@ const adminDashboardPage = () => {
       <div>
         <div className="split left">
           <SearchBar update={(e) => handleSearchChange(e)} />
+          <p style={{fontStyle:'italic', color:'grey',fontSize:'13px'}}>Search by ID</p>
           {R.isEmpty(searchResults) ? (
             <AvailabilityTabs
               available={available}

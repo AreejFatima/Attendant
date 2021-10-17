@@ -5,7 +5,7 @@ import { BiErrorCircle } from "react-icons/bi";
 
 const ErrorDiv: React.FC = (props: any) => (
   <div className="error">
-    <BiErrorCircle size={20} />
+    <BiErrorCircle size={19} style={{marginBottom:'2.2px',padding:'1px'}}/>
     {props.children}
   </div>
 );

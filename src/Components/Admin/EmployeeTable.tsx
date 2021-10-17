@@ -7,7 +7,7 @@ import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
 import { RiAddFill } from "react-icons/ri";
 import Snackbar from "@mui/material/Snackbar";
-import { IconButton } from "@mui/material";
+import { IconButton} from "@mui/material";
 import {
   patchRecordData,
   patchEmployeeData,
@@ -18,7 +18,8 @@ import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
 import { getUsers, getRecords } from "../../Adapter/gists";
 import SearchBar from "../User/SearchBar";
-import Settings from "./Settings";
+// import Settings from "./Settings";
+import Modal from './Modal'
 
 const R = require("ramda");
 
@@ -193,7 +194,7 @@ const EmployeeTable = () => {
     }, 1000);
   }
 
-  function editEmployee(event, id, username, dept, pincode, role, email) {
+  function editEmployee(event, id, username, dept, pincode, role, email):void{
     const currentTemp = {
       id,
       username,
@@ -254,7 +255,7 @@ const EmployeeTable = () => {
 
   // Form Header
   function renderHeader() {
-    const headerElement = ["Name", "Department", "Role", "Email", "Operations"];
+    const headerElement = ["Name", "Department", "Role", "Email", "Action"];
     return headerElement.map((key, index) => (
       <th key={index}>{key.toUpperCase()}</th>
     ));
@@ -315,7 +316,8 @@ const EmployeeTable = () => {
           <BiLogOutCircle size={30} />
         </button>
       </div>
-      <Settings />
+      <Modal/>
+      {/* <Settings /> */}
       <div className="employee-settings">
         <h4
           style={{
@@ -326,6 +328,7 @@ const EmployeeTable = () => {
           Employee Settings
         </h4>
         <SearchBar update={(event) => handleSearchChange(event)} />
+        <p style={{fontStyle:'italic', color:'grey',fontSize:'13px'}}>Search by Name, Dept and Role</p>
         <button className="add-emp" onClick={handleAdd}>
           <RiAddFill size={50} />
         </button>
