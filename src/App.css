@@ -74,6 +74,10 @@
   margin-top: 17px;
   margin-left: 6px;
 }
+.btnz[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
 .aicon {
   margin-left: 90%;

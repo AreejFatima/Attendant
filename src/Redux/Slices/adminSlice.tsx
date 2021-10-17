@@ -27,6 +27,7 @@ export interface leaveType {
   days: number;
   reason: string;
   message: string;
+  appliedOn:string
 }
 
 export interface empType {

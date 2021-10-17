@@ -9,6 +9,7 @@ import {
   getUsers,
   getRecords,
   getallGists,
+  getLeaves,
 } from "../../Adapter/gists";
 import { leaveType, empType, recordType } from "./adminSlice";
 
@@ -38,6 +39,9 @@ export const fetchUserDataFromGists = createAsyncThunk(
       });
       getRecords().then((data) => {
         thunkApi.dispatch(setInitialRecords(JSON.parse(data)));
+      });
+      getLeaves().then((data) => {
+        thunkApi.dispatch(setInitialLeaves(JSON.parse(data)));
       });
     }, 1000);
   }

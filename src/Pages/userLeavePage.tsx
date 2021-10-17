@@ -13,6 +13,8 @@ import { patchLeaveData } from "../Redux/Slices/userSlice";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
 import { leaveType } from "../Redux/Slices/adminSlice";
 
+const R = require("ramda");
+
 const userLeavePage: React.FC = () => {
   const id = useSelector((state: RootStateOrAny) => state.user.activeUser.id);
   const stateLeaves: leaveType[] = useSelector(
@@ -43,9 +45,11 @@ const userLeavePage: React.FC = () => {
     days: 0,
     reason: "",
     message: "",
+    appliedOn:"",
   };
 
   const onSubmit = (values) => {
+    const date = R.split(", ", new Date().toLocaleString());
     setIsSnackOpen(true);
     setMessage("Leave Submitted!");
     const tempLeave: leaveType = {
@@ -57,6 +61,7 @@ const userLeavePage: React.FC = () => {
       days: values.days,
       reason: values.reason,
       message: values.message,
+      appliedOn:date[0]
     };
     setNewLeave(tempLeave);
     history.push("/UserDashboard");
