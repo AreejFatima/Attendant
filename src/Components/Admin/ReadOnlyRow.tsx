@@ -1,6 +1,4 @@
-/* eslint-disable no-undef */
-// eslint-disable-next-line import/no-extraneous-dependencies
-import {MouseEvent} from "react";
+import { MouseEvent } from "react";
 
 interface Props {
   id: string;
@@ -42,7 +40,7 @@ const ReadOnlyRow = ({
       </button>
       <button
         className="button2"
-        onClick={(event: React.MouseEvent<HTMLElement>) =>
+        onClick={(event: MouseEvent<HTMLElement>) =>
           editEmployee(event, id, username, dept, pincode, role, email)
         }
       >

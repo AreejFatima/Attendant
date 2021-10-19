@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { useState } from "react";
 import { useSelector, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";

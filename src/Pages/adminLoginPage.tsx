@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import {FC, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -7,7 +7,6 @@ import "../App.css";
 import { fetchDataFromGists } from "../Redux/Slices/adminSlice";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
 import { allEmpType } from "../Adapter/types";
-
 
 const adminLoginPage: FC = () => {
   const history = useHistory();

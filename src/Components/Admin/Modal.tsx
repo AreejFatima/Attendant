@@ -1,26 +1,19 @@
-/* eslint-disable jsx-a11y/control-has-associated-label */
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-console */
-import React, { useState } from "react";
+import { FC, useState } from "react";
 import ReactModal from "react-modal";
 import { GrClose } from "react-icons/gr";
 import { AiFillClockCircle } from "react-icons/ai";
 import Settings from "./Settings";
 
-const Modal: React.FC = () => {
+const Modal: FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
 
-  function handleOpenModal(): void {
-    setShowModal(true);
-  }
-  function handleCloseModal(): void {
-    setShowModal(false);
+  function toggleModal() {
+    setShowModal((prev) => !prev);
   }
 
   return (
     <div>
-      <button className="gsetting" onClick={handleOpenModal}>
+      <button className="gsetting" onClick={toggleModal}>
         <AiFillClockCircle size={26} />
         General Settings
       </button>
@@ -29,10 +22,10 @@ const Modal: React.FC = () => {
         contentLabel="Minimal Modal Example"
         className="Modal"
         overlayClassName="Overlay"
-        onRequestClose={handleCloseModal}
+        onRequestClose={toggleModal}
       >
         <Settings />
-        <button className="cross" onClick={handleCloseModal}>
+        <button className="cross" onClick={toggleModal}>
           <GrClose size={20} />
         </button>
       </ReactModal>

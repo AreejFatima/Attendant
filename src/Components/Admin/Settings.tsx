@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { FC } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";

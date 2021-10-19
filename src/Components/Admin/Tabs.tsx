@@ -1,5 +1,4 @@
 /* eslint-disable react/destructuring-assignment */
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { FC, useState, Children } from "react";
 import TabButtons from "./TabButtons";
 

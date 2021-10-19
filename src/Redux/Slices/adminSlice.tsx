@@ -1,8 +1,5 @@
 /* eslint-disable no-return-await */
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-
-// Types
-
 import {
   patchUsers,
   getUsers,

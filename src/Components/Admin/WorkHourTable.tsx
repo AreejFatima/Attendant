@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { useState } from "react";
 import { FaSortUp, FaSortDown } from "react-icons/fa";
 import { workType } from "../../Adapter/types";
@@ -17,8 +16,6 @@ const sortTypes = {
     fn: (a) => a,
   },
 };
-
-
 
 interface Data {
   data: workType[];

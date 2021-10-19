@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import "../App.css";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import React, { useState, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -15,7 +14,7 @@ import { leaveType } from "../Adapter/types";
 
 const R = require("ramda");
 
-const userLeavePage: React.FC = () => {
+const userLeavePage: FC = () => {
   const id = useSelector((state: RootStateOrAny) => state.user.activeUser.id);
   const stateLeaves: leaveType[] = useSelector(
     (state: RootStateOrAny) => state.user.leaves
@@ -45,7 +44,7 @@ const userLeavePage: React.FC = () => {
     days: 0,
     reason: "",
     message: "",
-    appliedOn:"",
+    appliedOn: "",
   };
 
   const onSubmit = (values) => {
@@ -61,7 +60,7 @@ const userLeavePage: React.FC = () => {
       days: values.days,
       reason: values.reason,
       message: values.message,
-      appliedOn:date[0]
+      appliedOn: date[0],
     };
     setNewLeave(tempLeave);
     history.push("/UserDashboard");
@@ -78,7 +77,7 @@ const userLeavePage: React.FC = () => {
   };
   return (
     <div>
-       <div className="aicon">
+      <div className="aicon">
         <button onClick={() => history.push("UserDashboard")}>
           <FaBackward size={30} />
         </button>

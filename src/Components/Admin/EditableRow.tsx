@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { ChangeEvent } from "react";
 import { empType } from "../../Adapter/types";
 

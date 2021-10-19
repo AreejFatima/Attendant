@@ -13,6 +13,14 @@ module.exports = {
     sourceType: "module",
     project: "./tsconfig.json",
   },
+  overrides: [
+    {
+      files: ["*.tsx"],
+      rules: {
+        "no-undef": "off",
+      },
+    },
+  ],
   plugins: ["react"],
   rules: {
     "linebreak-style": 0,
@@ -29,7 +37,7 @@ module.exports = {
     "no-alert": 0,
     "array-callback-return": 0,
     "react/prop-types": 0,
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+    "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
     "react/jsx-no-bind": [
       0,
       {
