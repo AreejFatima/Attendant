@@ -11,7 +11,7 @@ import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
 import { patchLeaveData } from "../Redux/Slices/userSlice";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
-import { leaveType } from "../Redux/Slices/adminSlice";
+import { leaveType } from "../Adapter/types";
 
 const R = require("ramda");
 

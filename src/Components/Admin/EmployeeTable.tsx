@@ -1,34 +1,24 @@
 /* eslint-disable react/no-array-index-key */
-// eslint-disable-next-line import/no-extraneous-dependencies
-import React, { useState, useEffect } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
 import { RiAddFill } from "react-icons/ri";
 import Snackbar from "@mui/material/Snackbar";
-import { IconButton} from "@mui/material";
+import { IconButton } from "@mui/material";
 import {
   patchRecordData,
   patchEmployeeData,
-  empType,
-  recordType,
 } from "../../Redux/Slices/adminSlice";
+import { empType, recordType } from "../../Adapter/types";
 import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
 import { getUsers, getRecords } from "../../Adapter/gists";
 import SearchBar from "../User/SearchBar";
-// import Settings from "./Settings";
-import Modal from './Modal'
+import Modal from "./Modal";
 
 const R = require("ramda");
-
-interface editUserType {
-  username: string;
-  dept: string;
-  role: string;
-  email: string;
-}
 
 const EmployeeTable = () => {
   const [employees, setEmployees] = useState<empType[]>([]);
@@ -48,14 +38,14 @@ const EmployeeTable = () => {
     username: "",
     pincode: "",
   });
-  const [editFormData, setEditFormData] = useState<editUserType>({
+  const [editFormData, setEditFormData] = useState<empType>({
     username: "",
     dept: "",
     role: "",
     email: "",
   });
 
-  const [addFormData, setAddFormData] = useState<editUserType>({
+  const [addFormData, setAddFormData] = useState<empType>({
     username: "",
     dept: "",
     role: "",
@@ -75,9 +65,7 @@ const EmployeeTable = () => {
     setIsSnackOpen(false);
   }
 
-  function handleSearchChange(
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void {
+  function handleSearchChange(event: ChangeEvent<HTMLInputElement>): void {
     const searchValue = event.target.value;
     setSearch(searchValue);
   }
@@ -132,7 +120,7 @@ const EmployeeTable = () => {
   function handleAdd(): void {
     setIsAdded(true);
   }
-  function handleAddFormChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleAddFormChange(event: ChangeEvent<HTMLInputElement>) {
     const fieldName = event.target.getAttribute("name");
     const fieldValue = event.target.value;
     const newFormData = { ...addFormData };
@@ -194,7 +182,7 @@ const EmployeeTable = () => {
     }, 1000);
   }
 
-  function editEmployee(event, id, username, dept, pincode, role, email):void{
+  function editEmployee(event, id, username, dept, pincode, role, email): void {
     const currentTemp = {
       id,
       username,
@@ -213,7 +201,7 @@ const EmployeeTable = () => {
     setEditFormData(tempEmp);
   }
 
-  function handleEditFormChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleEditFormChange(event: ChangeEvent<HTMLInputElement>) {
     const fieldName = event.target.getAttribute("name");
     const fieldValue = event.target.value;
     const newFormData = { ...editFormData };
@@ -316,7 +304,7 @@ const EmployeeTable = () => {
           <BiLogOutCircle size={30} />
         </button>
       </div>
-      <Modal/>
+      <Modal />
       {/* <Settings /> */}
       <div className="employee-settings">
         <h4
@@ -328,7 +316,9 @@ const EmployeeTable = () => {
           Employee Settings
         </h4>
         <SearchBar update={(event) => handleSearchChange(event)} />
-        <p style={{fontStyle:'italic', color:'grey',fontSize:'13px'}}>Search by Name, Dept and Role</p>
+        <p style={{ fontStyle: "italic", color: "grey", fontSize: "13px" }}>
+          Search by Name, Dept and Role
+        </p>
         <button className="add-emp" onClick={handleAdd}>
           <RiAddFill size={50} />
         </button>

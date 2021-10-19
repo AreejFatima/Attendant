@@ -4,8 +4,8 @@
 /* eslint-disable no-console */
 import React, { useState } from "react";
 import ReactModal from "react-modal";
-import {GrClose} from "react-icons/gr";
-import {AiFillClockCircle} from "react-icons/ai";
+import { GrClose } from "react-icons/gr";
+import { AiFillClockCircle } from "react-icons/ai";
 import Settings from "./Settings";
 
 const Modal: React.FC = () => {
@@ -20,7 +20,10 @@ const Modal: React.FC = () => {
 
   return (
     <div>
-      <button className='gsetting' onClick={handleOpenModal}><AiFillClockCircle size={26}/>General Settings</button>
+      <button className="gsetting" onClick={handleOpenModal}>
+        <AiFillClockCircle size={26} />
+        General Settings
+      </button>
       <ReactModal
         isOpen={showModal}
         contentLabel="Minimal Modal Example"
@@ -28,8 +31,10 @@ const Modal: React.FC = () => {
         overlayClassName="Overlay"
         onRequestClose={handleCloseModal}
       >
-        <Settings/>
-        <button  className='cross' onClick={handleCloseModal}><GrClose size={20}/></button>
+        <Settings />
+        <button className="cross" onClick={handleCloseModal}>
+          <GrClose size={20} />
+        </button>
       </ReactModal>
     </div>
   );

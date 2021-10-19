@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable no-return-await */
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
@@ -12,50 +11,12 @@ import {
   patchRecords,
   patchSettings,
 } from "../../Adapter/gists";
-
-interface Hour {
-  officeHour: string;
-  minWH: string;
-}
-
-export interface leaveType {
-  userid: string;
-  status: string;
-  name: string;
-  dept: string;
-  type: string;
-  days: number;
-  reason: string;
-  message: string;
-  appliedOn:string
-}
-
-export interface empType {
-  id: string;
-  pincode: string;
-  username: string;
-  dept: string;
-  role: string;
-  email: string;
-}
-
-export interface individualRecType {
-  date: string;
-  punchIn: string;
-  punchOut: string;
-  workHours: number;
-}
-
-export interface recordType {
-  id: string;
-  Records: individualRecType[];
-}
-
-interface initialStateTypes {
-  requestedLeaves: leaveType[];
-  employees: empType[];
-  records: recordType[];
-}
+import {
+  Hour,
+  empType,
+  recordType,
+  initialStateTypes,
+} from "../../Adapter/types";
 
 const initialState: initialStateTypes = {
   requestedLeaves: [],

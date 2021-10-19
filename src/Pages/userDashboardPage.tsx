@@ -2,19 +2,17 @@
 /* eslint-disable prefer-destructuring */
 import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { CgArrowLongRight, CgArrowLongLeft } from "react-icons/cg";
 import { BiCalendarEvent, BiTimer, BiLogOut } from "react-icons/bi";
 import { patchUserRecords, setActiveUser } from "../Redux/Slices/userSlice";
-import { leaveType, recordType } from "../Redux/Slices/adminSlice";
+import { leaveType, recordType } from "../Adapter/types";
 
 import "../App.css";
 
 const R = require("ramda");
 
-// Calculating Employee Work Hours (Seconds returned and used for testing)
 function calculateWorkHours(st: string, et: string) {
   const startTime = moment(st, "HH:mm:ss A");
   const endTime = moment(et, "HH:mm:ss A");
@@ -45,10 +43,12 @@ const userDashboardPage = () => {
 
   useEffect(() => {
     const checkUser = R.find(R.propEq("userid", activeUser.id))(userLeaves);
-    const checkDate= checkUser!==undefined? checkUser.appliedOn:null
+    const checkDate = checkUser !== undefined ? checkUser.appliedOn : null;
     if (checkDate === date[0]) {
       setisDisabled(true);
-    }else{setisDisabled(false)}
+    } else {
+      setisDisabled(false);
+    }
   }, []);
 
   function addUserRecord(
@@ -118,7 +118,11 @@ const userDashboardPage = () => {
           </button>
         )}
 
-        <button className="btnz" onClick={()=>history.push("/LeaveRequest")} disabled={isDisabled}>
+        <button
+          className="btnz"
+          onClick={() => history.push("/LeaveRequest")}
+          disabled={isDisabled}
+        >
           <BiCalendarEvent size={40} />
           <p> Apply for Leave</p>
         </button>

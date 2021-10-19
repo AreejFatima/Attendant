@@ -1,27 +1,20 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-/* eslint-disable no-console */
-import React from 'react'
+import { FC } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
 import ErrorDiv from "../Shared/ErrorDiv";
-// eslint-disable-next-line import/named
 import { patchSettingData } from "../../Redux/Slices/adminSlice";
+import { Hour } from "../../Adapter/types";
 
-interface objectTypes{
-  officeHour:string,
-  minWH:string
-}
-
-const Settings:React.FC = () => {
+const Settings: FC = () => {
   const dispatch = useDispatch();
-  const initialValues :objectTypes= {
+  const initialValues: Hour = {
     officeHour: "",
     minWH: "",
   };
 
-  const onSubmit = (values) :void=> {
-    console.log(values);
+  const onSubmit = (values): void => {
     const temp = {
       officeHour: values.officeHour,
       minWH: values.minWH,
@@ -29,9 +22,9 @@ const Settings:React.FC = () => {
     dispatch(patchSettingData(temp));
   };
 
-  const validate = (values:objectTypes) => {
-    const errors:any={};
-    
+  const validate = (values: Hour) => {
+    const errors: any = {};
+
     if (values.officeHour === "null") errors.officeHour = "Required";
     if (!values.minWH) errors.minWH = "Required";
     return errors;
@@ -80,14 +73,11 @@ const Settings:React.FC = () => {
               fontSize: "12px",
               borderRadius: "4px",
               height: "10%",
-              width:'20%'
+              width: "20%",
             }}
           />
           <ErrorMessage name="minWH" component={ErrorDiv} />
-          <button
-            className="updatebutton"
-            type="submit"
-          >
+          <button className="updatebutton" type="submit">
             update
           </button>
         </Form>

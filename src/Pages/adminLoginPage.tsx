@@ -1,18 +1,15 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-// eslint-disable-next-line import/no-extraneous-dependencies
-import React, { useEffect } from "react";
+import {FC, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import "../App.css";
 import { fetchDataFromGists } from "../Redux/Slices/adminSlice";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
+import { allEmpType } from "../Adapter/types";
 
-interface initialType {
-  id: string;
-  pin: string;
-}
-const adminLoginPage: React.FC = () => {
+
+const adminLoginPage: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const ID: string = "AD-000";
@@ -23,7 +20,7 @@ const adminLoginPage: React.FC = () => {
     dispatch(fetchDataFromGists());
   }, [dispatch]);
 
-  const initialValues: initialType = {
+  const initialValues: allEmpType = {
     id: "",
     pin: "",
   };
@@ -31,7 +28,7 @@ const adminLoginPage: React.FC = () => {
   const onSubmit = (): void => {
     history.push("/AdminDashboard");
   };
-  const validate = (values: initialType) => {
+  const validate = (values: allEmpType) => {
     const errors: any = {};
     if (!values.id || values.id === "") errors.id = "Admin Id cannot be blank!";
     else if (values.id !== ID) errors.id = "Invalid Admin Id!";

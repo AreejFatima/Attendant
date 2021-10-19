@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 // eslint-disable-next-line import/no-extraneous-dependencies
-import React from "react";
+import {MouseEvent} from "react";
 
 interface Props {
   id: string;
@@ -8,7 +8,7 @@ interface Props {
   dept: string;
   removeEmployee: (id: string) => void;
   editEmployee: (
-    event: React.MouseEvent<HTMLElement>,
+    event: MouseEvent<HTMLElement>,
     id: string,
     username: string,
     dept: string,

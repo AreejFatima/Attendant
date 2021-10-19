@@ -1,16 +1,10 @@
 /* eslint-disable no-undef */
-// eslint-disable-next-line import/no-extraneous-dependencies
-import React from "react";
+import { ChangeEvent } from "react";
+import { empType } from "../../Adapter/types";
 
-interface EFD {
-  username: string;
-  dept: string;
-  role: string;
-  email: string;
-}
 interface Props {
-  editFormData: EFD;
-  handleEditFormChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  editFormData: empType;
+  handleEditFormChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleEditFormSave: () => void;
 }
 

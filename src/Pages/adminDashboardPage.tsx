@@ -1,27 +1,16 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { FaBackward } from "react-icons/fa";
 import { AiFillSetting } from "react-icons/ai";
 import "font-awesome/css/font-awesome.min.css";
-import { fetchDataFromGists, recordType } from "../Redux/Slices/adminSlice";
+import { fetchDataFromGists } from "../Redux/Slices/adminSlice";
 import WorkHourTable from "../Components/Admin/WorkHourTable";
 import AvailabilityTabs from "../Components/Admin/AvailabilityTabs";
 import SearchBar from "../Components/User/SearchBar";
+import { recordType, workType, allEmpType } from "../Adapter/types";
 
 const R = require("ramda");
-
-interface workType {
-  id: string;
-  totalHours: number;
-  averageHours: number;
-}
-
-interface allEmpType {
-  id: string;
-  status: string;
-}
 
 const adminDashboardPage = () => {
   const timestamp = R.split(", ", new Date().toLocaleString());
@@ -138,7 +127,9 @@ const adminDashboardPage = () => {
       <div>
         <div className="split left">
           <SearchBar update={(e) => handleSearchChange(e)} />
-          <p style={{fontStyle:'italic', color:'grey',fontSize:'13px'}}>Search by ID</p>
+          <p style={{ fontStyle: "italic", color: "grey", fontSize: "13px" }}>
+            Search by ID
+          </p>
           {R.isEmpty(searchResults) ? (
             <AvailabilityTabs
               available={available}

@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { useState } from "react";
 import { FaSortUp, FaSortDown } from "react-icons/fa";
+import { workType } from "../../Adapter/types";
 
 const sortTypes = {
   up: {
@@ -17,14 +18,10 @@ const sortTypes = {
   },
 };
 
-interface Props {
-  id: string;
-  totalHours: number;
-  averageHours: number;
-}
+
 
 interface Data {
-  data: Props[];
+  data: workType[];
 }
 
 const WorkHourTable = (props: Data) => {

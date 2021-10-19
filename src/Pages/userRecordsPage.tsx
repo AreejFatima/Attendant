@@ -7,7 +7,7 @@ import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
 import SearchBar from "../Components/User/SearchBar";
 import RecordsTable from "../Components/User/RecordsTable";
-import { recordType, individualRecType } from "../Redux/Slices/adminSlice";
+import { recordType, individualRecType } from "../Adapter/types";
 
 const R = require("ramda");
 
@@ -56,7 +56,9 @@ const userRecordsPage = () => {
         </button>
       </div>
       <SearchBar update={(e) => handleChange(e)} />
-      <p style={{fontStyle:'italic', color:'grey',fontSize:'13px'}}>Search by Date</p>
+      <p style={{ fontStyle: "italic", color: "grey", fontSize: "13px" }}>
+        Search by Date
+      </p>
       <RecordsTable data={recordsByDate} />
     </div>
   );

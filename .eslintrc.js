@@ -29,6 +29,7 @@ module.exports = {
     "no-alert": 0,
     "array-callback-return": 0,
     "react/prop-types": 0,
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
     "react/jsx-no-bind": [
       0,
       {

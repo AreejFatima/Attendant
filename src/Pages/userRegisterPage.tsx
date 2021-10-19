@@ -8,7 +8,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import Snackbar from "@mui/material/Snackbar";
 import { IconButton } from "@mui/material";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
-import { recordType, empType } from "../Redux/Slices/adminSlice";
+import { recordType, empType } from "../Adapter/types";
 import {
   fetchUserDataFromGists,
   patchUserData,
@@ -88,7 +88,11 @@ const userRegisterPage = () => {
   };
 
   const validate = (values) => {
-    const errors: any = {};
+    const errors: {
+      name: string;
+      pin: string;
+      email: string;
+    } = { name: "", pin: "", email: "" };
     if (!values.name || values.name === "")
       errors.name = "Enter Employee Username!";
     else if (values.name.length > 15) errors.name = "Name too long";

@@ -1,18 +1,13 @@
 /* eslint-disable no-undef */
 // eslint-disable-next-line import/no-extraneous-dependencies
-import React from 'react';
+import React from "react";
 import { FaUserAlt } from "react-icons/fa";
 import Tabs from "./Tabs";
+import { Data_ } from "../../Adapter/types";
 
 const R = require("ramda");
 
-interface Data{
-  available:string[],
-  unavailable:string[],
-  onleave:string[]
-}
-
-const AvailabilityTabs = (props:Data):JSX.Element => {
+const AvailabilityTabs = (props: Data_): JSX.Element => {
   const { available, unavailable, onleave } = props;
   return (
     <div className="tabs">
@@ -80,6 +75,6 @@ const AvailabilityTabs = (props:Data):JSX.Element => {
 };
 
 // eslint-disable-next-line react/destructuring-assignment
-const Tab= (props) => <>{props.children}</>;
+const Tab = (props) => <>{props.children}</>;
 
 export default AvailabilityTabs;

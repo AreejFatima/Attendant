@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-return-await */
-import { createSlice, current, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   patchUsers,
   patchRecords,
@@ -11,16 +10,12 @@ import {
   getallGists,
   getLeaves,
 } from "../../Adapter/gists";
-import { leaveType, empType, recordType } from "./adminSlice";
-
-interface initialStateType {
-  allUsers: empType[];
-  userRecords: recordType[];
-  activeUser: any;
-  leaves: leaveType[];
-}
-
-const R = require("ramda");
+import {
+  leaveType,
+  empType,
+  recordType,
+  initialStateType,
+} from "../../Adapter/types";
 
 const initialState: initialStateType = {
   allUsers: [],

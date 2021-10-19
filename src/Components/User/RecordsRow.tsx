@@ -1,10 +1,6 @@
-export interface rowType {
-  date: string;
-  punchIn: string;
-  punchOut: string;
-}
+import { individualRecType } from "../../Adapter/types";
 
-const RecordsRow = (props: rowType) => {
+const RecordsRow = (props: individualRecType) => {
   const { date, punchIn, punchOut } = props;
   return (
     <tr>

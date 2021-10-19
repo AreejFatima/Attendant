@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 // eslint-disable-next-line import/no-extraneous-dependencies
-import React from "react";
+import {FC} from "react";
 import "../../App.css";
 
-const NavBar: React.FC = () => (
+const NavBar: FC = () => (
   <div className="topnav">
     <a className="active" href="#">
       Attendant

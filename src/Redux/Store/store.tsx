@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "../Slices/userSlice";
 import adminReducer from "../Slices/adminSlice";

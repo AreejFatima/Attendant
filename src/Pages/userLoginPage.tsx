@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import "../App.css";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { useEffect } from "react";
 import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -10,14 +9,9 @@ import {
   setActiveUser,
   fetchUserDataFromGists,
 } from "../Redux/Slices/userSlice";
-import { empType } from "../Redux/Slices/adminSlice";
+import { empType, allEmpType } from "../Adapter/types";
 
 const R = require("ramda");
-
-interface initialValueType {
-  id: string;
-  pin: string;
-}
 
 const userLoginPage = () => {
   const usersList: empType[] = useSelector(
@@ -30,7 +24,7 @@ const userLoginPage = () => {
     dispatch(fetchUserDataFromGists());
   }, []);
 
-  const initialValues: initialValueType = {
+  const initialValues: allEmpType = {
     id: "",
     pin: "",
   };
