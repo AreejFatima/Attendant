@@ -758,10 +758,6 @@ input[type="number"],
   overflow: hidden;
 }
 
-.resizable-x {
-  /* height: 100vh; */
-}
-
 .resizable-y {
   flex-direction: column;
   margin-left: 3%;

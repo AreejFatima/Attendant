@@ -112,7 +112,6 @@ const WorkHours = ({ id, role, type }) => {
     }
     return obj;
   }
-  console.log(dailyRecords)
   function incrementDate(d, n) {
     const date = Date.parse(d);
     const current = new Date(date);
