@@ -15,6 +15,8 @@
         Records page contains a tabular view of all records showing (date, punch in and punch outs) Also, there is a date based search field at the top of the table + buttons to logout and go back
    - On validation failure, user will be shown an error
    - Below the punch form, there is a link leading to admin login form
+   - Extend employees information to other fields such as email address, profile pictures and phone number (make sure fields are properly validated). Employee should be able  to      upload a profile picture (figure out the way to store the uploaded images)
+   - Make an employee profile page where an employee can see his/her work hours (daily/weekly/monthly basis) both graphical and tabular form and other personal details (profile      pic, address, department, etc). Each employee can only see his/her profile page
 
  #### Admin
    - Login form with fields for inputting admin ID and PIN code
@@ -30,6 +32,8 @@
       - Working hours consolidated over a period of 1, 3, 6 or 12 months & enable users to select time period using a button group or dropdown at the top of the widget.
    - On validation failure, admin will be shown an error
    - Below the login form, there is a link leading to punch form of employees
+   - In Admin's view update employees info table to add profile pics as well. Also admin should be able to see each employee’s profile page. Clicking on the profile picture will      navigate the admin to the respective employee's profile page.
+   - Add an illustration (could be red/green or up/down arrows) in employees' table (for admin view) showing number of hours short/exceeded for each employee on weekly/monthly        basis
 #### Rules & Validations
 - All data is stored in gists
 - Validations on forms 
@@ -48,6 +52,18 @@
          - Shared
               - ErrorDiv
               - NavBar
+              - Editable Form
+              - GraphicalTabs
+              - HourlyTabs
+              - LineChart
+              - NavBar
+              - Tab
+              - TabButtons
+              - Tabs
+              - TabularView
+              - UploadingImage
+              - UserProfile
+              - WorkHours
          - Admin
               - AvailabilityTabs
               - DisplayTab
@@ -56,8 +72,6 @@
               - Settings
               - Modal
               - EmployeeTable
-              - TabButtons
-              - Tabs
               - WorkHourTable
          - User
              - RecordsRow
@@ -76,6 +90,7 @@
          - userDashboardPage
          - userLeavePage
          - userRecordsPage 
+         - userProfilePage
 
   
   
