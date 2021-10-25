@@ -50,6 +50,7 @@
               - NavBar
          - Admin
               - AvailabilityTabs
+              - DisplayTab
               - Editable Row
               - ReadOnly Row
               - Settings
