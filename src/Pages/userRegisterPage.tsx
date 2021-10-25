@@ -35,6 +35,8 @@ const userRegisterPage = () => {
     dept: "",
     role: "",
     email: "",
+    phone:'',
+    profilePic:''
   });
   const dispatch = useDispatch();
 
@@ -77,6 +79,8 @@ const userRegisterPage = () => {
       dept: values.dept,
       email: values.email,
       role: "Not Assigned",
+      phone:'',
+      profilePic:'',
     };
     const tempRecord: recordType = {
       id: getId(values.dept),

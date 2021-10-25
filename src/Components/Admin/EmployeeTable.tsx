@@ -17,6 +17,7 @@ import EditableRow from "./EditableRow";
 import { getUsers, getRecords } from "../../Adapter/gists";
 import SearchBar from "../User/SearchBar";
 import Modal from "./Modal";
+import { avatar } from "../../avatar";
 
 const R = require("ramda");
 
@@ -37,6 +38,8 @@ const EmployeeTable = () => {
     email: "",
     username: "",
     pincode: "",
+    phone: "",
+    profilePic: "",
   });
   const [editFormData, setEditFormData] = useState<empType>({
     username: "",
@@ -147,42 +150,65 @@ const EmployeeTable = () => {
   }
 
   function handleAddFormSubmit(): void {
-    const addedEmployee = {
-      id: getId(addFormData.dept),
-      username: addFormData.username,
-      dept: addFormData.dept,
-      role: addFormData.role,
-      email: addFormData.email,
-      pincode: "000000",
-    };
-    const addedRecord: recordType = {
-      id: getId(addFormData.dept),
-      Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
-    };
+    if (
+      !(
+        addFormData.username === "" ||
+        addFormData.dept === "" ||
+        addFormData.role === "" ||
+        addFormData.email === ""
+      )
+    ) {
+      const addedEmployee = {
+        id: getId(addFormData.dept),
+        username: addFormData.username,
+        dept: addFormData.dept,
+        role: addFormData.role,
+        email: addFormData.email,
+        pincode: "000000",
+        phone: "",
+        profilePic: "",
+      };
+      const addedRecord: recordType = {
+        id: getId(addFormData.dept),
+        Records: [{ date: "", punchIn: "", punchOut: "", workHours: 0 }],
+      };
 
-    const newRecords: recordType[] = [...records];
-    newRecords.push(addedRecord);
-    setRecords(newRecords);
+      const newRecords: recordType[] = [...records];
+      newRecords.push(addedRecord);
+      setRecords(newRecords);
 
-    const newEmployees: empType[] = [...employees];
-    newEmployees.push(addedEmployee);
-    setEmployees(newEmployees);
-    setIsAdded(false);
-    const initial = {
-      username: "",
-      dept: "",
-      role: "",
-      email: "",
-    };
-    setAddFormData(initial);
+      const newEmployees: empType[] = [...employees];
+      newEmployees.push(addedEmployee);
+      setEmployees(newEmployees);
+      setIsAdded(false);
+      const initial = {
+        username: "",
+        dept: "",
+        role: "",
+        email: "",
+      };
+      setAddFormData(initial);
 
-    setTimeout(() => {
-      dispatch(patchEmployeeData(newEmployees));
-      dispatch(patchRecordData(newRecords));
-    }, 1000);
+      setTimeout(() => {
+        dispatch(patchEmployeeData(newEmployees));
+        dispatch(patchRecordData(newRecords));
+      }, 1000);
+    } else {
+      alert("Missing Values, cannot add employee");
+    }
   }
 
-  function editEmployee(event, id, username, dept, pincode, role, email): void {
+  function editEmployee(
+    event,
+    id,
+    username,
+    dept,
+    pincode,
+    role,
+    email,
+    phone,
+    profilePic
+  ): void {
     const currentTemp = {
       id,
       username,
@@ -190,6 +216,8 @@ const EmployeeTable = () => {
       pincode,
       role,
       email,
+      phone,
+      profilePic,
     };
     setcurrentEmpId(currentTemp);
     const tempEmp = {
@@ -217,6 +245,8 @@ const EmployeeTable = () => {
       role: editFormData.role,
       email: editFormData.email,
       pincode: currentEmpId.pincode,
+      phone: currentEmpId.phone,
+      profilePic: currentEmpId.profilePic,
     };
     const newEmployees = [...employees];
 
@@ -237,13 +267,22 @@ const EmployeeTable = () => {
       email: "",
       username: "",
       pincode: "",
+      phone: "",
+      profilePic: "",
     };
     setcurrentEmpId(initial);
   }
 
   // Form Header
   function renderHeader() {
-    const headerElement = ["Name", "Department", "Role", "Email", "Action"];
+    const headerElement = [
+      "Name",
+      "Department",
+      "Role",
+      "Email",
+      "Profile",
+      "Action",
+    ];
     return headerElement.map((key, index) => (
       <th key={index}>{key.toUpperCase()}</th>
     ));
@@ -252,28 +291,33 @@ const EmployeeTable = () => {
   function renderBody(data) {
     return (
       data &&
-      data.map(({ id, username, dept, pincode, role, email }) => (
-        <>
-          {currentEmpId.id === id ? (
-            <EditableRow
-              editFormData={editFormData}
-              handleEditFormChange={handleEditFormChange}
-              handleEditFormSave={handleEditFormSave}
-            />
-          ) : (
-            <ReadOnlyRow
-              id={id}
-              username={username}
-              dept={dept}
-              pincode={pincode}
-              role={role}
-              email={email}
-              removeEmployee={removeEmployee}
-              editEmployee={editEmployee}
-            />
-          )}
-        </>
-      ))
+      data.map(
+        ({ id, username, dept, pincode, role, email, phone, profilePic }) => (
+          <>
+            {currentEmpId.id === id ? (
+              <EditableRow
+                editFormData={editFormData}
+                handleEditFormChange={handleEditFormChange}
+                handleEditFormSave={handleEditFormSave}
+                profilePic={profilePic}
+              />
+            ) : (
+              <ReadOnlyRow
+                id={id}
+                username={username}
+                dept={dept}
+                pincode={pincode}
+                role={role}
+                email={email}
+                phone={phone}
+                profilePic={profilePic}
+                removeEmployee={removeEmployee}
+                editEmployee={editEmployee}
+              />
+            )}
+          </>
+        )
+      )
     );
   }
 
@@ -330,6 +374,7 @@ const EmployeeTable = () => {
             <tbody>{renderBody(tableData)}</tbody>
             {isAdded ? (
               <EditableRow
+                profilePic={avatar}
                 editFormData={addFormData}
                 handleEditFormChange={handleAddFormChange}
                 handleEditFormSave={handleAddFormSubmit}

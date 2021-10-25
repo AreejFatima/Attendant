@@ -1,6 +1,7 @@
-import Tabs from "./Tabs";
+import Tabs from "../Shared/Tabs"
 import { Data_ } from "../../Adapter/types";
 import DisplayTab from "./DisplayTab";
+import Tab from '../Shared/Tab'
 
 const AvailabilityTabs = (props: Data_): JSX.Element => {
   const { available, unavailable, onleave } = props;
@@ -21,7 +22,6 @@ const AvailabilityTabs = (props: Data_): JSX.Element => {
   );
 };
 
-// eslint-disable-next-line react/destructuring-assignment
-const Tab = (props) => <>{props.children}</>;
+
 
 export default AvailabilityTabs;

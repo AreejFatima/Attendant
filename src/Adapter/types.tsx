@@ -23,6 +23,8 @@ export interface empType {
   dept: string;
   role: string;
   email: string;
+  phone?:string;
+  profilePic?:string;
 }
 
 export interface individualRecType {

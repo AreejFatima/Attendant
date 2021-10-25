@@ -7,6 +7,7 @@ import userLeavePage from "../Pages/userLeavePage";
 import userRegisterPage from "../Pages/userRegisterPage";
 import userLoginPage from "../Pages/userLoginPage";
 import userRecordsPage from "../Pages/userRecordsPage";
+import UserProfilePage from "../Pages/userProfilePage";
 
 const Routes = () => {
   const history = useHistory();
@@ -21,6 +22,7 @@ const Routes = () => {
         <Route path="/AdminDashboard" component={adminDashboardPage} />
         <Route path="/AdminSettings" component={adminSettingsPage} />
         <Route path="/LeaveRequest" component={userLeavePage} />
+        <Route path="/UserProfile" component={UserProfilePage} />
       </Switch>
     </Router>
   );

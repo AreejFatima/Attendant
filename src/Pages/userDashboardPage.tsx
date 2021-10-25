@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-destructuring */
 import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
@@ -6,8 +7,12 @@ import { useEffect, useState } from "react";
 import moment from "moment";
 import { CgArrowLongRight, CgArrowLongLeft } from "react-icons/cg";
 import { BiCalendarEvent, BiTimer, BiLogOut } from "react-icons/bi";
-import { patchUserRecords, setActiveUser } from "../Redux/Slices/userSlice";
-import { leaveType, recordType } from "../Adapter/types";
+import {
+  patchUserRecords,
+  setActiveUser,
+  fetchUserDataFromGists,
+} from "../Redux/Slices/userSlice";
+import { leaveType, recordType, empType } from "../Adapter/types";
 
 import "../App.css";
 
@@ -20,6 +25,7 @@ function calculateWorkHours(st: string, et: string) {
   const hours = Math.floor(duration.asHours());
   const minutes = Math.floor(duration.asMinutes()) % 60;
   const seconds = Math.floor(duration.asSeconds());
+
   // const result = hours + " hour and " + minutes + " minutes.";
   return seconds;
 }
@@ -28,10 +34,13 @@ const userDashboardPage = () => {
   const activeUser = useSelector(
     (state: RootStateOrAny) => state.user.activeUser
   );
+  const usersList: empType[] = useSelector(
+    (state: RootStateOrAny) => state.user.allUsers
+  );
   const userRecords: recordType[] = useSelector(
     (state: RootStateOrAny) => state.user.userRecords
   );
-  const [appliedforLeave, setAppliedForLeave] = useState<boolean>(false);
+  const [active, setActive] = useState(null);
   const [isWorking, setisWorking] = useState<boolean>(false);
   const [isDisabled, setisDisabled] = useState<boolean>(false);
   const date = R.split(", ", new Date().toLocaleString());
@@ -40,6 +49,10 @@ const userDashboardPage = () => {
   );
   const history = useHistory();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUserDataFromGists());
+  }, []);
 
   useEffect(() => {
     const checkUser = R.find(R.propEq("userid", activeUser.id))(userLeaves);
@@ -94,18 +107,43 @@ const userDashboardPage = () => {
       pincode: "",
       username: "",
       dept: "",
+      email: "",
+      role: "",
+      phone: "",
+      profilePic: "",
     };
     dispatch(setActiveUser(inactive));
     history.push("/");
   }
 
+  function handleProfile() {
+    if (activeUser) {
+      const temp = {
+        user: activeUser,
+        role: "user",
+      };
+      history.push({
+        pathname: "/UserProfile",
+        state: temp,
+      });
+    }
+  }
+
   return (
     <div>
-      <div className="avatar">
-        <div className="avatar__letters">{`Hi ${
-          activeUser.username ? activeUser.username : "User"
-        }`}</div>
-      </div>
+      {activeUser ? (
+        <img src={activeUser.profilePic} alt="Not Found" className="avatar" />
+      ) : (
+        <div className="avatar" style={{ marginLeft: "46%" }}>
+          <div className="avatar__letters">{`Hi ${
+            activeUser.username ? activeUser.username : "User"
+          }`}</div>
+        </div>
+      )}
+      <br />
+      <h2 style={{ marginTop: "2%" }} className="title">
+        Hi, {activeUser.username}!
+      </h2>
       <div className="buttons">
         {!isWorking && (
           <button className="btnz" onClick={handlePunch}>
@@ -129,6 +167,10 @@ const userDashboardPage = () => {
         <button className="btnz" onClick={() => history.push("/UserRecords")}>
           <BiTimer size={40} />
           <p>Show Records</p>
+        </button>
+        <button className="btnz" onClick={handleProfile}>
+          <BiTimer size={40} />
+          <p>Profile</p>
         </button>
         <button className="btnz" onClick={handleLogout}>
           <BiLogOut size={40} /> <p>LogOut </p>
