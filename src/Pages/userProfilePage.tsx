@@ -1,5 +1,5 @@
 import UserProfile from "../Components/Shared/UserProfile";
 
-const UserProfilePage = () => <UserProfile />;
+const UserProfilePage = (): JSX.Element => <UserProfile />;
 
 export default UserProfilePage;

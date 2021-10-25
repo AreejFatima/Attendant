@@ -16,7 +16,7 @@ import {
 
 const R = require("ramda");
 
-const userRegisterPage = () => {
+const userRegisterPage = (): JSX.Element => {
   const usersList = useSelector((state: RootStateOrAny) => state.user.allUsers);
   const userRecordsList = useSelector(
     (state: RootStateOrAny) => state.user.userRecords
@@ -35,8 +35,8 @@ const userRegisterPage = () => {
     dept: "",
     role: "",
     email: "",
-    phone:'',
-    profilePic:''
+    phone: "",
+    profilePic: "",
   });
   const dispatch = useDispatch();
 
@@ -79,8 +79,8 @@ const userRegisterPage = () => {
       dept: values.dept,
       email: values.email,
       role: "Not Assigned",
-      phone:'',
-      profilePic:'',
+      phone: "",
+      profilePic: "",
     };
     const tempRecord: recordType = {
       id: getId(values.dept),

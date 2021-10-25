@@ -3,7 +3,7 @@ import { empType } from "../../Adapter/types";
 
 interface Props {
   editFormData: empType;
-  profilePic: any;
+  profilePic: string;
   handleEditFormChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleEditFormSave: () => void;
 }

@@ -1,5 +1,5 @@
 /* eslint-disable react/void-dom-elements-no-children */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { patchUserData, setActiveUser } from "../../Redux/Slices/userSlice";
@@ -10,11 +10,11 @@ import WorkHours from "./WorkHours";
 
 const R = require("ramda");
 
-const UserProfile = ():JSX.Element => {
+const UserProfile = (): JSX.Element => {
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
   const location = useLocation();
   const prop = location.state;
-  const activeUser = prop.user;
+  const activeUser: empType = prop.user;
   const { role } = prop;
 
   let usersList: empType[];
@@ -25,42 +25,48 @@ const UserProfile = ():JSX.Element => {
     usersList = useSelector((state: RootStateOrAny) => state.admin.employees);
   }
 
-  const [url, setUrl] = useState(activeUser.profilePic);
   const dispatch = useDispatch();
 
-  function showForm() {
+  function showForm(): void {
     setShowEditForm((prev) => !prev);
   }
 
-  useEffect(() => {
-    const tempUsers = R.clone(usersList);
-    const index = R.findIndex(R.propEq("id", activeUser.id))(tempUsers);
-    const toUpdate = R.find(R.propEq("id", activeUser.id))(tempUsers);
-    toUpdate.profilePic = url;
+  function uploadProfilePicture(image: string): void {
+    const tempUsers: empType[] = R.clone(usersList);
+    const index: number = R.findIndex(R.propEq("id", activeUser.id))(tempUsers);
+    const toUpdate: empType = R.find(R.propEq("id", activeUser.id))(tempUsers);
+    toUpdate.profilePic = image;
     tempUsers[index] = toUpdate;
     dispatch(patchUserData(tempUsers));
     dispatch(setActiveUser(toUpdate));
-  }, [url]);
+  }
 
   return (
     <>
       <div id="layout">
-        <div className="resizable-x" style={{minHeight:'200vh'}}>
+        <div className="resizable-x" style={{ minHeight: "200vh" }}>
           <div
             className="left"
             style={{ width: "20%", marginTop: "0.2%", marginLeft: "0%" }}
           >
-            <UploadImage setUrl={setUrl} />
+            <UploadImage onUpload={uploadProfilePicture} activeUser={activeUser} />
             <h3 style={{ color: "white" }}>{activeUser.username}</h3>
             <button className="edit" onClick={showForm}>
               Edit Profile
             </button>
           </div>
           {showEditForm === false ? (
-            <div style={{ width: "77%" ,marginLeft:'1%' }}>
+            <div style={{ width: "77%", marginLeft: "1%" }}>
               <div className="top">
                 <h2 style={{ marginRight: "70%" }}>User Details</h2>
-                <div id="table" style={{ marginLeft: "30%", marginTop: "4%",marginBottom:'2%' }}>
+                <div
+                  id="table"
+                  style={{
+                    marginLeft: "30%",
+                    marginTop: "4%",
+                    marginBottom: "2%",
+                  }}
+                >
                   <div className="tr">
                     <div className="td">Name:</div>
                     <div className="td">{activeUser.username}</div>
@@ -87,11 +93,15 @@ const UserProfile = ():JSX.Element => {
                 <div>
                   {" "}
                   {activeUser.id ? (
-                    <WorkHours id={activeUser.id} role={role} type="graphical" />
+                    <WorkHours
+                      id={activeUser.id}
+                      role={role}
+                      type="graphical"
+                    />
                   ) : null}
                 </div>
               </div>
-              <div className="bottom" >
+              <div className="bottom">
                 <div>
                   {" "}
                   {activeUser.id ? (

@@ -3,7 +3,7 @@ import { FaUserAlt } from "react-icons/fa";
 
 const R = require("ramda");
 
-const DisplayTab = (props) => (
+const DisplayTab = ({ array }): JSX.Element => (
   <div>
     {R.map(
       (item) => (
@@ -16,7 +16,7 @@ const DisplayTab = (props) => (
           </li>
         </ul>
       ),
-      props.array
+      array
     )}
   </div>
 );

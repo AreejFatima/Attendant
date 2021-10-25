@@ -40,7 +40,6 @@ const userDashboardPage = () => {
   const userRecords: recordType[] = useSelector(
     (state: RootStateOrAny) => state.user.userRecords
   );
-  const [active, setActive] = useState(null);
   const [isWorking, setisWorking] = useState<boolean>(false);
   const [isDisabled, setisDisabled] = useState<boolean>(false);
   const date = R.split(", ", new Date().toLocaleString());

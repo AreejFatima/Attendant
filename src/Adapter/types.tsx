@@ -23,8 +23,8 @@ export interface empType {
   dept: string;
   role: string;
   email: string;
-  phone?:string;
-  profilePic?:string;
+  phone?: string;
+  profilePic?: string;
 }
 
 export interface individualRecType {
@@ -67,4 +67,29 @@ export interface allEmpType {
   id: string;
   pin?: string;
   status?: string;
+}
+
+export interface errorType {
+  username?: string;
+  pincode?: string;
+  email?: string;
+  dept?: string;
+  phone?: string;
+}
+
+export interface hourlyType {
+  date: string;
+  WorkHours: number;
+}
+
+export interface datasetType{
+  label:string;
+  colors:string;
+  backgroundColor:string;
+  data:number[]
+}
+
+export interface chartType {
+  labels: string[];
+  datasets:datasetType[]
 }

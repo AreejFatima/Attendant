@@ -1,20 +1,23 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useSelector, RootStateOrAny } from "react-redux";
-import { IconButton, Avatar } from "@mui/material";
-import {useState } from "react";
 
-const UploadImage = ({ setUrl }):JSX.Element => {
-  const activeUser = useSelector(
-    (state: RootStateOrAny) => state.user.activeUser
-  );
+import { IconButton, Avatar } from "@mui/material";
+import { useState } from "react";
+import { empType } from "../../Adapter/types";
+
+interface propType {
+  onUpload: (image: string) => void;
+  activeUser: empType;
+}
+const UploadImage = (props: propType): JSX.Element => {
+  const { onUpload, activeUser } = props;
   const [baseImage, setBaseImage] = useState(activeUser.profilePic);
 
   async function uploadImage(e) {
     const file = e.target.files[0];
     const base64: any = await convertBase64(file);
     setBaseImage(base64);
-    setUrl(base64);
+    onUpload(base64);
   }
 
   const convertBase64 = (file) =>

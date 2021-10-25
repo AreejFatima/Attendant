@@ -10,7 +10,7 @@ import { recordType, individualRecType } from "../Adapter/types";
 
 const R = require("ramda");
 
-const userRecordsPage = () => {
+const userRecordsPage = (): JSX.Element => {
   const [search, setSearch] = useState<string>("");
   const history = useHistory();
   const userRecords: recordType[] = useSelector(

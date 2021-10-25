@@ -12,7 +12,7 @@ import { recordType, workType, allEmpType } from "../Adapter/types";
 
 const R = require("ramda");
 
-const adminDashboardPage = () => {
+const adminDashboardPage = (): JSX.Element => {
   const timestamp = R.split(", ", new Date().toLocaleString());
   const currentDate: string = timestamp[0];
   const [search, setSearch] = useState<string>("");

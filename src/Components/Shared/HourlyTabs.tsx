@@ -1,8 +1,14 @@
 import Tabs from "./Tabs";
 import TabularView from "./TabularView";
 import Tab from "./Tab";
+import { hourlyType } from "../../Adapter/types";
 
-const HourlyTabs = (props): JSX.Element => {
+interface propType {
+  weekly: hourlyType[];
+  monthly: hourlyType[];
+}
+
+const HourlyTabs = (props: propType): JSX.Element => {
   const { weekly, monthly } = props;
   return (
     <div className="tabs">

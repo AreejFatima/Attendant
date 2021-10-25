@@ -1,7 +1,14 @@
-const TabularView = ({ data, total }) => {
-  function checkBoundaries(user) {
-    const calculated = user.WorkHours;
+import { hourlyType } from "../../Adapter/types";
 
+interface propType {
+  data: hourlyType[];
+  total: number;
+}
+
+const TabularView = (props: propType) => {
+  const { data, total } = props;
+  function checkBoundaries(user: hourlyType) {
+    const calculated: number = user.WorkHours;
     if (calculated > total) {
       return "rgba(11, 242, 33, 0.4)";
     }

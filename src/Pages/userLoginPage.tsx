@@ -13,7 +13,7 @@ import { empType, allEmpType } from "../Adapter/types";
 
 const R = require("ramda");
 
-const userLoginPage = () => {
+const userLoginPage = (): JSX.Element => {
   const usersList: empType[] = useSelector(
     (state: RootStateOrAny) => state.user.allUsers
   );

@@ -1,12 +1,24 @@
 import { useState, useEffect } from "react";
 import { useSelector, RootStateOrAny } from "react-redux";
-import { recordType } from "../../Adapter/types";
+import {
+  recordType,
+  hourlyType,
+  chartType,
+  individualRecType,
+} from "../../Adapter/types";
 import GraphicalTabs from "./GraphicalTabs";
 import HourlyTabs from "./HourlyTabs";
 
 const R = require("ramda");
 
-const WorkHours = ({ id, role, type }) => {
+interface propType {
+  id: string;
+  role: string;
+  type: string;
+}
+
+const WorkHours = (props: propType): JSX.Element => {
+  const { id, role, type } = props;
   let recordsList: recordType;
   if (role === "user") {
     recordsList = useSelector(
@@ -16,25 +28,25 @@ const WorkHours = ({ id, role, type }) => {
     recordsList = useSelector((state: RootStateOrAny) => state.admin.records);
   }
 
-  const [userRecords, setUserRecords] = useState([]);
-  let weeklyRecords = [];
-  let dailyRecords = [];
-  let monthlyRecords = [];
-  const dailylabels = [];
-  const dailydata = [];
-  const weeklylabels = [];
-  const weeklydata = [];
-  const monthlylabels = [];
-  const monthlydata = [];
+  const [userRecords, setUserRecords] = useState<individualRecType[]>([]);
+  let weeklyRecords: hourlyType[] = [];
+  let dailyRecords: hourlyType[] = [];
+  let monthlyRecords: hourlyType[] = [];
+  const dailylabels: string[] = [];
+  const dailydata: number[] = [];
+  const weeklylabels: string[] = [];
+  const weeklydata: number[] = [];
+  const monthlylabels: string[] = [];
+  const monthlydata: number[] = [];
 
   useEffect(() => {
-    const recordObject = R.find(R.propEq("id", id))(recordsList);
+    const recordObject: recordType = R.find(R.propEq("id", id))(recordsList);
     setUserRecords(recordObject.Records);
   }, []);
   const byDate = R.groupBy((record) => record.date);
 
   function recordsByDate(): void {
-    const tempRec = [];
+    const tempRec: hourlyType[] = [];
     if (userRecords) {
       const temp = byDate(userRecords);
       Object.entries(temp).map(([k, v]) => {
@@ -53,8 +65,8 @@ const WorkHours = ({ id, role, type }) => {
   }
   recordsByDate();
 
-  function dailyChartData() {
-    let obj;
+  function dailyChartData(): chartType {
+    let obj: chartType;
     if (dailyRecords) {
       R.map((item) => {
         dailylabels.push(item.date);
@@ -75,8 +87,8 @@ const WorkHours = ({ id, role, type }) => {
     return obj;
   }
 
-  function weeklyMonthlyChartData(recType) {
-    let obj;
+  function weeklyMonthlyChartData(recType): chartType {
+    let obj: chartType;
     if (recType === "week" && !R.isEmpty(weeklyRecords)) {
       R.map((item) => {
         weeklylabels.push(item.date);
@@ -122,7 +134,7 @@ const WorkHours = ({ id, role, type }) => {
     return finalDate;
   }
 
-  function calculateWeeklyMonthlyHours(n) {
+  function calculateWeeklyMonthlyHours(n): void {
     if (!R.isEmpty(dailyRecords)) {
       if (dailyRecords.length > 1) {
         const tempWeek = [];

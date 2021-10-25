@@ -5,7 +5,7 @@ import Snackbar from "@mui/material/Snackbar";
 import { IconButton } from "@mui/material";
 import { useState, useEffect } from "react";
 import ErrorDiv from "./ErrorDiv";
-import { empType } from "../../Adapter/types";
+import { empType, errorType } from "../../Adapter/types";
 import {
   fetchUserDataFromGists,
   patchUserData,
@@ -52,14 +52,14 @@ const EditableForm = ({
     setIsSnackOpen(false);
   }
 
-  function validate(values) {
-    let errors: {
-      username?: string;
-      pincode?: string;
-      email?: string;
-      dept?: string;
-      phone?: string;
-    } = { username: "", pincode: "", email: "", phone: "", dept: "" };
+  function validate(values): errorType {
+    let errors: errorType = {
+      username: "",
+      pincode: "",
+      email: "",
+      phone: "",
+      dept: "",
+    };
     if (!values.username || values.username === "") {
       errors.username = "Enter Employee Username!";
     } else if (values.username.length > 15) errors.username = "Name too long";

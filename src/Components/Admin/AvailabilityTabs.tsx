@@ -1,7 +1,7 @@
-import Tabs from "../Shared/Tabs"
+import Tabs from "../Shared/Tabs";
 import { Data_ } from "../../Adapter/types";
 import DisplayTab from "./DisplayTab";
-import Tab from '../Shared/Tab'
+import Tab from "../Shared/Tab";
 
 const AvailabilityTabs = (props: Data_): JSX.Element => {
   const { available, unavailable, onleave } = props;
@@ -21,7 +21,5 @@ const AvailabilityTabs = (props: Data_): JSX.Element => {
     </div>
   );
 };
-
-
 
 export default AvailabilityTabs;
