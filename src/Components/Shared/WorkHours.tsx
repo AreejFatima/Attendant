@@ -33,7 +33,7 @@ const WorkHours = ({ id, role, type }) => {
   }, []);
   const byDate = R.groupBy((record) => record.date);
 
-  function recordsByDate() {
+  function recordsByDate(): void {
     const tempRec = [];
     if (userRecords) {
       const temp = byDate(userRecords);
@@ -112,7 +112,7 @@ const WorkHours = ({ id, role, type }) => {
     }
     return obj;
   }
-  function incrementDate(d, n) {
+  function incrementDate(d, n): string {
     const date = Date.parse(d);
     const current = new Date(date);
     current.setDate(current.getDate() + n);

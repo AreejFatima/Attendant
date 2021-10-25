@@ -13,21 +13,21 @@ const Settings: FC = () => {
     minWH: "",
   };
 
-  const onSubmit = (values): void => {
+  function onSubmit(values): void {
     const temp = {
       officeHour: values.officeHour,
       minWH: values.minWH,
     };
     dispatch(patchSettingData(temp));
-  };
+  }
 
-  const validate = (values: Hour) => {
+  function validate(values: Hour) {
     const errors: any = {};
 
     if (values.officeHour === "null") errors.officeHour = "Required";
     if (!values.minWH) errors.minWH = "Required";
     return errors;
-  };
+  }
   return (
     <div className="settings">
       <h5

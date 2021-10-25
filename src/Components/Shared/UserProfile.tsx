@@ -10,7 +10,7 @@ import WorkHours from "./WorkHours";
 
 const R = require("ramda");
 
-const UserProfile = () => {
+const UserProfile = ():JSX.Element => {
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
   const location = useLocation();
   const prop = location.state;

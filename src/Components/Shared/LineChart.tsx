@@ -9,7 +9,7 @@ const options = {
   },
 };
 
-const LineChart = ({ data }) => (
+const LineChart = ({ data }): JSX.Element  => (
   <>
     <div
       className="hourly_graph"

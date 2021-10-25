@@ -37,7 +37,6 @@ const adminDashboardPage = () => {
   function assembleWHdata(event): void {
     const tempLogArr = [];
     const month = event ? event.target.value : 1;
-
     const currentdate = new Date();
     const todayDate = Date.parse(
       R.split(", ", currentDate.toLocaleString())[0]
@@ -161,7 +160,7 @@ const adminDashboardPage = () => {
         <div className="split right">
           <h2>Employee Work Hours </h2>
           <div className="btn-group">
-            <button value="1" onClick={(e) => assembleWHdata(e)}>
+            <button value="12" onClick={(e) => assembleWHdata(e)}>
               All
             </button>
             <button value="1" onClick={(e) => assembleWHdata(e)}>

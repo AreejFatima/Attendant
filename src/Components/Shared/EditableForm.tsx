@@ -29,7 +29,7 @@ const EditableForm = ({
   let usersList: empType[];
   if (type === "user") {
     usersList = useSelector((state: RootStateOrAny) => state.user.allUsers);
-  }else{
+  } else {
     usersList = useSelector((state: RootStateOrAny) => state.admin.employees);
   }
   const initialValues = {
@@ -52,7 +52,7 @@ const EditableForm = ({
     setIsSnackOpen(false);
   }
 
-  const validate = (values) => {
+  function validate(values) {
     let errors: {
       username?: string;
       pincode?: string;
@@ -84,9 +84,9 @@ const EditableForm = ({
       errors = {};
     }
     return errors;
-  };
+  }
 
-  const onSubmit = (values): void => {
+  function onSubmit(values): void {
     setIsSnackOpen(true);
     setMessage("User Details Edited!");
     const tempUsers = R.clone(usersList);
@@ -102,14 +102,12 @@ const EditableForm = ({
       profilePic,
     };
     tempUsers[index] = editedUser;
-    if(type==='user'){
+    if (type === "user") {
       dispatch(patchUserData(tempUsers));
-    }
-    else{
+    } else {
       dispatch(patchEmployeeData(tempUsers));
     }
-    
-  };
+  }
 
   return (
     <div>

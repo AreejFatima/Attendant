@@ -2,22 +2,20 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useSelector, RootStateOrAny } from "react-redux";
 import { IconButton, Avatar } from "@mui/material";
-import { useState } from "react";
+import {useState } from "react";
 
-const UploadImage = ({ setUrl }) => {
+const UploadImage = ({ setUrl }):JSX.Element => {
   const activeUser = useSelector(
     (state: RootStateOrAny) => state.user.activeUser
   );
   const [baseImage, setBaseImage] = useState(activeUser.profilePic);
 
-  const uploadImage = async (e) => {
+  async function uploadImage(e) {
     const file = e.target.files[0];
     const base64: any = await convertBase64(file);
-      setBaseImage(base64);
-      setUrl(base64);
-    
-
-  };
+    setBaseImage(base64);
+    setUrl(base64);
+  }
 
   const convertBase64 = (file) =>
     new Promise((resolve, reject) => {

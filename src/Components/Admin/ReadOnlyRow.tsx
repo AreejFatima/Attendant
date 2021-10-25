@@ -1,6 +1,6 @@
 import { MouseEvent } from "react";
 import { useHistory } from "react-router-dom";
-import {avatar} from "../../avatar";
+import { avatar } from "../../avatar";
 
 interface Props {
   id: string;
@@ -37,11 +37,10 @@ const ReadOnlyRow = ({
   phone,
   profilePic,
 }: Props): JSX.Element => {
+  const history = useHistory();
 
-  const history=useHistory()
-
-  function handleViewUserProfile(){
-    const activeUser={
+  function handleViewUserProfile() {
+    const activeUser = {
       id,
       username,
       dept,
@@ -50,19 +49,19 @@ const ReadOnlyRow = ({
       phone,
       email,
       profilePic,
-    }
-    const temp={
-      user:activeUser,
-      role:"admin"
-    }
+    };
+    const temp = {
+      user: activeUser,
+      role: "admin",
+    };
     history.push({
-      pathname: '/UserProfile',
+      pathname: "/UserProfile",
       state: temp,
     });
   }
 
   if (profilePic === "") {
-    profilePic = avatar
+    profilePic = avatar;
   }
   return (
     <tr>
@@ -71,8 +70,12 @@ const ReadOnlyRow = ({
       <td>{role}</td>
       <td>{email}</td>
       <td>
-        <button  style={{background:'none', border:'none'}} onClick={handleViewUserProfile}>
-        <img src={profilePic} alt="" height="100" width="100"/></button>
+        <button
+          style={{ background: "none", border: "none" }}
+          onClick={handleViewUserProfile}
+        >
+          <img src={profilePic} alt="" height="100" width="100" />
+        </button>
       </td>
       <td className="opration">
         <button className="button" onClick={() => removeEmployee(id)}>

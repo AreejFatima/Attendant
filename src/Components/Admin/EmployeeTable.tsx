@@ -120,9 +120,11 @@ const EmployeeTable = () => {
       setRecords(filteredRec);
     }, 1000);
   }
+
   function handleAdd(): void {
     setIsAdded(true);
   }
+
   function handleAddFormChange(event: ChangeEvent<HTMLInputElement>) {
     const fieldName = event.target.getAttribute("name");
     const fieldValue = event.target.value;
@@ -194,7 +196,8 @@ const EmployeeTable = () => {
         dispatch(patchRecordData(newRecords));
       }, 1000);
     } else {
-      alert("Missing Values, cannot add employee");
+      setIsSnackOpen(true);
+      setMessage("Missing Values: Cannot add Employee :(");
     }
   }
 
