@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
+import * as R from "ramda";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Snackbar from "@mui/material/Snackbar";
 import { IconButton } from "@mui/material";
@@ -13,8 +14,6 @@ import {
   patchUserData,
   patchUserRecords,
 } from "../Redux/Slices/userSlice";
-
-const R = require("ramda");
 
 const userRegisterPage = (): JSX.Element => {
   const usersList = useSelector((state: RootStateOrAny) => state.user.allUsers);

@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
+import * as R from "ramda";
 import Snackbar from "@mui/material/Snackbar";
 import { IconButton } from "@mui/material";
 import { useState, useEffect } from "react";
@@ -11,8 +12,6 @@ import {
   patchUserData,
 } from "../../Redux/Slices/userSlice";
 import { patchEmployeeData } from "../../Redux/Slices/adminSlice";
-
-const R = require("ramda");
 
 const EditableForm = ({
   id,

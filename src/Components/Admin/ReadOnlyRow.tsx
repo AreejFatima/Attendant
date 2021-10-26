@@ -1,5 +1,5 @@
-import { MouseEvent } from "react";
 import { useHistory } from "react-router-dom";
+import { empType } from "../../Adapter/types";
 import { avatar } from "../../avatar";
 
 interface Props {
@@ -7,17 +7,7 @@ interface Props {
   username: string;
   dept: string;
   removeEmployee: (id: string) => void;
-  editEmployee: (
-    event: MouseEvent<HTMLElement>,
-    id: string,
-    username: string,
-    dept: string,
-    pincode: string,
-    role: string,
-    email: string,
-    phone: string,
-    profilePic: string
-  ) => void;
+  editEmployee: (employee: empType) => void;
   pincode: string;
   role: string;
   email: string;
@@ -38,20 +28,19 @@ const ReadOnlyRow = ({
   profilePic,
 }: Props): JSX.Element => {
   const history = useHistory();
-
-  function handleViewUserProfile() {
-    const activeUser = {
-      id,
-      username,
-      dept,
-      pincode,
-      role,
-      phone,
-      email,
-      profilePic,
-    };
+  const activeEmployee: empType = {
+    id,
+    username,
+    dept,
+    pincode,
+    role,
+    phone,
+    email,
+    profilePic,
+  };
+  function handleViewUserProfile(activeEmp: empType) {
     const temp = {
-      user: activeUser,
+      user: activeEmp,
       role: "admin",
     };
     history.push({
@@ -72,7 +61,7 @@ const ReadOnlyRow = ({
       <td>
         <button
           style={{ background: "none", border: "none" }}
-          onClick={handleViewUserProfile}
+          onClick={() => handleViewUserProfile(activeEmployee)}
         >
           <img src={profilePic} alt="" height="100" width="100" />
         </button>
@@ -83,19 +72,7 @@ const ReadOnlyRow = ({
         </button>
         <button
           className="button2"
-          onClick={(event: MouseEvent<HTMLElement>) =>
-            editEmployee(
-              event,
-              id,
-              username,
-              dept,
-              pincode,
-              role,
-              email,
-              phone,
-              profilePic
-            )
-          }
+          onClick={() => editEmployee(activeEmployee)}
         >
           Edit
         </button>

@@ -14,10 +14,10 @@ const HourlyTabs = (props: propType): JSX.Element => {
     <div className="tabs">
       <Tabs>
         <Tab label="Weekly">
-          <TabularView data={weekly} total={40} />
+          <TabularView tableData={weekly} total={40} />
         </Tab>
         <Tab label="Monthly">
-          <TabularView data={monthly} total={160} />
+          <TabularView tableData={monthly} total={160} />
         </Tab>
       </Tabs>
     </div>

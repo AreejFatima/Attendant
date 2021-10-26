@@ -3,6 +3,7 @@ import "../App.css";
 import { useEffect } from "react";
 import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
+import * as R from "ramda";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
 import {
@@ -10,8 +11,6 @@ import {
   fetchUserDataFromGists,
 } from "../Redux/Slices/userSlice";
 import { empType, allEmpType } from "../Adapter/types";
-
-const R = require("ramda");
 
 const userLoginPage = (): JSX.Element => {
   const usersList: empType[] = useSelector(

@@ -1,9 +1,8 @@
 /* eslint-disable react/destructuring-assignment */
 import { FaUserAlt } from "react-icons/fa";
+import * as R from "ramda";
 
-const R = require("ramda");
-
-const DisplayTab = ({ array }): JSX.Element => (
+const DisplayTab = ({ availabilityList }): JSX.Element => (
   <div>
     {R.map(
       (item) => (
@@ -16,7 +15,7 @@ const DisplayTab = ({ array }): JSX.Element => (
           </li>
         </ul>
       ),
-      array
+      availabilityList
     )}
   </div>
 );

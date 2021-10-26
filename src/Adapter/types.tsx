@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
-export interface Hour {
+import { MouseEvent } from "react";
+
+export interface hourType {
   officeHour: string;
   minWH: string;
 }
@@ -19,10 +21,10 @@ export interface leaveType {
 export interface empType {
   id?: string;
   pincode?: string;
-  username: string;
-  dept: string;
-  role: string;
-  email: string;
+  username?: string;
+  dept?: string;
+  role?: string;
+  email?: string;
   phone?: string;
   profilePic?: string;
 }
@@ -51,7 +53,7 @@ export interface initialStateType {
   activeUser: any;
   leaves: leaveType[];
 }
-export interface Data_ {
+export interface availabilityType {
   available: string[];
   unavailable: string[];
   onleave: string[];
@@ -82,7 +84,7 @@ export interface hourlyType {
   WorkHours: number;
 }
 
-export interface datasetType{
+export interface dataSetType{
   label:string;
   colors:string;
   backgroundColor:string;
@@ -91,5 +93,5 @@ export interface datasetType{
 
 export interface chartType {
   labels: string[];
-  datasets:datasetType[]
+  datasets:dataSetType[]
 }

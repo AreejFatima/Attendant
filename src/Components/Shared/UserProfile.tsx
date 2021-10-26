@@ -2,20 +2,19 @@
 import { useState } from "react";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
+import * as R from "ramda";
 import { patchUserData, setActiveUser } from "../../Redux/Slices/userSlice";
 import { empType } from "../../Adapter/types";
 import UploadImage from "./UploadImage";
 import EditableForm from "./EditableForm";
 import WorkHours from "./WorkHours";
 
-const R = require("ramda");
-
 const UserProfile = (): JSX.Element => {
   const [showEditForm, setShowEditForm] = useState<boolean>(false);
   const location = useLocation();
-  const prop = location.state;
-  const activeUser: empType = prop.user;
-  const { role } = prop;
+  const locationState = location.state;
+  const activeUser: empType = locationState.user;
+  const { role } = locationState;
 
   let usersList: empType[];
 
@@ -49,7 +48,10 @@ const UserProfile = (): JSX.Element => {
             className="left"
             style={{ width: "20%", marginTop: "0.2%", marginLeft: "0%" }}
           >
-            <UploadImage onUpload={uploadProfilePicture} activeUser={activeUser} />
+            <UploadImage
+              onUpload={uploadProfilePicture}
+              activeUser={activeUser}
+            />
             <h3 style={{ color: "white" }}>{activeUser.username}</h3>
             <button className="edit" onClick={showForm}>
               Edit Profile

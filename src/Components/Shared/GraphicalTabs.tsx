@@ -15,13 +15,13 @@ const GraphicalTabs = (props: propType): JSX.Element => {
     <div className="tabs">
       <Tabs>
         <Tab label="Daily">
-          <LineChart data={daily} />
+          <LineChart dataToPlot={daily} />
         </Tab>
         <Tab label="Weekly">
-          <LineChart data={weekly} />
+          <LineChart dataToPlot={weekly} />
         </Tab>
         <Tab label="Monthly">
-          <LineChart data={monthly} />
+          <LineChart dataToPlot={monthly} />
         </Tab>
       </Tabs>
     </div>

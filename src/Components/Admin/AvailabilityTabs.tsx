@@ -1,21 +1,21 @@
 import Tabs from "../Shared/Tabs";
-import { Data_ } from "../../Adapter/types";
+import { availabilityType } from "../../Adapter/types";
 import DisplayTab from "./DisplayTab";
 import Tab from "../Shared/Tab";
 
-const AvailabilityTabs = (props: Data_): JSX.Element => {
+const AvailabilityTabs = (props: availabilityType): JSX.Element => {
   const { available, unavailable, onleave } = props;
   return (
     <div className="tabs">
       <Tabs>
         <Tab label="Available">
-          <DisplayTab array={available} />
+          <DisplayTab availabilityList={available} />
         </Tab>
         <Tab label="Unavailable">
-          <DisplayTab array={unavailable} />
+          <DisplayTab availabilityList={unavailable} />
         </Tab>
         <Tab label="OnLeave">
-          <DisplayTab array={onleave} />
+          <DisplayTab availabilityList={onleave} />
         </Tab>
       </Tabs>
     </div>

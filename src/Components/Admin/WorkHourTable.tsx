@@ -17,11 +17,11 @@ const sortTypes = {
   },
 };
 
-interface Data {
-  data: workType[];
+interface propType {
+  workHourLog: workType[];
 }
 
-const WorkHourTable = (props: Data) => {
+const WorkHourTable = (props: propType) => {
   const [currentSort, setCurrentsort] = useState<string>("default");
 
   const onSortChange = (): void => {
@@ -34,10 +34,10 @@ const WorkHourTable = (props: Data) => {
     setCurrentsort(nextSort);
   };
 
-  const { data }: Data = props;
+  const { workHourLog }: propType = props;
 
   return (
-    data.length > 0 && (
+    workHourLog.length > 0 && (
       <div className="wh">
         <table>
           <thead>
@@ -58,7 +58,7 @@ const WorkHourTable = (props: Data) => {
             </tr>
           </thead>
           <tbody>
-            {[...data].sort(sortTypes[currentSort].fn).map((p) => (
+            {[...workHourLog].sort(sortTypes[currentSort].fn).map((p) => (
               <tr>
                 <td>{p.id}</td>
                 <td>{p.totalHours}hrs</td>

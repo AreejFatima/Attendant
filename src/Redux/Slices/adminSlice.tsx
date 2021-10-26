@@ -9,7 +9,7 @@ import {
   patchSettings,
 } from "../../Adapter/gists";
 import {
-  Hour,
+  hourType,
   empType,
   recordType,
   initialStateTypes,
@@ -57,7 +57,7 @@ export const patchRecordData = createAsyncThunk(
 
 export const patchSettingData = createAsyncThunk(
   "admin/patchSettingData",
-  async (hours: Hour) => {
+  async (hours: hourType) => {
     const stringHours = JSON.stringify(hours);
     patchSettings(stringHours);
   }

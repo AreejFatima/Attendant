@@ -2,6 +2,7 @@
 import { ChangeEvent, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import * as R from "ramda";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
 import { RiAddFill } from "react-icons/ri";
@@ -18,8 +19,6 @@ import { getUsers, getRecords } from "../../Adapter/gists";
 import SearchBar from "../User/SearchBar";
 import Modal from "./Modal";
 import { avatar } from "../../avatar";
-
-const R = require("ramda");
 
 const EmployeeTable = () => {
   const [employees, setEmployees] = useState<empType[]>([]);
@@ -84,15 +83,12 @@ const EmployeeTable = () => {
   }
 
   // Deleting Employee and Records
-
   function removeEmployee(eid: string): void {
     setIsSnackOpen(true);
     setMessage("Employee Deleted Sucessfully!");
     const tempEmp: empType[] = [...employees];
     const tempRec: recordType[] = [...records];
-
-    const toDelete: empType = R.find(R.propEq("id", eid), tempEmp);
-
+    const toDeleteEmp: empType = R.find(R.propEq("id", eid), tempEmp);
     const toDeleteRec: recordType = R.find(R.propEq("id", eid), tempRec);
 
     const filteredRecords: recordType[] = tempRec.filter(
@@ -100,25 +96,24 @@ const EmployeeTable = () => {
     );
 
     const filteredEmployees: empType[] = tempEmp.filter(
-      (item) => item !== toDelete
+      (item) => item !== toDeleteEmp
     );
+
     dispatch(patchEmployeeData(filteredEmployees));
     dispatch(patchRecordData(filteredRecords));
 
-    setTimeout(() => {
-      const toDeleted: empType = R.find(R.propEq("id", eid))(employees);
-      const filteredEmp: empType[] = employees.filter(
-        (item) => item !== toDeleted
-      );
+    const deletedEmp: empType = R.find(R.propEq("id", eid))(employees);
+    const filteredEmp: empType[] = employees.filter(
+      (item) => item !== deletedEmp
+    );
 
-      const toDeletedRec: recordType = R.find(R.propEq("id", eid))(records);
-      const filteredRec: recordType[] = records.filter(
-        (item) => item !== toDeletedRec
-      );
+    const deletedRec: recordType = R.find(R.propEq("id", eid))(records);
+    const filteredRec: recordType[] = records.filter(
+      (item) => item !== deletedRec
+    );
 
-      setEmployees(filteredEmp);
-      setRecords(filteredRec);
-    }, 1000);
+    setEmployees(filteredEmp);
+    setRecords(filteredRec);
   }
 
   function handleAdd(): void {
@@ -133,7 +128,7 @@ const EmployeeTable = () => {
     setAddFormData(newFormData);
   }
 
-  function pad(num: number | string, size) {
+  function pad(num: number | string, size: number) {
     num = num.toString();
     while (num.length < size) num = `0${num}`;
     return num;
@@ -190,44 +185,31 @@ const EmployeeTable = () => {
         email: "",
       };
       setAddFormData(initial);
-
-      setTimeout(() => {
-        dispatch(patchEmployeeData(newEmployees));
-        dispatch(patchRecordData(newRecords));
-      }, 1000);
+      dispatch(patchEmployeeData(newEmployees));
+      dispatch(patchRecordData(newRecords));
     } else {
       setIsSnackOpen(true);
       setMessage("Missing Values: Cannot add Employee :(");
     }
   }
 
-  function editEmployee(
-    event,
-    id,
-    username,
-    dept,
-    pincode,
-    role,
-    email,
-    phone,
-    profilePic
-  ): void {
+  function editEmployee(employee: empType): void {
     const currentTemp = {
-      id,
-      username,
-      dept,
-      pincode,
-      role,
-      email,
-      phone,
-      profilePic,
+      id: employee.id,
+      username: employee.username,
+      dept: employee.dept,
+      pincode: employee.pincode,
+      role: employee.role,
+      email: employee.email,
+      phone: employee.phone,
+      profilePic: employee.profilePic,
     };
     setcurrentEmpId(currentTemp);
     const tempEmp = {
-      username,
-      dept,
-      role,
-      email,
+      username: employee.username,
+      dept: employee.dept,
+      role: employee.role,
+      email: employee.email,
     };
     setEditFormData(tempEmp);
   }
@@ -352,7 +334,6 @@ const EmployeeTable = () => {
         </button>
       </div>
       <Modal />
-      {/* <Settings /> */}
       <div className="employee-settings">
         <h4
           style={{

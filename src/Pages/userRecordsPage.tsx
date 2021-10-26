@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useSelector, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
+import * as R from "ramda";
 import "react-bootstrap-table/dist/react-bootstrap-table-all.min.css";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
 import SearchBar from "../Components/User/SearchBar";
 import RecordsTable from "../Components/User/RecordsTable";
 import { recordType, individualRecType } from "../Adapter/types";
-
-const R = require("ramda");
 
 const userRecordsPage = (): JSX.Element => {
   const [search, setSearch] = useState<string>("");
@@ -58,7 +57,7 @@ const userRecordsPage = (): JSX.Element => {
       <p style={{ fontStyle: "italic", color: "grey", fontSize: "13px" }}>
         Search by Date
       </p>
-      <RecordsTable data={recordsByDate} />
+      <RecordsTable recordsData={recordsByDate} />
     </div>
   );
 };

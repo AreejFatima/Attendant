@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, RootStateOrAny } from "react-redux";
+import * as R from "ramda";
 import {
   recordType,
   hourlyType,
@@ -8,8 +9,6 @@ import {
 } from "../../Adapter/types";
 import GraphicalTabs from "./GraphicalTabs";
 import HourlyTabs from "./HourlyTabs";
-
-const R = require("ramda");
 
 interface propType {
   id: string;

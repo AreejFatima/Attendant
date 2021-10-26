@@ -3,6 +3,7 @@ import "../App.css";
 import { FC, useState, useEffect } from "react";
 import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
+import * as R from "ramda";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Snackbar from "@mui/material/Snackbar";
 import { IconButton } from "@mui/material";
@@ -12,7 +13,6 @@ import { patchLeaveData } from "../Redux/Slices/userSlice";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
 import { leaveType } from "../Adapter/types";
 
-const R = require("ramda");
 
 const userLeavePage: FC = () => {
   const id = useSelector((state: RootStateOrAny) => state.user.activeUser.id);

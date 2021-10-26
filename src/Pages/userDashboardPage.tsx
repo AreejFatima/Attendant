@@ -3,6 +3,7 @@
 /* eslint-disable prefer-destructuring */
 import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
+import * as R from "ramda";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { CgArrowLongRight, CgArrowLongLeft } from "react-icons/cg";
@@ -13,10 +14,6 @@ import {
   fetchUserDataFromGists,
 } from "../Redux/Slices/userSlice";
 import { leaveType, recordType, empType } from "../Adapter/types";
-
-import "../App.css";
-
-const R = require("ramda");
 
 function calculateWorkHours(st: string, et: string) {
   const startTime = moment(st, "HH:mm:ss A");

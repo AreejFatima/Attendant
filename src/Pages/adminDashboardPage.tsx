@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { FaBackward } from "react-icons/fa";
+import * as R from "ramda";
 import { AiFillSetting } from "react-icons/ai";
 import "font-awesome/css/font-awesome.min.css";
 import { fetchDataFromGists } from "../Redux/Slices/adminSlice";
@@ -9,8 +10,6 @@ import WorkHourTable from "../Components/Admin/WorkHourTable";
 import AvailabilityTabs from "../Components/Admin/AvailabilityTabs";
 import SearchBar from "../Components/User/SearchBar";
 import { recordType, workType, allEmpType } from "../Adapter/types";
-
-const R = require("ramda");
 
 const adminDashboardPage = (): JSX.Element => {
   const timestamp = R.split(", ", new Date().toLocaleString());
@@ -176,7 +175,7 @@ const adminDashboardPage = (): JSX.Element => {
               12 month
             </button>
           </div>
-          <WorkHourTable data={workHourLog} />
+          <WorkHourTable workHourLog={workHourLog} />
         </div>
       </div>
     </div>

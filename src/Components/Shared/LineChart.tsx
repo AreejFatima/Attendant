@@ -10,11 +10,11 @@ const options = {
 };
 
 interface propType {
-  data: () => chartType;
+  dataToPlot: () => chartType;
 }
 
 const LineChart = (props: propType): JSX.Element => {
-  const { data } = props;
+  const { dataToPlot } = props;
   return (
     <>
       <div
@@ -26,7 +26,7 @@ const LineChart = (props: propType): JSX.Element => {
           marginBottom: "2%",
         }}
       >
-        {data ? <Line data={data} options={options} /> : null}
+        {dataToPlot ? <Line data={dataToPlot} options={options} /> : null}
       </div>
     </>
   );

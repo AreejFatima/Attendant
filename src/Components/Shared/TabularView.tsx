@@ -1,12 +1,12 @@
 import { hourlyType } from "../../Adapter/types";
 
 interface propType {
-  data: hourlyType[];
+  tableData: hourlyType[];
   total: number;
 }
 
 const TabularView = (props: propType) => {
-  const { data, total } = props;
+  const { tableData, total } = props;
   function checkBoundaries(user: hourlyType) {
     const calculated: number = user.WorkHours;
     if (calculated > total) {
@@ -28,7 +28,7 @@ const TabularView = (props: propType) => {
         </tr>
       </thead>
       <tbody>
-        {data.map((u) => (
+        {tableData.map((u) => (
           <tr style={{ backgroundColor: checkBoundaries(u) }}>
             <td>{u.date}</td>
             <td>{total}</td>
