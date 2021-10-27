@@ -16,19 +16,16 @@ let settingGist;
 const allgists = [];
 
 // Getting All Gists, and then Data from Gists (Helper Functions)
-export async function getallGists() {
-  try {
-    const response = await octokit.request("GET /users/AreejFatima/gists", {
-      username: "AreejFatima",
-    });
+
+function pipeFunctions(gistArray, response) {
+  R.pipe(
     R.map((gist) => {
       const temp = {
         filename: R.keys(gist.files).toString(),
         id: gist.id,
       };
-      allgists.push(temp);
-    }, response.data);
-
+      gistArray.push(temp);
+    }, response),
     R.map((item) => {
       switch (item.filename) {
         case "userStore.txt":
@@ -44,7 +41,16 @@ export async function getallGists() {
           settingGist = item.id;
           break;
       }
-    }, allgists);
+    }, gistArray)
+  );
+}
+
+export async function getallGists() {
+  try {
+    const response = await octokit.request("GET /users/AreejFatima/gists", {
+      username: "AreejFatima",
+    });
+    pipeFunctions(allgists, response.data);
   } catch (error) {
     console.log(error);
   }
