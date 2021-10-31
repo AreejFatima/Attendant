@@ -25,15 +25,13 @@ const initialState: initialStateTypes = {
 export const fetchDataFromGists = createAsyncThunk(
   "admin/fetchData",
   async (_, thunkApi) => {
-    getallGists();
-    setTimeout(() => {
-      getUsers().then((data) => {
-        thunkApi.dispatch(setInitialEmployees(JSON.parse(data)));
-      });
-      getRecords().then((data) => {
-        thunkApi.dispatch(setInitialERecords(JSON.parse(data)));
-      });
-    }, 1000);
+    await getallGists();
+    getUsers().then((data) => {
+      thunkApi.dispatch(setInitialEmployees(JSON.parse(data)));
+    });
+    getRecords().then((data) => {
+      thunkApi.dispatch(setInitialERecords(JSON.parse(data)));
+    });
   }
 );
 

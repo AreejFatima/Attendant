@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
+import { useSelector, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { FaBackward } from "react-icons/fa";
 import * as R from "ramda";
 import { AiFillSetting } from "react-icons/ai";
 import "font-awesome/css/font-awesome.min.css";
-import { fetchDataFromGists } from "../Redux/Slices/adminSlice";
 import WorkHourTable from "../Components/Admin/WorkHourTable";
 import AvailabilityTabs from "../Components/Admin/AvailabilityTabs";
 import SearchBar from "../Components/User/SearchBar";
 import { recordType, workType, allEmpType } from "../Adapter/types";
 
 const adminDashboardPage = (): JSX.Element => {
+  const [errors, setErrors] = useState("");
   const timestamp = R.split(", ", new Date().toLocaleString());
   const currentDate: string = timestamp[0];
   const [search, setSearch] = useState<string>("");
@@ -25,11 +25,17 @@ const adminDashboardPage = (): JSX.Element => {
   const recordz: recordType = useSelector(
     (state: RootStateOrAny) => state.admin.records
   );
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchDataFromGists());
-    assembleWHdata(null);
+    try {
+      if (!R.isEmpty(recordz)) {
+        assembleWHdata(null);
+      } else {
+        throw new TypeError("Cannot Display Dashboard, Employees Not Found");
+      }
+    } catch (error) {
+      setErrors(error);
+    }
   }, []);
 
   // Calculating work hours
@@ -110,6 +116,10 @@ const adminDashboardPage = (): JSX.Element => {
   const searchString: string = search;
   if (searchString.length > 0) {
     searchResults = allEmployees.filter((e) => e.id.match(searchString));
+  }
+
+  if (errors) {
+    return <h1>{errors}</h1>;
   }
 
   return (

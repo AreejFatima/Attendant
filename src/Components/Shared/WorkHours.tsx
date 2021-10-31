@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { useSelector, RootStateOrAny } from "react-redux";
 import * as R from "ramda";
@@ -62,7 +63,7 @@ const WorkHours = (props: propType): JSX.Element => {
       dailyRecords = tempRec;
     }
   }
-  recordsByDate();
+    recordsByDate();
 
   function dailyChartData(): chartType {
     let obj: chartType;

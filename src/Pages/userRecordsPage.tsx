@@ -21,18 +21,19 @@ const userRecordsPage = (): JSX.Element => {
   const allRecords = [];
   let recordsByDate: individualRecType[] = [];
 
-  R.map((item) => {
-    if (item.id === id) {
-      allRecords.push(item.Records);
-    }
-  }, userRecords);
+  
+    R.map((item) => {
+      if (item.id === id) {
+        allRecords.push(item.Records);
+      }
+    }, userRecords);
 
-  R.map((item) => {
-    R.map((subRecord) => {
-      recordsByDate.push(subRecord);
-    }, item);
-  }, allRecords);
-
+    R.map((item) => {
+      R.map((subRecord) => {
+        recordsByDate.push(subRecord);
+      }, item);
+    }, allRecords);
+  
   function handleChange(event): void {
     const searchValue = event.target.value;
     setSearch(searchValue);

@@ -13,9 +13,10 @@ import { patchLeaveData } from "../Redux/Slices/userSlice";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
 import { leaveType } from "../Adapter/types";
 
-
 const userLeavePage: FC = () => {
-  const id = useSelector((state: RootStateOrAny) => state.user.activeUser.id);
+  const activeUser = useSelector(
+    (state: RootStateOrAny) => state.user.activeUser
+  );
   const stateLeaves: leaveType[] = useSelector(
     (state: RootStateOrAny) => state.user.leaves
   );
@@ -52,7 +53,7 @@ const userLeavePage: FC = () => {
     setIsSnackOpen(true);
     setMessage("Leave Submitted!");
     const tempLeave: leaveType = {
-      userid: id,
+      userid: activeUser.id,
       status: "pending",
       name: values.name,
       dept: values.dept,
@@ -75,6 +76,7 @@ const userLeavePage: FC = () => {
     else if (!values.days) errors.days = "Required!";
     return errors;
   };
+
   return (
     <div>
       <div className="aicon">

@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import { ChangeEvent, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector,RootStateOrAny } from "react-redux";
 import * as R from "ramda";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
@@ -22,6 +22,7 @@ import { avatar } from "../../avatar";
 
 const EmployeeTable = () => {
   const [employees, setEmployees] = useState<empType[]>([]);
+  const [errors, setErrors] = useState("");
   const [records, setRecords] = useState<recordType[]>([]);
   const [search, setSearch] = useState<string>("");
   const [isAdded, setIsAdded] = useState<boolean>(false);
@@ -30,6 +31,9 @@ const EmployeeTable = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   let tableData = [...employees];
+  const allEmployees: empType[] = useSelector(
+    (state: RootStateOrAny) => state.admin.employees
+  );
   const [currentEmpId, setcurrentEmpId] = useState<empType>({
     id: null,
     dept: "",
@@ -61,6 +65,16 @@ const EmployeeTable = () => {
     getRecords().then((data) => {
       setRecords(JSON.parse(data));
     });
+  }, []);
+
+  useEffect(() => {
+    try {
+      if (R.isEmpty(allEmployees)) {
+        throw new TypeError("Cannot Display Settings, Employees Not Found");
+      }
+    } catch (error) {
+      setErrors(error);
+    }
   }, []);
 
   function SnackBarClose(): void {
@@ -306,6 +320,9 @@ const EmployeeTable = () => {
     );
   }
 
+  if (errors) {
+    return <h1>{errors}</h1>;
+  }
   return (
     <>
       <Snackbar

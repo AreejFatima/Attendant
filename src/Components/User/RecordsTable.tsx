@@ -20,7 +20,11 @@ const RecordsTable = (props: propType) => {
       </thead>
       <tbody>
         {recordsData.map((d) => (
-          <RecordsRow date={d.date} punchIn={d.punchIn} punchOut={d.punchOut} />
+          <RecordsRow
+            date={d.date}
+            punchIn={d.punchIn}
+            punchOut={d.punchOut}
+          />
         ))}
       </tbody>
     </Table>
