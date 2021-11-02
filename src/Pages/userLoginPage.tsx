@@ -23,6 +23,7 @@ const userLoginPage = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(fetchUserDataFromGists());
+    localStorage.removeItem('activeUser')
   }, []);
 
   const initialValues: allEmpType = {

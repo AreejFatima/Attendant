@@ -29,7 +29,9 @@ const userRecordsPage = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(fetchUserDataFromGists());
-    dispatch( setActiveUser(JSON.parse(window.localStorage.getItem("activeUser"))));
+    dispatch(
+      setActiveUser(JSON.parse(window.localStorage.getItem("activeUser")))
+    );
   }, []);
 
   R.map((item) => {

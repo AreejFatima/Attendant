@@ -1,4 +1,3 @@
-/* eslint-disable react/no-array-index-key */
 import { ChangeEvent, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
@@ -12,6 +11,7 @@ import {
   patchUserData,
   patchUserRecords,
   fetchUserDataFromGists,
+  setActiveUser,
 } from "../../Redux/Slices/userSlice";
 import { empType, recordType } from "../../Adapter/types";
 import ReadOnlyRow from "./ReadOnlyRow";
@@ -78,6 +78,7 @@ const EmployeeTable = () => {
     setSearch(searchValue);
   }
 
+  // search employees by username, role and dept
   const searchString: string = search;
   if (searchString.length > 0) {
     tableData = tableData.filter(
@@ -274,10 +275,9 @@ const EmployeeTable = () => {
       "Profile",
       "Action",
     ];
-    return headerElement.map((key, index) => (
-      <th key={index}>{key.toUpperCase()}</th>
-    ));
+    return headerElement.map((key) => <th>{key.toUpperCase()}</th>);
   }
+  
   // Form Body
   function renderBody(data) {
     return (
@@ -312,9 +312,21 @@ const EmployeeTable = () => {
     );
   }
 
-  function handleLogout(){
-    Auth.signout()
-    history.push("AdminLogin")
+  function handleLogout() {
+    const inactive = {
+      id: "",
+      pincode: "",
+      username: "",
+      dept: "",
+      email: "",
+      role: "",
+      phone: "",
+      profilePic: "",
+    };
+    dispatch(setActiveUser(inactive));
+    localStorage.removeItem("activeUser");
+    Auth.signout();
+    history.push("AdminLogin");
   }
 
   return (

@@ -4,10 +4,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
 import ErrorDiv from "../Shared/ErrorDiv";
 import { patchSettingData } from "../../Redux/Slices/userSlice";
-import { hourType } from "../../Adapter/types";
+import { hourType,errorType } from "../../Adapter/types";
 
 const Settings: FC = () => {
   const dispatch = useDispatch();
+
   const initialValues: hourType = {
     officeHour: "",
     minWH: "",
@@ -22,9 +23,12 @@ const Settings: FC = () => {
   }
 
   function validate(values: hourType) {
-    const errors: any = {};
+    let errors: errorType = { officeHour: "", minWH: "" };
     if (values.officeHour === "null") errors.officeHour = "Required";
     if (!values.minWH) errors.minWH = "Required";
+    else {
+      errors = {};
+    }
     return errors;
   }
   return (

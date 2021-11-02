@@ -1,5 +1,3 @@
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-return-await */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getData, getallGists, patchData } from "../../Adapter/gists";
 import {
@@ -10,12 +8,6 @@ import {
   hourType,
 } from "../../Adapter/types";
 
-const initialState: initialStateType = {
-  allUsers: [],
-  userRecords: [],
-  activeUser: {},
-  leaves: [],
-};
 let gistObj;
 
 // fetching data from gists and setting states
@@ -67,6 +59,13 @@ export const patchSettingData = createAsyncThunk(
     patchData("settings.txt", stringHours, gistObj.settingGist);
   }
 );
+
+const initialState: initialStateType = {
+  allUsers: [],
+  userRecords: [],
+  activeUser: {},
+  leaves: [],
+};
 
 const userSlice = createSlice({
   name: "user",

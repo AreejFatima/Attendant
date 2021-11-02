@@ -9,7 +9,10 @@ import WorkHourTable from "../Components/Admin/WorkHourTable";
 import AvailabilityTabs from "../Components/Admin/AvailabilityTabs";
 import SearchBar from "../Components/User/SearchBar";
 import { recordType, workType, allEmpType } from "../Adapter/types";
-import { fetchUserDataFromGists } from "../Redux/Slices/userSlice";
+import {
+  fetchUserDataFromGists,
+  setActiveUser,
+} from "../Redux/Slices/userSlice";
 import Auth from "../Routing/Auth";
 
 const adminDashboardPage = (): JSX.Element => {
@@ -104,7 +107,19 @@ const adminDashboardPage = (): JSX.Element => {
   assembleData();
 
   function handleLogout() {
+    const inactive = {
+      id: "",
+      pincode: "",
+      username: "",
+      dept: "",
+      email: "",
+      role: "",
+      phone: "",
+      profilePic: "",
+    };
     Auth.signout();
+    dispatch(setActiveUser(inactive));
+    localStorage.removeItem("activeUser");
     history.push("/AdminLogin");
   }
   // SearchBar

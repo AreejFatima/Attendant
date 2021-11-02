@@ -4,9 +4,12 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as R from "ramda";
-import { fetchUserDataFromGists } from "../Redux/Slices/userSlice";
+import {
+  fetchUserDataFromGists,
+  setActiveUser,
+} from "../Redux/Slices/userSlice";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
-import { allEmpType, empType } from "../Adapter/types";
+import { allEmpType, empType, errorType } from "../Adapter/types";
 import Auth from "../Routing/Auth";
 
 const adminLoginPage: FC = () => {
@@ -19,6 +22,7 @@ const adminLoginPage: FC = () => {
   // Fetching Records and users from gists
   useEffect(() => {
     dispatch(fetchUserDataFromGists());
+    localStorage.removeItem("activeUser");
   }, []);
 
   const initialValues: allEmpType = {
@@ -26,17 +30,28 @@ const adminLoginPage: FC = () => {
     pin: "",
   };
 
-  const onSubmit = (): void => {
-    Auth.authenticate()
+  const onSubmit = (values): void => {
+    const enteredId = values.id;
+    const enteredPin = values.pin;
+    R.map((item) => {
+      if (item.id === enteredId && item.pincode === enteredPin) {
+        dispatch(setActiveUser(item));
+        window.localStorage.setItem("activeUser", JSON.stringify(item));
+      }
+    }, usersList);
+    Auth.authenticate();
     history.push("/AdminDashboard");
   };
   const validate = (values: allEmpType) => {
-    const errors: any = {};
+    let errors: errorType = { id: "", pin: "" };
     if (!values.id || values.id === "") errors.id = "Admin Id cannot be blank!";
     else if (values.id !== admin.id) errors.id = "Invalid Admin Id!";
-    if (!values.pin || values.pin === "")
+    else if (!values.pin || values.pin === "")
       errors.pin = "Pincode cannot be blank!";
     else if (values.pin !== admin.pincode) errors.pin = "Invalid Pincode";
+    else {
+      errors = {};
+    }
     return errors;
   };
 

@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-import { MouseEvent } from "react";
-
 export interface hourType {
   officeHour: string;
   minWH: string;
@@ -77,6 +74,10 @@ export interface errorType {
   email?: string;
   dept?: string;
   phone?: string;
+  officeHour?:string;
+  minWH?:string;
+  id?:string;
+  pin?:string
 }
 
 export interface hourlyType {
@@ -84,14 +85,14 @@ export interface hourlyType {
   WorkHours: number;
 }
 
-export interface dataSetType{
-  label:string;
-  colors:string;
-  backgroundColor:string;
-  data:number[]
+export interface dataSetType {
+  label: string;
+  colors: string;
+  backgroundColor: string;
+  data: number[];
 }
 
 export interface chartType {
   labels: string[];
-  datasets:dataSetType[]
+  datasets: dataSetType[];
 }

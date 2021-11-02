@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { useSelector, RootStateOrAny } from "react-redux";
 import * as R from "ramda";
@@ -13,13 +12,11 @@ import HourlyTabs from "./HourlyTabs";
 
 interface propType {
   id: string;
-  role: string;
   type: string;
 }
 
 const WorkHours = (props: propType): JSX.Element => {
-  const { id, role, type } = props;
-
+  const { id, type } = props;
   const [userRecords, setUserRecords] = useState<individualRecType[]>([]);
   let weeklyRecords: hourlyType[] = [];
   let dailyRecords: hourlyType[] = [];
@@ -30,11 +27,12 @@ const WorkHours = (props: propType): JSX.Element => {
   const weeklydata: number[] = [];
   const monthlylabels: string[] = [];
   const monthlydata: number[] = [];
+  const recordsList: recordType = useSelector(
+    (state: RootStateOrAny) => state.user.userRecords
+  );
 
   useEffect(() => {
-    const recordObject: recordType = JSON.parse(
-      window.localStorage.getItem("activeRecords")
-    );
+    const recordObject: recordType = R.find(R.propEq("id", id))(recordsList);
     setUserRecords(recordObject.Records);
   }, []);
   const byDate = R.groupBy((record) => record.date);
@@ -54,7 +52,7 @@ const WorkHours = (props: propType): JSX.Element => {
         };
         tempRec.push(temp2);
       });
-      dailyRecords = tempRec;
+      dailyRecords = [...tempRec];
     }
   }
   recordsByDate();
@@ -161,9 +159,9 @@ const WorkHours = (props: propType): JSX.Element => {
           startDate = incrementDate(endDate, 1);
         }
         if (n >= 20) {
-          monthlyRecords = tempWeek;
+          monthlyRecords = [...tempWeek];
         } else {
-          weeklyRecords = tempWeek;
+          weeklyRecords = [...tempWeek];
         }
       }
     }

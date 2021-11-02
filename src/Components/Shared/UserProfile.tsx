@@ -1,9 +1,12 @@
-/* eslint-disable react/void-dom-elements-no-children */
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import * as R from "ramda";
-import { fetchUserDataFromGists, patchUserData, setActiveUser } from "../../Redux/Slices/userSlice";
+import {
+  fetchUserDataFromGists,
+  patchUserData,
+  setActiveUser,
+} from "../../Redux/Slices/userSlice";
 import { empType } from "../../Adapter/types";
 import UploadImage from "./UploadImage";
 import EditableForm from "./EditableForm";
@@ -14,7 +17,6 @@ const UserProfile = (): JSX.Element => {
   const location = useLocation();
   const locationState = location.state;
   const activeUser: empType = locationState.user;
-  const { role } = locationState;
 
   const usersList: empType[] = useSelector(
     (state: RootStateOrAny) => state.user.allUsers
@@ -23,9 +25,11 @@ const UserProfile = (): JSX.Element => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchUserDataFromGists())
-    dispatch(setActiveUser(JSON.parse(window.localStorage.getItem("activeUser"))))
-  }, [])
+    dispatch(fetchUserDataFromGists());
+    dispatch(
+      setActiveUser(JSON.parse(window.localStorage.getItem("activeUser")))
+    );
+  }, []);
 
   function showForm(): void {
     setShowEditForm((prev) => !prev);
@@ -39,7 +43,7 @@ const UserProfile = (): JSX.Element => {
     tempUsers[index] = toUpdate;
     dispatch(patchUserData(tempUsers));
     dispatch(setActiveUser(toUpdate));
-    localStorage.activeUser=JSON.stringify(toUpdate)
+    localStorage.activeUser = JSON.stringify(toUpdate);
   }
 
   return (
@@ -97,11 +101,7 @@ const UserProfile = (): JSX.Element => {
                 <div>
                   {" "}
                   {activeUser.id ? (
-                    <WorkHours
-                      id={activeUser.id}
-                      role={role}
-                      type="graphical"
-                    />
+                    <WorkHours id={activeUser.id} type="graphical" />
                   ) : null}
                 </div>
               </div>
@@ -109,7 +109,7 @@ const UserProfile = (): JSX.Element => {
                 <div>
                   {" "}
                   {activeUser.id ? (
-                    <WorkHours id={activeUser.id} role={role} type="tabular" />
+                    <WorkHours id={activeUser.id} type="tabular" />
                   ) : null}
                 </div>
               </div>
@@ -129,7 +129,6 @@ const UserProfile = (): JSX.Element => {
                 phone={activeUser.phone}
                 profilePic={activeUser.profilePic}
                 showEditForm={showEditForm}
-                type={role}
               />
             </div>
           )}

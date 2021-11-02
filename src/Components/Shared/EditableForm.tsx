@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
@@ -24,7 +23,6 @@ const EditableForm = ({
   phone,
   profilePic,
   showEditForm,
-  type,
 }) => {
   const usersList: empType[] = useSelector(
     (state: RootStateOrAny) => state.user.allUsers
@@ -44,7 +42,9 @@ const EditableForm = ({
 
   useEffect(() => {
     dispatch(fetchUserDataFromGists);
-    dispatch(setActiveUser(JSON.parse(window.localStorage.getItem('activeUser'))))
+    dispatch(
+      setActiveUser(JSON.parse(window.localStorage.getItem("activeUser")))
+    );
   }, []);
 
   function SnackBarClose(): void {
@@ -102,8 +102,8 @@ const EditableForm = ({
     };
     tempUsers[index] = editedUser;
     dispatch(patchUserData(tempUsers));
-    localStorage.activeUser=JSON.stringify(editedUser)
-    dispatch(setActiveUser(editedUser))
+    localStorage.activeUser = JSON.stringify(editedUser);
+    dispatch(setActiveUser(editedUser));
   }
 
   return (

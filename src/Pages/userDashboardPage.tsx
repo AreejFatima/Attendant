@@ -1,7 +1,5 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-lone-blocks */
-/* eslint-disable no-template-curly-in-string */
 /* eslint-disable prefer-destructuring */
+/* eslint-disable no-unused-vars */
 import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as R from "ramda";
@@ -14,8 +12,8 @@ import {
   setActiveUser,
   fetchUserDataFromGists,
 } from "../Redux/Slices/userSlice";
-import { leaveType, recordType} from "../Adapter/types";
-import Auth from '../Routing/Auth'
+import { leaveType, recordType } from "../Adapter/types";
+import Auth from "../Routing/Auth";
 
 function calculateWorkHours(st: string, et: string) {
   const startTime = moment(st, "HH:mm:ss A");
@@ -31,7 +29,7 @@ function calculateWorkHours(st: string, et: string) {
 
 const userDashboardPage = () => {
   const [errors, setErrors] = useState("");
-  const activeUser=JSON.parse(window.localStorage.getItem('activeUser'))
+  const activeUser = JSON.parse(window.localStorage.getItem("activeUser"));
   const userRecords: recordType[] = useSelector(
     (state: RootStateOrAny) => state.user.userRecords
   );
@@ -46,27 +44,20 @@ const userDashboardPage = () => {
 
   useEffect(() => {
     dispatch(fetchUserDataFromGists());
-    dispatch(setActiveUser(activeUser))
+    dispatch(setActiveUser(activeUser));
   }, []);
 
   useEffect(() => {
-    try {
-      if (!R.isEmpty(activeUser)) {
-        const checkUser = R.find(R.propEq("userid", activeUser.id))(userLeaves);
-        const checkDate = checkUser !== undefined ? checkUser.appliedOn : null;
-        if (checkDate === date[0]) {
-          setisDisabled(true);
-        } else {
-          setisDisabled(false);
-        }
+    if (!R.isEmpty(activeUser)) {
+      const checkUser = R.find(R.propEq("userid", activeUser.id))(userLeaves);
+      const checkDate = checkUser !== undefined ? checkUser.appliedOn : null;
+      if (checkDate === date[0]) {
+        setisDisabled(true);
       } else {
-        throw new TypeError("Cannot Display Dashboard, No User is Active");
+        setisDisabled(false);
       }
-    } catch (error) {
-      setErrors(error);
     }
   }, []);
-
   function addUserRecord(
     userRecordsArray: recordType[],
     id: string,
@@ -119,15 +110,15 @@ const userDashboardPage = () => {
       phone: "",
       profilePic: "",
     };
-    Auth.signout()
+    Auth.signout();
     dispatch(setActiveUser(inactive));
+    localStorage.removeItem("activeUser");
     history.push("/");
   }
 
   function handleProfile() {
     const temp = {
       user: activeUser,
-      role: "user",
     };
     history.push({
       pathname: "/UserProfile",
@@ -136,67 +127,61 @@ const userDashboardPage = () => {
   }
 
   function handleRecords() {
-    try {
-      history.push("/UserRecords");
-    } catch (error) {
-      setErrors(error);
-    }
+    history.push("/UserRecords");
   }
 
-  {
-    if (errors) {
-      return <h1>{errors}</h1>;
-    }
-    return (
-      <div>
-        {!R.isEmpty(activeUser) ? (
-          <img src={activeUser.profilePic} alt="Not Found" className="avatar" />
-        ) : (
-          <div className="avatar" style={{ marginLeft: "46%" }}>
-            <div className="avatar__letters">{`Hi ${
-              activeUser.username ? activeUser.username : "User"
-            }`}</div>
-          </div>
-        )}
-        <br />
-        <h2 style={{ marginTop: "2%" }} className="title">
-          Hi, {activeUser.username}!
-        </h2>
-        <div className="buttons">
-          {!isWorking && (
-            <button className="btnz" onClick={handlePunch}>
-              <CgArrowLongRight size={40} className="cb" /> <p>Punch In</p>
-            </button>
-          )}
-          {isWorking && (
-            <button className="btnz" onClick={handlePunch}>
-              <CgArrowLongLeft size={40} /> <p>Punch Out</p>
-            </button>
-          )}
-
-          <button
-            className="btnz"
-            onClick={() => history.push("/LeaveRequest")}
-            disabled={isDisabled}
-          >
-            <BiCalendarEvent size={40} />
-            <p> Apply for Leave</p>
-          </button>
-          <button className="btnz" onClick={handleRecords}>
-            <BiTimer size={40} />
-            <p>Show Records</p>
-          </button>
-          <button className="btnz" onClick={handleProfile}>
-            <BiTimer size={40} />
-            <p>Profile</p>
-          </button>
-          <button className="btnz" onClick={handleLogout}>
-            <BiLogOut size={40} /> <p>LogOut </p>
-          </button>
+  if (errors) {
+    return <h1>{errors}</h1>;
+  }
+  return (
+    <div>
+      {!R.isEmpty(activeUser) ? (
+        <img src={activeUser.profilePic} alt="Not Found" className="avatar" />
+      ) : (
+        <div className="avatar" style={{ marginLeft: "46%" }}>
+          <div className="avatar__letters">{`Hi ${
+            activeUser.username ? activeUser.username : "User"
+          }`}</div>
         </div>
+      )}
+      <br />
+      <h2 style={{ marginTop: "2%" }} className="title">
+        Hi, {activeUser.username}!
+      </h2>
+      <div className="buttons">
+        {!isWorking && (
+          <button className="btnz" onClick={handlePunch}>
+            <CgArrowLongRight size={40} className="cb" /> <p>Punch In</p>
+          </button>
+        )}
+        {isWorking && (
+          <button className="btnz" onClick={handlePunch}>
+            <CgArrowLongLeft size={40} /> <p>Punch Out</p>
+          </button>
+        )}
+
+        <button
+          className="btnz"
+          onClick={() => history.push("/LeaveRequest")}
+          disabled={isDisabled}
+        >
+          <BiCalendarEvent size={40} />
+          <p> Apply for Leave</p>
+        </button>
+        <button className="btnz" onClick={handleRecords}>
+          <BiTimer size={40} />
+          <p>Show Records</p>
+        </button>
+        <button className="btnz" onClick={handleProfile}>
+          <BiTimer size={40} />
+          <p>Profile</p>
+        </button>
+        <button className="btnz" onClick={handleLogout}>
+          <BiLogOut size={40} /> <p>LogOut </p>
+        </button>
       </div>
-    );
-  }
+    </div>
+  );
 };
 
 export default userDashboardPage;

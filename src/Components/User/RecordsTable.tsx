@@ -1,4 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
 import Table from "react-bootstrap/Table";
 import RecordsRow from "./RecordsRow";
 import { individualRecType } from "../../Adapter/types";
@@ -20,11 +19,7 @@ const RecordsTable = (props: propType) => {
       </thead>
       <tbody>
         {recordsData.map((d) => (
-          <RecordsRow
-            date={d.date}
-            punchIn={d.punchIn}
-            punchOut={d.punchOut}
-          />
+          <RecordsRow date={d.date} punchIn={d.punchIn} punchOut={d.punchOut} />
         ))}
       </tbody>
     </Table>

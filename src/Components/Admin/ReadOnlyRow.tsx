@@ -42,7 +42,6 @@ const ReadOnlyRow = ({
   function handleViewUserProfile(activeEmp: empType) {
     const temp = {
       user: activeEmp,
-      role: "admin",
     };
     history.push({
       pathname: "/UserProfile",

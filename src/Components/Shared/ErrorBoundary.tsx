@@ -1,9 +1,8 @@
 /* eslint-disable no-console */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable no-unused-vars */
 import React from "react";
 
-function ErrorFallbackUI({ errorMessage }) {
+function ErrorFallbackUI(props) {
+  const { errorMessage } = props;
   return (
     <div className="article-error">
       <h3>There was a problem displaying this Page:</h3>

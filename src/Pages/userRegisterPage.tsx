@@ -8,7 +8,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import Snackbar from "@mui/material/Snackbar";
 import { IconButton } from "@mui/material";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
-import { recordType, empType } from "../Adapter/types";
+import { recordType, empType, errorType } from "../Adapter/types";
 import {
   fetchUserDataFromGists,
   patchUserData,
@@ -90,14 +90,10 @@ const userRegisterPage = (): JSX.Element => {
   };
 
   const validate = (values) => {
-    const errors: {
-      name: string;
-      pin: string;
-      email: string;
-    } = { name: "", pin: "", email: "" };
+    const errors: errorType = { username: "", pin: "", email: "" };
     if (!values.name || values.name === "")
-      errors.name = "Enter Employee Username!";
-    else if (values.name.length > 15) errors.name = "Name too long";
+      errors.username = "Enter Employee Username!";
+    else if (values.name.length > 15) errors.username = "Name too long";
     if (!values.pin || values.pin.length > 6 || values.pin.length < 6)
       errors.pin = "pincode must be 6 digits long";
     if (!values.email) errors.email = "Required!";
