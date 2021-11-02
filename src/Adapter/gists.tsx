@@ -9,15 +9,11 @@ const octokit = new Octokit({
   auth: process.env.REACT_APP_API_KEY,
 });
 
-let userGist;
-let recordGist;
-let leaveGist;
-let settingGist;
 const allgists = [];
 
 // Getting All Gists, and then Data from Gists (Helper Functions)
 
-function pipeFunctions(gistArray, response) {
+function pipeFunctions(gistArray, response, obj) {
   R.pipe(
     R.map((gist) => {
       const temp = {
@@ -29,16 +25,16 @@ function pipeFunctions(gistArray, response) {
     R.map((item) => {
       switch (item.filename) {
         case "userStore.txt":
-          userGist = item.id;
+          obj.userGist = item.id;
           break;
         case "leaves.txt":
-          leaveGist = item.id;
+          obj.leaveGist = item.id;
           break;
         case "records.txt":
-          recordGist = item.id;
+          obj.recordGist = item.id;
           break;
         case "settings.txt":
-          settingGist = item.id;
+          obj.settingGist = item.id;
           break;
       }
     }, gistArray)
@@ -47,26 +43,30 @@ function pipeFunctions(gistArray, response) {
 
 export async function getallGists() {
   try {
+    const obj = {
+      userGist: "",
+      recordGist: "",
+      leaveGist: "",
+      settingGist: "",
+    };
     const response = await octokit.request("GET /users/AreejFatima/gists", {
       username: "AreejFatima",
     });
-    pipeFunctions(allgists, response.data);
+    pipeFunctions(allgists, response.data, obj);
+    return obj;
   } catch (error) {
     console.log(error);
   }
 }
 
-export async function getUsers() {
-  if (userGist) {
+export async function getData(filename, gistId) {
+  if (gistId) {
     try {
-      const response = await octokit.request(`GET /gists/${userGist}`, {
+      const response = await octokit.request(`GET /gists/${gistId}`, {
         org: "octokit",
         type: "private",
       });
-      const data = R.path(
-        ["data", "files", "userStore.txt", "content"],
-        response
-      );
+      const data = R.path(["data", "files", filename, "content"], response);
       return data;
     } catch (error) {
       console.log(error);
@@ -74,91 +74,15 @@ export async function getUsers() {
   }
 }
 
-export async function getRecords() {
-  try {
-    if (recordGist) {
-      const response = await octokit.request(`GET /gists/${recordGist}`, {
-        org: "octokit",
-        type: "private",
-      });
-      const data = R.path(
-        ["data", "files", "records.txt", "content"],
-        response
-      );
-      return data;
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function getLeaves() {
-  try {
-    const response = await octokit.request(`GET /gists/${leaveGist}`, {
-      org: "octokit",
-      type: "private",
-    });
-    const data = R.path(["data", "files", "leaves.txt", "content"], response);
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 // Patching Data to Gists (Helper Functions)
 
-export async function patchUsers(u) {
+export async function patchData(filename, data, gistId) {
   try {
-    const response = await octokit.request(`PATCH /gists/${userGist}`, {
-      gist_id: userGist,
+    const response = await octokit.request(`PATCH /gists/${gistId}`, {
+      gist_id: gistId,
       files: {
-        "userStore.txt": {
-          content: u,
-        },
-      },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function patchRecords(r) {
-  try {
-    const response = await octokit.request(`PATCH /gists/${recordGist}`, {
-      gist_id: recordGist,
-      files: {
-        "records.txt": {
-          content: r,
-        },
-      },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function patchLeaves(l) {
-  try {
-    const response = await octokit.request(`PATCH /gists/${leaveGist}`, {
-      gist_id: leaveGist,
-      files: {
-        "leaves.txt": {
-          content: l,
-        },
-      },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-export async function patchSettings(s) {
-  try {
-    const response = await octokit.request(`PATCH /gists/${settingGist}`, {
-      gist_id: leaveGist,
-      files: {
-        "settings.txt": {
-          content: s,
+        [filename]: {
+          content: data,
         },
       },
     });

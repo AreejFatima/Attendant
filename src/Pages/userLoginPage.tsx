@@ -10,12 +10,14 @@ import {
   setActiveUser,
   fetchUserDataFromGists,
 } from "../Redux/Slices/userSlice";
-import { empType, allEmpType } from "../Adapter/types";
+import { empType, allEmpType} from "../Adapter/types";
+import Auth from '../Routing/Auth'
 
 const userLoginPage = (): JSX.Element => {
   const usersList: empType[] = useSelector(
     (state: RootStateOrAny) => state.user.allUsers
   );
+  
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -34,8 +36,11 @@ const userLoginPage = (): JSX.Element => {
     R.map((item) => {
       if (item.id === enteredId && item.pincode === enteredPin) {
         dispatch(setActiveUser(item));
+        window.localStorage.setItem("activeUser", JSON.stringify(item));
+        
       }
     }, usersList);
+    Auth.authenticate()
     history.push("/UserDashboard");
   };
 

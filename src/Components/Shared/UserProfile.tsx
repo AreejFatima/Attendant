@@ -1,9 +1,9 @@
 /* eslint-disable react/void-dom-elements-no-children */
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import * as R from "ramda";
-import { patchUserData, setActiveUser } from "../../Redux/Slices/userSlice";
+import { fetchUserDataFromGists, patchUserData, setActiveUser } from "../../Redux/Slices/userSlice";
 import { empType } from "../../Adapter/types";
 import UploadImage from "./UploadImage";
 import EditableForm from "./EditableForm";
@@ -16,15 +16,16 @@ const UserProfile = (): JSX.Element => {
   const activeUser: empType = locationState.user;
   const { role } = locationState;
 
-  let usersList: empType[];
-
-  if (role === "user") {
-    usersList = useSelector((state: RootStateOrAny) => state.user.allUsers);
-  } else {
-    usersList = useSelector((state: RootStateOrAny) => state.admin.employees);
-  }
+  const usersList: empType[] = useSelector(
+    (state: RootStateOrAny) => state.user.allUsers
+  );
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUserDataFromGists())
+    dispatch(setActiveUser(JSON.parse(window.localStorage.getItem("activeUser"))))
+  }, [])
 
   function showForm(): void {
     setShowEditForm((prev) => !prev);
@@ -38,6 +39,7 @@ const UserProfile = (): JSX.Element => {
     tempUsers[index] = toUpdate;
     dispatch(patchUserData(tempUsers));
     dispatch(setActiveUser(toUpdate));
+    localStorage.activeUser=JSON.stringify(toUpdate)
   }
 
   return (

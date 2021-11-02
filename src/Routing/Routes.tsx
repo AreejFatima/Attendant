@@ -8,6 +8,7 @@ import userRegisterPage from "../Pages/userRegisterPage";
 import userLoginPage from "../Pages/userLoginPage";
 import userRecordsPage from "../Pages/userRecordsPage";
 import UserProfilePage from "../Pages/userProfilePage";
+import PrivateRoute from "./PrivateRoute";
 
 const Routes = () => {
   const history = useHistory();
@@ -16,13 +17,37 @@ const Routes = () => {
       <Switch>
         <Route path="/" exact component={userLoginPage} />
         <Route path="/Register" component={userRegisterPage} />
-        <Route path="/UserDashboard" component={userDashboardPage} />
-        <Route path="/UserRecords" component={userRecordsPage} />
+        <PrivateRoute
+          path="/UserDashboard"
+          component={userDashboardPage}
+          redirected=""
+        />
+        <PrivateRoute
+          path="/UserRecords"
+          component={userRecordsPage}
+          redirected=""
+        />
+        <PrivateRoute
+          path="/LeaveRequest"
+          component={userLeavePage}
+          redirected=""
+        />
+        <PrivateRoute
+          path="/UserProfile"
+          component={UserProfilePage}
+          redirected=""
+        />
         <Route path="/AdminLogin" component={adminLoginPage} />
-        <Route path="/AdminDashboard" component={adminDashboardPage} />
-        <Route path="/AdminSettings" component={adminSettingsPage} />
-        <Route path="/LeaveRequest" component={userLeavePage} />
-        <Route path="/UserProfile" component={UserProfilePage} />
+        <PrivateRoute
+          path="/AdminDashboard"
+          component={adminDashboardPage}
+          redirected="AdminLogin"
+        />
+        <PrivateRoute
+          path="/AdminSettings"
+          component={adminSettingsPage}
+          redirected="AdminLogin"
+        />
       </Switch>
     </Router>
   );

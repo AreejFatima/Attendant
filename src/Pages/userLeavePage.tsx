@@ -9,7 +9,7 @@ import Snackbar from "@mui/material/Snackbar";
 import { IconButton } from "@mui/material";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
-import { patchLeaveData } from "../Redux/Slices/userSlice";
+import { fetchUserDataFromGists, patchLeaveData, setActiveUser } from "../Redux/Slices/userSlice";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
 import { leaveType } from "../Adapter/types";
 
@@ -25,6 +25,11 @@ const userLeavePage: FC = () => {
   const [newLeave, setNewLeave] = useState<leaveType>(null);
   const dispatch = useDispatch();
   const history = useHistory();
+
+  useEffect(() => {
+    dispatch(fetchUserDataFromGists())
+    dispatch(setActiveUser(JSON.parse(window.localStorage.getItem('activeUser'))))
+  }, [])
 
   useEffect(() => {
     if (newLeave !== null) {

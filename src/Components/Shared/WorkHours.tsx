@@ -19,14 +19,6 @@ interface propType {
 
 const WorkHours = (props: propType): JSX.Element => {
   const { id, role, type } = props;
-  let recordsList: recordType;
-  if (role === "user") {
-    recordsList = useSelector(
-      (state: RootStateOrAny) => state.user.userRecords
-    );
-  } else {
-    recordsList = useSelector((state: RootStateOrAny) => state.admin.records);
-  }
 
   const [userRecords, setUserRecords] = useState<individualRecType[]>([]);
   let weeklyRecords: hourlyType[] = [];
@@ -40,7 +32,9 @@ const WorkHours = (props: propType): JSX.Element => {
   const monthlydata: number[] = [];
 
   useEffect(() => {
-    const recordObject: recordType = R.find(R.propEq("id", id))(recordsList);
+    const recordObject: recordType = JSON.parse(
+      window.localStorage.getItem("activeRecords")
+    );
     setUserRecords(recordObject.Records);
   }, []);
   const byDate = R.groupBy((record) => record.date);
@@ -63,7 +57,7 @@ const WorkHours = (props: propType): JSX.Element => {
       dailyRecords = tempRec;
     }
   }
-    recordsByDate();
+  recordsByDate();
 
   function dailyChartData(): chartType {
     let obj: chartType;

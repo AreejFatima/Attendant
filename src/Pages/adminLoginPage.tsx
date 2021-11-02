@@ -1,23 +1,25 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { FC, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import "../App.css";
-import { fetchDataFromGists } from "../Redux/Slices/adminSlice";
+import * as R from "ramda";
+import { fetchUserDataFromGists } from "../Redux/Slices/userSlice";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
-import { allEmpType } from "../Adapter/types";
+import { allEmpType, empType } from "../Adapter/types";
+import Auth from "../Routing/Auth";
 
 const adminLoginPage: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const ID: string = "AD-000";
-  const PIN: string = "12345";
-
+  const usersList: empType[] = useSelector(
+    (state: RootStateOrAny) => state.user.allUsers
+  );
+  const admin = R.find(R.propEq("role", "ADMIN"))(usersList);
   // Fetching Records and users from gists
   useEffect(() => {
-    dispatch(fetchDataFromGists());
-  }, [dispatch]);
+    dispatch(fetchUserDataFromGists());
+  }, []);
 
   const initialValues: allEmpType = {
     id: "",
@@ -25,15 +27,16 @@ const adminLoginPage: FC = () => {
   };
 
   const onSubmit = (): void => {
+    Auth.authenticate()
     history.push("/AdminDashboard");
   };
   const validate = (values: allEmpType) => {
     const errors: any = {};
     if (!values.id || values.id === "") errors.id = "Admin Id cannot be blank!";
-    else if (values.id !== ID) errors.id = "Invalid Admin Id!";
+    else if (values.id !== admin.id) errors.id = "Invalid Admin Id!";
     if (!values.pin || values.pin === "")
       errors.pin = "Pincode cannot be blank!";
-    else if (values.pin !== PIN) errors.pin = "Invalid Pincode";
+    else if (values.pin !== admin.pincode) errors.pin = "Invalid Pincode";
     return errors;
   };
 

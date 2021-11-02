@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useSelector, RootStateOrAny } from "react-redux";
+import { useState, useEffect } from "react";
+import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as R from "ramda";
 import "react-bootstrap-table/dist/react-bootstrap-table-all.min.css";
@@ -8,6 +8,10 @@ import { BiLogOutCircle } from "react-icons/bi";
 import SearchBar from "../Components/User/SearchBar";
 import RecordsTable from "../Components/User/RecordsTable";
 import { recordType, individualRecType } from "../Adapter/types";
+import {
+  fetchUserDataFromGists,
+  setActiveUser,
+} from "../Redux/Slices/userSlice";
 
 const userRecordsPage = (): JSX.Element => {
   const [search, setSearch] = useState<string>("");
@@ -21,19 +25,25 @@ const userRecordsPage = (): JSX.Element => {
   const allRecords = [];
   let recordsByDate: individualRecType[] = [];
 
-  
-    R.map((item) => {
-      if (item.id === id) {
-        allRecords.push(item.Records);
-      }
-    }, userRecords);
+  const dispatch = useDispatch();
 
-    R.map((item) => {
-      R.map((subRecord) => {
-        recordsByDate.push(subRecord);
-      }, item);
-    }, allRecords);
-  
+  useEffect(() => {
+    dispatch(fetchUserDataFromGists());
+    dispatch( setActiveUser(JSON.parse(window.localStorage.getItem("activeUser"))));
+  }, []);
+
+  R.map((item) => {
+    if (item.id === id) {
+      allRecords.push(item.Records);
+    }
+  }, userRecords);
+
+  R.map((item) => {
+    R.map((subRecord) => {
+      recordsByDate.push(subRecord);
+    }, item);
+  }, allRecords);
+
   function handleChange(event): void {
     const searchValue = event.target.value;
     setSearch(searchValue);

@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import { ChangeEvent, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch,useSelector,RootStateOrAny } from "react-redux";
+import { useDispatch, useSelector, RootStateOrAny } from "react-redux";
 import * as R from "ramda";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
@@ -9,20 +9,20 @@ import { RiAddFill } from "react-icons/ri";
 import Snackbar from "@mui/material/Snackbar";
 import { IconButton } from "@mui/material";
 import {
-  patchRecordData,
-  patchEmployeeData,
-} from "../../Redux/Slices/adminSlice";
+  patchUserData,
+  patchUserRecords,
+  fetchUserDataFromGists,
+} from "../../Redux/Slices/userSlice";
 import { empType, recordType } from "../../Adapter/types";
 import ReadOnlyRow from "./ReadOnlyRow";
 import EditableRow from "./EditableRow";
-import { getUsers, getRecords } from "../../Adapter/gists";
 import SearchBar from "../User/SearchBar";
 import Modal from "./Modal";
 import { avatar } from "../../avatar";
+import Auth from "../../Routing/Auth";
 
 const EmployeeTable = () => {
   const [employees, setEmployees] = useState<empType[]>([]);
-  const [errors, setErrors] = useState("");
   const [records, setRecords] = useState<recordType[]>([]);
   const [search, setSearch] = useState<string>("");
   const [isAdded, setIsAdded] = useState<boolean>(false);
@@ -30,10 +30,15 @@ const EmployeeTable = () => {
   const [snackMesage, setMessage] = useState<string>("");
   const dispatch = useDispatch();
   const history = useHistory();
-  let tableData = [...employees];
   const allEmployees: empType[] = useSelector(
-    (state: RootStateOrAny) => state.admin.employees
+    (state: RootStateOrAny) => state.user.allUsers
   );
+  const allRecords: recordType[] = useSelector(
+    (state: RootStateOrAny) => state.user.userRecords
+  );
+  const adminIndex = R.findIndex(R.propEq("role", "ADMIN"))(employees);
+  let tableData = [...employees];
+  tableData.splice(adminIndex, 1);
   const [currentEmpId, setcurrentEmpId] = useState<empType>({
     id: null,
     dept: "",
@@ -59,22 +64,9 @@ const EmployeeTable = () => {
   });
 
   useEffect(() => {
-    getUsers().then((data) => {
-      setEmployees(JSON.parse(data));
-    });
-    getRecords().then((data) => {
-      setRecords(JSON.parse(data));
-    });
-  }, []);
-
-  useEffect(() => {
-    try {
-      if (R.isEmpty(allEmployees)) {
-        throw new TypeError("Cannot Display Settings, Employees Not Found");
-      }
-    } catch (error) {
-      setErrors(error);
-    }
+    dispatch(fetchUserDataFromGists());
+    setEmployees(allEmployees);
+    setRecords(allRecords);
   }, []);
 
   function SnackBarClose(): void {
@@ -113,8 +105,8 @@ const EmployeeTable = () => {
       (item) => item !== toDeleteEmp
     );
 
-    dispatch(patchEmployeeData(filteredEmployees));
-    dispatch(patchRecordData(filteredRecords));
+    dispatch(patchUserData(filteredEmployees));
+    dispatch(patchUserRecords(filteredRecords));
 
     const deletedEmp: empType = R.find(R.propEq("id", eid))(employees);
     const filteredEmp: empType[] = employees.filter(
@@ -199,8 +191,8 @@ const EmployeeTable = () => {
         email: "",
       };
       setAddFormData(initial);
-      dispatch(patchEmployeeData(newEmployees));
-      dispatch(patchRecordData(newRecords));
+      dispatch(patchUserData(newEmployees));
+      dispatch(patchUserRecords(newRecords));
     } else {
       setIsSnackOpen(true);
       setMessage("Missing Values: Cannot add Employee :(");
@@ -256,7 +248,7 @@ const EmployeeTable = () => {
     setEmployees(newEmployees);
 
     setTimeout(() => {
-      dispatch(patchEmployeeData(newEmployees));
+      dispatch(patchUserData(newEmployees));
     }, 1000);
 
     const initial = {
@@ -320,9 +312,11 @@ const EmployeeTable = () => {
     );
   }
 
-  if (errors) {
-    return <h1>{errors}</h1>;
+  function handleLogout(){
+    Auth.signout()
+    history.push("AdminLogin")
   }
+
   return (
     <>
       <Snackbar
@@ -346,7 +340,7 @@ const EmployeeTable = () => {
         <button onClick={() => history.push("AdminDashboard")}>
           <FaBackward size={30} />
         </button>
-        <button onClick={() => history.push("AdminLogin")}>
+        <button onClick={handleLogout}>
           <BiLogOutCircle size={30} />
         </button>
       </div>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
@@ -10,8 +11,8 @@ import { empType, errorType } from "../../Adapter/types";
 import {
   fetchUserDataFromGists,
   patchUserData,
+  setActiveUser,
 } from "../../Redux/Slices/userSlice";
-import { patchEmployeeData } from "../../Redux/Slices/adminSlice";
 
 const EditableForm = ({
   id,
@@ -25,12 +26,10 @@ const EditableForm = ({
   showEditForm,
   type,
 }) => {
-  let usersList: empType[];
-  if (type === "user") {
-    usersList = useSelector((state: RootStateOrAny) => state.user.allUsers);
-  } else {
-    usersList = useSelector((state: RootStateOrAny) => state.admin.employees);
-  }
+  const usersList: empType[] = useSelector(
+    (state: RootStateOrAny) => state.user.allUsers
+  );
+
   const initialValues = {
     pincode,
     dept,
@@ -45,6 +44,7 @@ const EditableForm = ({
 
   useEffect(() => {
     dispatch(fetchUserDataFromGists);
+    dispatch(setActiveUser(JSON.parse(window.localStorage.getItem('activeUser'))))
   }, []);
 
   function SnackBarClose(): void {
@@ -101,11 +101,9 @@ const EditableForm = ({
       profilePic,
     };
     tempUsers[index] = editedUser;
-    if (type === "user") {
-      dispatch(patchUserData(tempUsers));
-    } else {
-      dispatch(patchEmployeeData(tempUsers));
-    }
+    dispatch(patchUserData(tempUsers));
+    localStorage.activeUser=JSON.stringify(editedUser)
+    dispatch(setActiveUser(editedUser))
   }
 
   return (

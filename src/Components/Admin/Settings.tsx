@@ -3,7 +3,7 @@ import { FC } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useDispatch } from "react-redux";
 import ErrorDiv from "../Shared/ErrorDiv";
-import { patchSettingData } from "../../Redux/Slices/adminSlice";
+import { patchSettingData } from "../../Redux/Slices/userSlice";
 import { hourType } from "../../Adapter/types";
 
 const Settings: FC = () => {

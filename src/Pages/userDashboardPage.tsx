@@ -1,6 +1,6 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-lone-blocks */
 /* eslint-disable no-template-curly-in-string */
-/* eslint-disable no-unused-vars */
 /* eslint-disable prefer-destructuring */
 import { useSelector, useDispatch, RootStateOrAny } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -14,8 +14,8 @@ import {
   setActiveUser,
   fetchUserDataFromGists,
 } from "../Redux/Slices/userSlice";
-import { leaveType, recordType, empType } from "../Adapter/types";
-import ErrorBoundary from "../Components/Shared/ErrorBoundary";
+import { leaveType, recordType} from "../Adapter/types";
+import Auth from '../Routing/Auth'
 
 function calculateWorkHours(st: string, et: string) {
   const startTime = moment(st, "HH:mm:ss A");
@@ -31,9 +31,7 @@ function calculateWorkHours(st: string, et: string) {
 
 const userDashboardPage = () => {
   const [errors, setErrors] = useState("");
-  const activeUser = useSelector(
-    (state: RootStateOrAny) => state.user.activeUser
-  );
+  const activeUser=JSON.parse(window.localStorage.getItem('activeUser'))
   const userRecords: recordType[] = useSelector(
     (state: RootStateOrAny) => state.user.userRecords
   );
@@ -48,6 +46,7 @@ const userDashboardPage = () => {
 
   useEffect(() => {
     dispatch(fetchUserDataFromGists());
+    dispatch(setActiveUser(activeUser))
   }, []);
 
   useEffect(() => {
@@ -120,6 +119,7 @@ const userDashboardPage = () => {
       phone: "",
       profilePic: "",
     };
+    Auth.signout()
     dispatch(setActiveUser(inactive));
     history.push("/");
   }

@@ -38,6 +38,7 @@ const ReadOnlyRow = ({
     email,
     profilePic,
   };
+
   function handleViewUserProfile(activeEmp: empType) {
     const temp = {
       user: activeEmp,

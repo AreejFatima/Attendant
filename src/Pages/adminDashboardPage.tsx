@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector, RootStateOrAny } from "react-redux";
+import { useSelector, RootStateOrAny, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { FaBackward } from "react-icons/fa";
 import * as R from "ramda";
@@ -9,9 +9,10 @@ import WorkHourTable from "../Components/Admin/WorkHourTable";
 import AvailabilityTabs from "../Components/Admin/AvailabilityTabs";
 import SearchBar from "../Components/User/SearchBar";
 import { recordType, workType, allEmpType } from "../Adapter/types";
+import { fetchUserDataFromGists } from "../Redux/Slices/userSlice";
+import Auth from "../Routing/Auth";
 
 const adminDashboardPage = (): JSX.Element => {
-  const [errors, setErrors] = useState("");
   const timestamp = R.split(", ", new Date().toLocaleString());
   const currentDate: string = timestamp[0];
   const [search, setSearch] = useState<string>("");
@@ -23,19 +24,13 @@ const adminDashboardPage = (): JSX.Element => {
   let searchResults: allEmpType[] = [];
   const onleave: string[] = [];
   const recordz: recordType = useSelector(
-    (state: RootStateOrAny) => state.admin.records
+    (state: RootStateOrAny) => state.user.userRecords
   );
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    try {
-      if (!R.isEmpty(recordz)) {
-        assembleWHdata(null);
-      } else {
-        throw new TypeError("Cannot Display Dashboard, Employees Not Found");
-      }
-    } catch (error) {
-      setErrors(error);
-    }
+    dispatch(fetchUserDataFromGists());
+    assembleWHdata(null);
   }, []);
 
   // Calculating work hours
@@ -107,6 +102,11 @@ const adminDashboardPage = (): JSX.Element => {
     }
   }
   assembleData();
+
+  function handleLogout() {
+    Auth.signout();
+    history.push("/AdminLogin");
+  }
   // SearchBar
   function handleSearchChange(event): void {
     const searchValue = event.target.value;
@@ -118,14 +118,10 @@ const adminDashboardPage = (): JSX.Element => {
     searchResults = allEmployees.filter((e) => e.id.match(searchString));
   }
 
-  if (errors) {
-    return <h1>{errors}</h1>;
-  }
-
   return (
     <div className="adminMain">
       <div className="aicon">
-        <button onClick={() => history.push("AdminLogin")}>
+        <button onClick={handleLogout}>
           <FaBackward size={30} />
         </button>
         <button onClick={() => history.push("AdminSettings")}>
