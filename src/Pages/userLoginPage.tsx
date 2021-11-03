@@ -10,20 +10,20 @@ import {
   setActiveUser,
   fetchUserDataFromGists,
 } from "../Redux/Slices/userSlice";
-import { empType, allEmpType} from "../Adapter/types";
-import Auth from '../Routing/Auth'
+import { empType, allEmpType } from "../Adapter/types";
+import Auth from "../Routing/Auth";
 
 const userLoginPage = (): JSX.Element => {
   const usersList: empType[] = useSelector(
     (state: RootStateOrAny) => state.user.allUsers
   );
-  
+
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
     dispatch(fetchUserDataFromGists());
-    localStorage.removeItem('activeUser')
+    localStorage.removeItem("activeUser");
   }, []);
 
   const initialValues: allEmpType = {
@@ -32,16 +32,14 @@ const userLoginPage = (): JSX.Element => {
   };
 
   const onSubmit = (values): void => {
-    const enteredId = values.id;
-    const enteredPin = values.pin;
+    const { id: enteredId, pin: enteredPin } = values;
     R.map((item) => {
       if (item.id === enteredId && item.pincode === enteredPin) {
         dispatch(setActiveUser(item));
         window.localStorage.setItem("activeUser", JSON.stringify(item));
-        
       }
     }, usersList);
-    Auth.authenticate()
+    Auth.authenticate();
     history.push("/UserDashboard");
   };
 

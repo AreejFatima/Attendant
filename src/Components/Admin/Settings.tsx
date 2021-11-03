@@ -15,9 +15,10 @@ const Settings: FC = () => {
   };
 
   function onSubmit(values): void {
+    const {officeHour,minWH}=values
     const temp = {
-      officeHour: values.officeHour,
-      minWH: values.minWH,
+      officeHour,
+      minWH,
     };
     dispatch(patchSettingData(temp));
   }

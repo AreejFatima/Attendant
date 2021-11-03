@@ -164,13 +164,10 @@ const EmployeeTable = () => {
     ) {
       const addedEmployee = {
         id: getId(addFormData.dept),
-        username: addFormData.username,
-        dept: addFormData.dept,
-        role: addFormData.role,
-        email: addFormData.email,
         pincode: "000000",
         phone: "",
         profilePic: "",
+        ...addFormData,
       };
       const addedRecord: recordType = {
         id: getId(addFormData.dept),
@@ -201,22 +198,16 @@ const EmployeeTable = () => {
   }
 
   function editEmployee(employee: empType): void {
+    const { username, dept, role, email } = employee;
     const currentTemp = {
-      id: employee.id,
-      username: employee.username,
-      dept: employee.dept,
-      pincode: employee.pincode,
-      role: employee.role,
-      email: employee.email,
-      phone: employee.phone,
-      profilePic: employee.profilePic,
+      ...employee,
     };
     setcurrentEmpId(currentTemp);
     const tempEmp = {
-      username: employee.username,
-      dept: employee.dept,
-      role: employee.role,
-      email: employee.email,
+      username,
+      dept,
+      role,
+      email,
     };
     setEditFormData(tempEmp);
   }
@@ -230,15 +221,13 @@ const EmployeeTable = () => {
   }
 
   function handleEditFormSave(): void {
+    const { id, pincode, phone, profilePic } = currentEmpId;
     const editedEmployee = {
-      id: currentEmpId.id,
-      username: editFormData.username,
-      dept: editFormData.dept,
-      role: editFormData.role,
-      email: editFormData.email,
-      pincode: currentEmpId.pincode,
-      phone: currentEmpId.phone,
-      profilePic: currentEmpId.profilePic,
+      id,
+      pincode,
+      phone,
+      profilePic,
+      ...editFormData,
     };
     const newEmployees = [...employees];
 
@@ -277,7 +266,7 @@ const EmployeeTable = () => {
     ];
     return headerElement.map((key) => <th>{key.toUpperCase()}</th>);
   }
-  
+
   // Form Body
   function renderBody(data) {
     return (

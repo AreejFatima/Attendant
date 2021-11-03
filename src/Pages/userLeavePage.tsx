@@ -9,7 +9,11 @@ import Snackbar from "@mui/material/Snackbar";
 import { IconButton } from "@mui/material";
 import { FaBackward } from "react-icons/fa";
 import { BiLogOutCircle } from "react-icons/bi";
-import { fetchUserDataFromGists, patchLeaveData, setActiveUser } from "../Redux/Slices/userSlice";
+import {
+  fetchUserDataFromGists,
+  patchLeaveData,
+  setActiveUser,
+} from "../Redux/Slices/userSlice";
 import ErrorDiv from "../Components/Shared/ErrorDiv";
 import { leaveType } from "../Adapter/types";
 
@@ -27,9 +31,11 @@ const userLeavePage: FC = () => {
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(fetchUserDataFromGists())
-    dispatch(setActiveUser(JSON.parse(window.localStorage.getItem('activeUser'))))
-  }, [])
+    dispatch(fetchUserDataFromGists());
+    dispatch(
+      setActiveUser(JSON.parse(window.localStorage.getItem("activeUser")))
+    );
+  }, []);
 
   useEffect(() => {
     if (newLeave !== null) {
@@ -55,17 +61,19 @@ const userLeavePage: FC = () => {
 
   const onSubmit = (values) => {
     const date = R.split(", ", new Date().toLocaleString());
+    const { name, dept, type, days, reason, message } = values;
+    const { id: userid } = activeUser;
     setIsSnackOpen(true);
     setMessage("Leave Submitted!");
     const tempLeave: leaveType = {
-      userid: activeUser.id,
+      userid,
       status: "pending",
-      name: values.name,
-      dept: values.dept,
-      type: values.type,
-      days: values.days,
-      reason: values.reason,
-      message: values.message,
+      name,
+      dept,
+      type,
+      days,
+      reason,
+      message,
       appliedOn: date[0],
     };
     setNewLeave(tempLeave);

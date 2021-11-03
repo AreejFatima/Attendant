@@ -31,8 +31,7 @@ const adminLoginPage: FC = () => {
   };
 
   const onSubmit = (values): void => {
-    const enteredId = values.id;
-    const enteredPin = values.pin;
+    const { id: enteredId, pin: enteredPin } = values;
     R.map((item) => {
       if (item.id === enteredId && item.pincode === enteredPin) {
         dispatch(setActiveUser(item));
